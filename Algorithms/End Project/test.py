@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-An example for Prim's Algorithm
+Testing file for the animations module
 """
 __author__ = """Jorge Reus (http://github.com/JorgeReus/)"""
 

@@ -23,7 +23,7 @@ G.add_edge('G','I',weight=1)
 G.add_edge('H','I',weight=3)
 
 # Make the MST and the History(For animation steps)
-mst, history = prim2(G,'A')
+mst, history = prim(G,'A')
 
 print("MST: ",mst)
 print("HIstory", history)

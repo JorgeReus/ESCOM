@@ -23,7 +23,7 @@ G.add_edge('G','I',weight=1)
 G.add_edge('H','I',weight=3)
 
 # Make the prim_mst and the prim_history(For prim's animation steps)
-prim_mst, prim_history = prim2(G,'A')
+prim_mst, prim_history = prim(G,'A')
 # Make the kruskal_mst and the kruskal_history(For krukal's animation steps)
 kruskal_history, kruskal_mst, kruskal_cycles = kruskal(G)
 
