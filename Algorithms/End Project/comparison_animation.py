@@ -3,9 +3,9 @@ from matplotlib import animation
 import networkx as nx
 from prim import *
 from kruskal import *
-
+# Create the graph
 G=nx.Graph()
-
+# Add edges to the graph
 G.add_edge('A','B',weight=3)
 G.add_edge('A','D',weight=5)
 G.add_edge('A','E',weight=9)
@@ -48,7 +48,7 @@ def makeFigure():
     ax1.set_yticks([])
     ax1.set_title("Prim's Algorithm")
     # Plot nodes for ax1
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=500)
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=300)
     # Plot edges for ax1
     edges = nx.draw_networkx_edges(G, pos, width=1)
     # Plot labels for ax1
@@ -57,19 +57,19 @@ def makeFigure():
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
 
 
-    # Add ax2
+    # Add ax2 (Kruskal)
     ax2 = fig.add_subplot(2,1,2)
     # Remove the ticks and tick labels
     ax2.set_xticks([])
     ax2.set_yticks([])
     ax2.set_title("Kruskal's Algorithm")
     # Plot nodes for ax2
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='y')
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=300, node_color='y')
     # Plot edges for ax2
     edges = nx.draw_networkx_edges(G, pos, width=1)
     # Plot labels for ax2
     labels = nx.get_edge_attributes(G,'weight')
-    nx.draw_networkx_labels(G,pos,font_size=15,font_family='sans-serif')
+    nx.draw_networkx_labels(G,pos,font_size=10,font_family='sans-serif')
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     return fig, ax1, ax2, edges, nodes
 
@@ -87,7 +87,7 @@ def renderFrame(i, edges, nodes):
         # Title of the plot
         ax1.set_title("Prim's Algorithm")
         # Update frame with original nodes
-        nodes = nx.draw_networkx_nodes(G, pos, node_size=500)
+        nodes = nx.draw_networkx_nodes(G, pos, node_size=300)
         # Update frame with original edges
         edges = nx.draw_networkx_edges(G, pos, width=1)
         # Update frame with labels (Labels do not change)
@@ -102,7 +102,7 @@ def renderFrame(i, edges, nodes):
             # Draw the lowest value edge
             nx.draw_networkx_edges(G, pos,edgelist=[current,], width=6, edge_color='r', style='dashed')
             # Draw the visited nodes
-            nodes = nx.draw_networkx_nodes(G, pos, nodelist=visited_nodes_prim, node_size=500, node_color='yellow')
+            nodes = nx.draw_networkx_nodes(G, pos, nodelist=visited_nodes_prim, node_size=300, node_color='yellow')
             # Draw the visited edges (prim_mst)
             edges = nx.draw_networkx_edges(G, pos,edgelist=visited_edges_prim, width=6, edge_color='r', style=':')
             # Add the current edge to visited edges for prim_mst
@@ -114,6 +114,7 @@ def renderFrame(i, edges, nodes):
         else:
             # Final edges (prim_mst)
             nx.draw_networkx_edges(G, pos, edgelist=prim_mst, width=6, alpha=0.5, edge_color='b', style='dashed')
+
         plt.sca(ax2)
         # Erase the previous figure, for memory optimization
         ax2.cla()
@@ -123,34 +124,35 @@ def renderFrame(i, edges, nodes):
         # Title of the plot
         ax2.set_title("Kruskal's Algorithm")
         # Update frame with original nodes
-        nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='y')
+        nodes = nx.draw_networkx_nodes(G, pos, node_size=300, node_color='y')
         # Update frame with original edges
-        edges = nx.draw_networkx_edges(G, pos, width=2, edge_color='r')
+        edges = nx.draw_networkx_edges(G, pos, width=2, edge_color='r', style='dashed')
         nx.draw_networkx_edges(G, pos,edgelist=edges_cycles_kruskal, width=2, edge_color='y')
         # Update frame with labels (Labels do not change)
         labels = nx.get_edge_attributes(G,'weight')
-        nx.draw_networkx_labels(G,pos,font_size=15,font_family='sans-serif')
+        nx.draw_networkx_labels(G,pos,font_size=10,font_family='sans-serif')
         nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
         if (len(kruskal_history) > 0):
             # Current Edge
             current = kruskal_history[0]
-            if (current not in edges_cycles_kruskal):
+            if (current not in kruskal_cycles):
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, pos,edgelist=visited_edges_kruskal, width=2, edge_color='b')
+                edges = nx.draw_networkx_edges(G, pos,edgelist=edges_cycles_kruskal, width=2, edge_color='y')
                 # Add the current edge to visited edges for MST
                 visited_edges_kruskal.append(current)
             else:
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, pos,edgelist=visited_edges_kruskal, width=2, edge_color='b')
-                # Add the current edge to visited edges for MST
-                edges_cycles_kruskal.append(current)
                 # Draw the edges which cause cycles
                 nx.draw_networkx_edges(G, pos,edgelist=edges_cycles_kruskal, width=2, edge_color='y')
+                # Add the current edge to visited edges for MST
+                edges_cycles_kruskal.append(current)
             # Remove the step of mst from kruskal_history
             del kruskal_history[0]
         else:
             # Draw Final edges (MST)
-            nx.draw_networkx_edges(G, pos, edgelist=kruskal_mst, width=4, edge_color='b')
+            nx.draw_networkx_edges(G, pos, edgelist=kruskal_mst, width=4, edge_color='r')
     return edges, nodes
 
 # # List of Animation objects for tracking

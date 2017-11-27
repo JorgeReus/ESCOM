@@ -1,7 +1,7 @@
 from pqdict import PQDict
 
-def prim(G,start):
-    """Function recives a graph and a starting node, and returns a MST"""
+def prim(G: "networx Graph object", start: "1X2 Tuple(Node)")-> (list, list):
+    """Function recives a graph and a starting node, and returns the MST and the history of the algorithm"""
     MST_len = G.number_of_nodes() - 1
     current = start
     visited = set()
@@ -13,13 +13,10 @@ def prim(G,start):
     history = []
     # While the MST has N - 1 edges (N is the total nodes)
     while len(mst) < MST_len:
-        # print (" ")
-        # print ("Current node :", current)
         # Get the neighbors
         # history.append((current, G.neighbors(current)))
         for node in G.neighbors(current):
             if node not in visited and current not in visited:
-                # print ("    neigbors: ", node)
                 # Append the history
                 steps.append((current, node))
                 if (current,node) not in pq and (node,current) not in pq:
@@ -40,4 +37,6 @@ def prim(G,start):
         current = tup[1]
 
     return mst, history
-    # pass
+
+if __name__ == '__main__':
+    print(getattr(prim, '__annotations__'))
