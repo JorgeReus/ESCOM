@@ -9,25 +9,10 @@ from matplotlib.backend_bases import key_press_handler
 import tkinter as tk
 
 root = tk.Tk()
+root.state('zoomed')
 root.wm_title("Embeding")
 
-G=nx.Graph()
-
-G.add_edge('A','B',weight=3)
-G.add_edge('A','D',weight=5)
-G.add_edge('A','E',weight=9)
-G.add_edge('B','C',weight=5)
-G.add_edge('B','D',weight=4)
-G.add_edge('B','E',weight=8)
-G.add_edge('C','D',weight=7)
-G.add_edge('C','G',weight=3)
-G.add_edge('D','F',weight=8)
-G.add_edge('D','G',weight=5)
-G.add_edge('D','H',weight=6)
-G.add_edge('E','F',weight=2)
-G.add_edge('F','H',weight=10)
-G.add_edge('G','I',weight=1)
-G.add_edge('H','I',weight=3)
+G=nx.read_edgelist("graph.edgelist")
 
 # Make the MST and the History(For animation steps)
 mst, history = prim(G,'A')
@@ -71,7 +56,7 @@ def makeFigure():
     nx.draw_networkx_labels(G,pos,font_size=15,font_family='sans-serif')
     nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
     return fig, ax1, ax2, edges, nodes
-
+anim = []
 # Add the starting node
 visited_nodes.append(history[0][0][0])
 # Frame rendering function
@@ -131,7 +116,7 @@ def renderFrame(i, edges, nodes):
     return edges, nodes
 
 # # List of Animation objects for tracking
-anim = []
+
 
 # Make the figures
 figcomps1=makeFigure()
@@ -157,11 +142,10 @@ canvas.mpl_connect('key_press_event', on_key_event)
 def _quit():
     root.quit()
     root.destroy()
-
-button = tk.Button(master=root, text='Quit', command=_quit)
+def start():
+    anim.append(animation.FuncAnimation(fig,renderFrame,fargs=[edges, nodes], frames=len(history)+2, interval=1400, blit=False))
+    fig.canvas.show()
+button = tk.Button(master=root, text='Start Animation', command=start)
+root.protocol('WM_DELETE_WINDOW', _quit)  # root is your root window
 button.pack(side=tk.BOTTOM)
-anim.append(animation.FuncAnimation(fig,renderFrame,fargs=[edges, nodes], frames=len(history)+2, interval=1400, blit=False))
 tk.mainloop()
-# figManager.window.showMaximized()
-# Show figure
-# plt.show()
