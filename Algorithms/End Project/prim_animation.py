@@ -1,7 +1,9 @@
 from matplotlib import pyplot as plt
 from matplotlib import animation
+from matplotlib import rcParams
 import networkx as nx
 from prim import *
+rcParams['toolbar'] = 'None'
 
 G=nx.read_edgelist("graph.edgelist")
 
@@ -20,14 +22,15 @@ visited_nodes = []
 def makeFigure():
     # Figure
     fig = plt.figure()
-    fig.canvas.set_window_title("MST Algorithm Comparison")
+    fig.canvas.set_window_title("Prim Algorithm Animation")
     # Add ax1
     ax1 = fig.add_subplot(2,2,1)
     ax2 = fig.add_subplot(2,2,2)
     plt.sca(ax1)
     ax1.set_xticks([])
     ax1.set_yticks([])
-    ax1.set_title("Prim's Algorithm")
+    ax1.set_title("Prim's Animation")
+    ax2.set_title("Prim's Algorithm")
     ax2.set_xticks([])
     ax2.set_yticks([])
     plt.sca(ax2)
@@ -59,7 +62,8 @@ def renderFrame(i, edges, nodes):
         ax1.set_xticks([])
         ax1.set_yticks([])
         # Title of the plot
-        ax1.set_title("Prim's Algorithm")
+        ax1.set_title("Prim's Animation")
+        ax2.set_title("Prim's Algorithm")
         # Update frame with original nodes
         nodes = nx.draw_networkx_nodes(G, pos, node_size=500)
         # Update frame with original edges

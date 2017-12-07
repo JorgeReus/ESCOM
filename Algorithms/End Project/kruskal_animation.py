@@ -1,14 +1,15 @@
 from matplotlib import pyplot as plt
-from matplotlib import animation
+from matplotlib import animation, rcParams
 import networkx as nx
 from kruskal import *
 
+rcParams['toolbar'] = 'None'
 G=nx.read_edgelist("graph.edgelist")
 
 # Make the MST, the History and the cycles(For animation steps)
 history, mst, cycles = kruskal(G)
 
-print("MST: ",mst)
+# print("MST: ",mst)
 # Layout of the Graph
 pos = nx.spring_layout(G)
 # Lists for keeping track of the nodes and edges
@@ -27,7 +28,10 @@ def makeFigure():
     # Remove the ticks and tick labels
     ax1.set_xticks([])
     ax1.set_yticks([])
-    ax1.set_title("Kruskal's Algorithm")
+    ax2.set_xticks([])
+    ax2.set_yticks([])
+    ax1.set_title("Kruskal's Animation")
+    ax2.set_title("Kruskal's Algorithm")
     # Plot nodes for ax1
     nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='y')
     # Plot edges for ax1
@@ -55,7 +59,8 @@ def renderFrame(i, edges, nodes):
         ax1.set_xticks([])
         ax1.set_yticks([])
         # Title of the plot
-        ax1.set_title("Kruskal's Algorithm")
+        ax1.set_title("Kruskal's Animation")
+        ax2.set_title("Kruskal's Algorithm")
         # Update frame with original nodes
         nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='y')
         # Update frame with original edges
@@ -92,11 +97,13 @@ def renderFrame(i, edges, nodes):
             # Draw Final edges (MST)
             nx.draw_networkx_edges(G, pos, edgelist=mst, width=4, edge_color='b')
             plt.sca(ax2)
+            ax2.set_xticks([])
             ax2.text(.1, .6, 'Sort all the edges in ascendant order', fontsize=15, color="blue")
             ax2.text(.1, .5, 'For edge in the sorted edges', fontsize=15, color="blue")
             ax2.text(.1, .4, '      If the edge does not make a cycle append it to the mst', fontsize=15, color="blue")
             ax2.text(.1, .3, '      else: discard it', fontsize=15, color="blue")
             plt.sca(ax1)
+            ax1.set_yticks([])
     return edges, nodes
 
 # # List of Animation objects for tracking

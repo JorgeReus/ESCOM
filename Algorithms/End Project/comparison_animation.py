@@ -1,8 +1,10 @@
 from matplotlib import pyplot as plt
-from matplotlib import animation
+from matplotlib import animation, rcParams
 import networkx as nx
 from prim import *
 from kruskal import *
+
+rcParams['toolbar'] = 'None'
 # Create the graph from file
 G=nx.read_edgelist("graph.edgelist")
 
@@ -11,8 +13,8 @@ prim_mst, prim_history = prim(G,'A')
 # Make the kruskal_mst and the kruskal_history(For krukal's animation steps)
 kruskal_history, kruskal_mst, kruskal_cycles = kruskal(G)
 
-print("prim_mst: ",prim_mst)
-print("prim_history", prim_history)
+# print("prim_mst: ",prim_mst)
+# print("prim_history", prim_history)
 # Layout of the Graph
 pos = nx.spring_layout(G)
 # Lists for keeping track of the nodes and edges
