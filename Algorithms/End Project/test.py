@@ -1,7 +1,15 @@
+import matplotlib
+matplotlib.use("TkAgg")
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import networkx as nx
 from prim import *
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.backend_bases import key_press_handler
+import tkinter as tk
+
+root = tk.Tk()
+root.wm_title("Embeding")
 
 G=nx.Graph()
 
@@ -119,6 +127,7 @@ def renderFrame(i, edges, nodes):
             ax2.text(.1, .3, '      else: discard it', fontsize=15, color="blue")
             ax2.text(.1, .2, '      update the current node with the added one', fontsize=15, color="blue")
             plt.sca(ax1)
+            anim[-1].event_source.stop()
     return edges, nodes
 
 # # List of Animation objects for tracking
@@ -130,9 +139,29 @@ figcomps1=makeFigure()
 # Animate the figures
 fig, ax1, ax2, edges, nodes = figcomps1
 # Start animation
-anim.append(animation.FuncAnimation(fig,renderFrame,fargs=[edges, nodes], frames=len(history)+2, interval=1400))
 # Mananges for maximize the window
+canvas = FigureCanvasTkAgg(fig, master=root)
 figManager = plt.get_current_fig_manager()
-figManager.window.showMaximized()
+# canvas.show()
+canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+toolbar = NavigationToolbar2TkAgg(canvas, root)
+toolbar.update()
+canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=1)
+
+def on_key_event(event):
+    key_press_handler(event, canvas, toolbar)
+
+canvas.mpl_connect('key_press_event', on_key_event)
+
+def _quit():
+    root.quit()
+    root.destroy()
+
+button = tk.Button(master=root, text='Quit', command=_quit)
+button.pack(side=tk.BOTTOM)
+anim.append(animation.FuncAnimation(fig,renderFrame,fargs=[edges, nodes], frames=len(history)+2, interval=1400, blit=False))
+tk.mainloop()
+# figManager.window.showMaximized()
 # Show figure
-plt.show()
+# plt.show()
