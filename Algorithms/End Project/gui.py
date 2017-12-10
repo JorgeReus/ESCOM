@@ -1,19 +1,29 @@
 import sys
 import os
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QHBoxLayout, QGroupBox, QDialog, QVBoxLayout, QGridLayout, QLabel
+from PyQt5.QtWidgets import (
+    QApplication, 
+    QWidget, 
+    QPushButton, 
+    QHBoxLayout, 
+    QGroupBox, 
+    QDialog, 
+    QVBoxLayout, 
+    QGridLayout, 
+    QLabel
+)
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import pyqtSlot
  
 class App(QWidget):
- 
+    """ Class for the main app for the algorithm comparison"""
     def __init__(self):
-        super().__init__()
+        super().__init__() # Initialize the father class
         self.title = 'Minimun Spanning tree algorithm animations'
         self.left = 600
         self.top = 300
         self.width = 640
         self.height = 480
-        self.initUI()
+        self.initUI() # Init the App
  
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -22,15 +32,18 @@ class App(QWidget):
         # Prim
         self.prim_button = QPushButton("Prim's Algorithm Animation", self)
         self.prim_button.setToolTip('Runs the animation for prim')
-        self.prim_button.clicked.connect(lambda: self.on_click("prim_animation.py"))
+        self.prim_button.clicked.connect(
+            lambda: self.on_click("primAnimation.py"))
         # Kruskal
         self.kruskal_button = QPushButton("Kruskal's Algorithm Animation", self)
         self.kruskal_button.setToolTip('Runs the animation for kruskal')
-        self.kruskal_button.clicked.connect(lambda: self.on_click("kruskal_animation.py"))
+        self.kruskal_button.clicked.connect(
+            lambda: self.on_click("kruskalAnimation.py"))
         # Comparison
         self.comparison_button = QPushButton("Comparison Animation", self)
         self.comparison_button.setToolTip('Runs both animations for comparison')
-        self.comparison_button.clicked.connect(lambda: self.on_click("comparison_animation.py"))
+        self.comparison_button.clicked.connect(
+            lambda: self.on_click("comparisonAnimation.py"))
         self.escom_pixmap = QPixmap("escom_image")
         self.subject_pixmap = QPixmap("subject")
         self.createGridLayout()
@@ -52,6 +65,7 @@ class App(QWidget):
 
 
     @pyqtSlot()
+    # Helper function that executes a python file
     def on_click(self, file):
         os.system("python {}".format(file))
         

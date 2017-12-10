@@ -1,11 +1,16 @@
 from pqdict import PQDict
 
 def prim(G: "networx Graph object", start: "1X2 Tuple(Node)")-> (list, list):
-    """Function recives a graph and a starting node, and returns the MST and the history of the algorithm"""
+    """
+    Function recives a graph and a starting node, 
+    and returns the MST and the history of the algorithm
+    """
     MST_len = G.number_of_nodes() - 1
     current = start
     visited = set()
-    # Priority Queue (keeps the item with the lowest value on the top - in this case the weight of an edge)
+    # Priority Queue 
+    #(keeps the item with the lowest value on the top - 
+    #in this case the weight of an edge)
     pq = PQDict()
     # Minimal spamming tree
     mst = []
