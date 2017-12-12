@@ -79,7 +79,7 @@ def makeFigure():
     ax2.set_yticks([])
     ax2.set_title("Kruskal's Algorithm")
     # Plot nodes for ax2
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=300, node_color='y')
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=300, node_color='r')
     # Plot edges for ax2
     edges = nx.draw_networkx_edges(G, pos, width=1)
     # Plot labels for ax2
@@ -148,11 +148,11 @@ def renderFrame(i, edges, nodes):
             # Draw the lowest value edge
             nx.draw_networkx_edges(G, 
                 pos,edgelist=[current,], width=6, 
-                edge_color='r', style='dashed')
+                edge_color='y', style='dashed')
             # Draw the visited nodes
             nodes = nx.draw_networkx_nodes(G, pos, 
                 nodelist=visited_nodes_prim, node_size=300, 
-                node_color='yellow')
+                node_color='y')
             # Draw the visited edges (prim_mst)
             edges = nx.draw_networkx_edges(G, pos, 
                 edgelist=visited_edges_prim, width=6, 
@@ -196,12 +196,12 @@ def renderFrame(i, edges, nodes):
         ax2_2.set_title("Kruskal's Algorithm")
         # Update frame with original nodes
         nodes = nx.draw_networkx_nodes(G, pos, node_size=300, 
-            node_color='y')
+            node_color='r')
         # Update frame with original edges
         edges = nx.draw_networkx_edges(G, pos, width=2, 
-            edge_color='r', style='dashed')
+            edge_color='y', style='dashed')
         nx.draw_networkx_edges(G, pos,edgelist=edges_cycles_kruskal, 
-            width=2, edge_color='y')
+            width=2)
         # Update frame with labels (Labels do not change)
         labels = nx.get_edge_attributes(G,'weight')
         nx.draw_networkx_labels(G,pos,font_size=10,
@@ -226,7 +226,7 @@ def renderFrame(i, edges, nodes):
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, 
                     pos,edgelist=visited_edges_kruskal,
-                     width=3, edge_color='b', style='dashed')
+                     width=3, edge_color='b')
                 edges = nx.draw_networkx_edges(G, pos, 
                     edgelist=edges_cycles_kruskal, width=2, 
                     edge_color='y')
@@ -236,7 +236,7 @@ def renderFrame(i, edges, nodes):
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, pos, 
                     edgelist=visited_edges_kruskal, 
-                    width=3, edge_color='b', style='dashed')
+                    width=3, edge_color='b')
                 # Draw the edges which cause cycles
                 nx.draw_networkx_edges(G, pos, 
                     edgelist=edges_cycles_kruskal, 
@@ -248,7 +248,7 @@ def renderFrame(i, edges, nodes):
         else:
             # Draw Final edges (MST)
             nx.draw_networkx_edges(G, pos, 
-                edgelist=kruskal_mst, width=4, edge_color='r')
+                edgelist=kruskal_mst, width=4, edge_color='b')
             plt.sca(ax2_2)
             ax2_2.text(.1, .6, 'Sort all the edges in ascendant order', 
                 fontsize=15, color="blue")

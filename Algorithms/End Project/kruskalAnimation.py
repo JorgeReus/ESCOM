@@ -32,7 +32,7 @@ def makeFigure():
     ax1.set_title("Kruskal's Animation")
     ax2.set_title("Kruskal's Algorithm")
     # Plot nodes for ax1
-    nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='y')
+    nodes = nx.draw_networkx_nodes(G, pos, node_size=500, node_color='r')
     # Plot edges for ax1
     edges = nx.draw_networkx_edges(G, pos, width=1)
     # Plot labels for ax1
@@ -65,10 +65,10 @@ def renderFrame(i, edges, nodes):
         ax2.set_title("Kruskal's Algorithm")
         # Update frame with original nodes
         nodes = nx.draw_networkx_nodes(G, pos, 
-            node_size=500, node_color='y')
+            node_size=500, node_color='r')
         # Update frame with original edges
         edges = nx.draw_networkx_edges(G, pos, width=2, 
-            edge_color='r')
+            edge_color='b')
         nx.draw_networkx_edges(G, pos,edgelist=visited_edges_cycles, 
             width=2, edge_color='y')
         # Update frame with labels (Labels do not change)
@@ -95,15 +95,13 @@ def renderFrame(i, edges, nodes):
             if (current not in cycles):
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, 
-                    pos,edgelist=visited_edges, width=3, 
-                    edge_color='b',style='dashed')
+                    pos,edgelist=visited_edges, width=3)
                 # Add the current edge to visited edges for MST
                 visited_edges.append(current)
             else:
                 # Draw the visited edges
                 edges = nx.draw_networkx_edges(G, 
-                    pos,edgelist=visited_edges, width=3, 
-                    edge_color='b', style='dashed')
+                    pos,edgelist=visited_edges, width=3)
                 # Add the current edge to visited edges for MST
                 visited_edges_cycles.append(current)
                 # Draw the edges which cause cycles

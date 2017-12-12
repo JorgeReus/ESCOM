@@ -9,7 +9,9 @@ from PyQt5.QtWidgets import (
     QDialog, 
     QVBoxLayout, 
     QGridLayout, 
-    QLabel
+    QLabel,
+    QTextEdit,
+    QAction
 )
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtCore import pyqtSlot
@@ -29,6 +31,11 @@ class App(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.setWindowIcon(QIcon('icon.jpg'))
+        # Text Edit
+        self.textEdit = QTextEdit()
+        with open('graph.edgelist', 'r') as g_file:
+            s = g_file.read()
+        self.textEdit.setText(s)
         # Prim
         self.prim_button = QPushButton("Prim's Algorithm Animation", self)
         self.prim_button.setToolTip('Runs the animation for prim')
@@ -46,6 +53,7 @@ class App(QWidget):
             lambda: self.on_click("comparisonAnimation.py"))
         self.escom_pixmap = QPixmap("escom_image")
         self.subject_pixmap = QPixmap("subject")
+
         self.createGridLayout()
         self.show()
 
@@ -62,11 +70,18 @@ class App(QWidget):
         layout.addWidget(self.prim_button, 2, 0) 
         layout.addWidget(self.kruskal_button, 2, 1) 
         layout.addWidget(self.comparison_button, 2, 2) 
+        layout.addWidget(self.textEdit, 3, 0, 1, 3) 
 
+    def save(self):
+        data=self.textEdit.toPlainText()
+        file=open("graph.edgelist",'w')
+        file.write(data)
+        file.close()
 
     @pyqtSlot()
     # Helper function that executes a python file
     def on_click(self, file):
+        self.save()
         os.system("python {}".format(file))
         
 if __name__ == '__main__':
