@@ -7,8 +7,8 @@
 <!-- the Compile on Save feature is turned off for the project. -->
 <!-- You can turn off the Compile on Save (or Deploy on Save) setting -->
 <!-- in the project's Project Properties dialog box.-->
-<project name="ServletEjemploAttributo33CM2" default="default" basedir=".">
-    <description>Builds, tests, and runs the project ServletEjemploAttributo33CM2.</description>
+<project name="ServletEjemplo3_Attributos_3CM2" default="default" basedir=".">
+    <description>Builds, tests, and runs the project ServletEjemplo3_Attributos_3CM2.</description>
     <import file="nbproject/build-impl.xml"/>
     <!--
 

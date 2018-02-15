@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Eq</title>
+        <meta charset="UTF-8">
+         <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#eqForm').on('submit', function (fm) {
+                    fm.preventDefault();  //prevent form from submitting
+                    $.get("ServletEq", $("#eqForm").serialize(),
+                            function (data, status) {
+                                $("#result").html(data);
+                            });
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form id="eqForm">         
+            <div>
+                <input id="x1" name="x1" type="text" size="10px">x1+
+                <input id="y1" name="y1" type="text" size="10px">y1=
+                <input id="c1" name="c1" type="text" size="10px">
+            </div>
+            <div>
+                <input id="x2" name="x2" type="text" size="10px">x2+
+                <input id="y2" name="y2" type="text" size="10px">y2=
+                <input id="c2" name="c2" type="text" size="10px">
+            </div>  
+            <input type="submit" value="Enviar">
+            <div id="result">
+                
+            </div>
+        </form>
+    </body>
+</html>
