@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,20 +18,24 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletProductos extends HttpServlet {
 
     private List<String> productos = new ArrayList<>();
+    private List<Cookie> cookies = new ArrayList<>();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext application = request.getServletContext();
         productos = new ArrayList<>();
+        cookies = new ArrayList<>();
         if (request.getParameterValues("productos") != null) {
             for (String producto : request.getParameterValues("productos")) {
-                if (!productos.contains(producto)) {
-                    productos.add(producto);
-                }
+                Cookie cookie = new Cookie(producto, producto);
+                cookie.setMaxAge(3600*24*365);
+                cookies.add(cookie);
+                productos.add(cookie.getValue());
             }
         }
-        application.setAttribute("productos", productos);
+        for(Cookie cookie : cookies){
+            response.addCookie(cookie);
+        }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
