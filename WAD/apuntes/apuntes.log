@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.1.30)  16 FEB 2018 09:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.1.30)  22 FEB 2018 07:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -795,62 +795,104 @@ Package babel Info: Redefining spanish shorthand "!
 (babel)             in language append on input line 44.
 Package babel Info: Redefining spanish shorthand "?
 (babel)             in language append on input line 44.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 49.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 49.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 49.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 49.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 49.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 49.
 
 AED: lastpage setting LastPage
+
+Underfull \hbox (badness 10000) in paragraph at lines 50--52
+
+ []
+
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 [2]
 Package babel Info: Redefining spanish shorthand <<
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand >>
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "=
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "~
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "!
-(babel)             in language append on input line 48.
+(babel)             in language append on input line 52.
 Package babel Info: Redefining spanish shorthand "?
-(babel)             in language append on input line 48.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 48.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 48.
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 52.
+ [3]
+Package babel Info: Redefining spanish shorthand <<
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand >>
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "=
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "~
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "!
+(babel)             in language append on input line 52.
+Package babel Info: Redefining spanish shorthand "?
+(babel)             in language append on input line 52.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 52.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 52.
  (./apuntes.aux
 LaTeX Info: Redefining \. on input line 23.
 LaTeX Info: Redefining \% on input line 23.
 )
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 48.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 48.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 52.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 52.
 Package rerunfilecheck Info: File `apuntes.out' has not changed.
-(rerunfilecheck)             Checksum: 6BAB0C0A1F8C1D95A3221AA4FCE02258;312.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 48.
+(rerunfilecheck)             Checksum: 6D2B3CC526F6866F0729B3BE89842AB9;378.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 52.
  ) 
 Here is how much of TeX's memory you used:
- 7667 strings out of 494891
- 107592 string characters out of 6179039
- 210265 words of memory out of 5000000
- 10861 multiletter control sequences out of 15000+600000
+ 7670 strings out of 494891
+ 107628 string characters out of 6179039
+ 211265 words of memory out of 5000000
+ 10862 multiletter control sequences out of 15000+600000
  9063 words of font info for 32 fonts, out of 8000000 for 9000
  40 hyphenation exceptions out of 8191
  36i,12n,45p,242b,384s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -861,10 +903,10 @@ ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/tex
 mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on apuntes.pdf (2 pages, 94688 bytes).
+Output written on apuntes.pdf (3 pages, 96859 bytes).
 PDF statistics:
- 81 PDF objects out of 1000 (max. 8388607)
- 69 compressed objects within 1 object stream
- 13 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 91 PDF objects out of 1000 (max. 8388607)
+ 78 compressed objects within 1 object stream
+ 15 named destinations out of 1000 (max. 500000)
+ 49 words of extra memory for PDF output out of 10000 (max. 10000000)
 
