@@ -1,16 +1,19 @@
+#include <vector>
+
 #ifndef ASTEROID_H_
 	#define ASTEROID_H_
 	class Asteroid
 	{
 		private:
 			int radio;
-			int numPts;
-			double angle;
   			double posX;
   			double posY;
+  			std::vector<float> v1;
+  			std::vector<float> v2;
+  			double vw;
 		public:
-			Asteroid(int r = 5, int pts = 8);
+			Asteroid();
 			void draw();
-			void showAttrs();
+			void rotate(int);
 	};
 #endif

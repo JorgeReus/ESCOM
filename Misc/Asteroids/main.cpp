@@ -3,42 +3,41 @@
 #include <iostream>
 #include "Asteroide.h"
 #include <cstdlib>
+#include <vector>
+
+
 using namespace std;
-int main()
+int main(int argc, char *argv[])
 {
-	int t = 1;
+	if(argc != 2)
+	{
+		cout << "Solo 2 argumentos" << endl;
+		return 1;
+	}
+	int num_asteroids = atoi(argv[1]);
  	srand(time(0));
- 	gfx_open(800, 600, "Ejemplo Micro Animacion GFX");
+ 	gfx_open(800, 600, "Simulación Asteroides");
  	gfx_color(0, 200, 100);
- 	Asteroid asteroid;
- 	asteroid.showAttrs();
+ 	vector<Asteroid> asteroids;
+ 	for(int i=0; i < num_asteroids; i++)
+ 	{
+ 		Asteroid a;
+ 		asteroids.push_back(a);
+ 	}
+ 	int t=10;
  	while(1)
  	{
  		gfx_clear();
-		asteroid.draw();
-		if(gfx_event_waiting())
-		{
-			if(gfx_wait() == 'q')
-				break;			
-		} 
+		for(int i=0; i < num_asteroids; i++)
+ 		{
+ 			asteroids[i].rotate(t++);
+ 		}
+		for(int i=0; i < num_asteroids; i++)
+ 		{
+ 			asteroids[i].draw();
+ 		}
+ 		gfx_flush();
 		usleep(41666); //24 por segundo
 	}
-	/*
-	while(1)
-	{
-		t++;
-		gfx_clear();
-		gfx_line(t*1+80, t*2+40, t*2+40, t*3+80);
-	 	gfx_line(t*5+80, t*3+40, t*3+40, t*5+80);
-	 	usleep(41666); //24 por segundo
-		if(t>=100) 
-			t=0;
-		if(gfx_event_waiting())
-		{
-			if(gfx_wait() == 'q')
-				break;			
-		} 
-	}
-	*/
  	return 0;
 }
