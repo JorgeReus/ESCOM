@@ -29,5 +29,13 @@ $(document).ready(function () {
                 });
         modal.style.display = "block";
     });
+    $('#borrarBtn').on('click', function (fm) {
+        fm.preventDefault();  //prevent form from submitting
+        var attrs = $("#prodForm").serialize();
+        $.get("ServletBorrar", attrs,
+                function (data, status) {
+                    $("#result").html(data);
+                });
+    });
 
 });

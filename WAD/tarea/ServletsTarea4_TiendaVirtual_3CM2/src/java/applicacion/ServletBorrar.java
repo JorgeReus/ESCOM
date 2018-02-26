@@ -2,7 +2,6 @@ package applicacion;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,31 +10,28 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author alyne
+ * @author reus
  */
-public class ServletCarrito extends HttpServlet {
+public class ServletBorrar extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext application = request.getServletContext();
-        PrintWriter out = response.getWriter();
-        out.println("<!DOCTYPE html>");
-        out.println("<html>");
-        out.println("<head>");
-        out.println("<title>Servlet ServletProductos</title>");
-        out.println("</head>");
-        out.println("<body>");
-        try {
-            ArrayList<String> res = (ArrayList<String>) application.getAttribute("productos");
-            for (String val : res) {
-                out.println(val + "<br>");
+        try (PrintWriter out = response.getWriter()) {
+            ServletContext application = request.getServletContext();
+            if (application.getAttribute("productos") != null) {
+                application.removeAttribute("productos");
             }
-        } catch (NullPointerException nullPointer) {
-            out.println("No hay Productos en el Carrito");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ServletBorrar</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>No hay productos en el carrito</h3>");
+            out.println("</body>");
+            out.println("</html>");
         }
-        out.println("</body>");
-        out.println("</html>");
     }
 
     @Override
@@ -49,4 +45,5 @@ public class ServletCarrito extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
+
 }

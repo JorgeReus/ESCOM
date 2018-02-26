@@ -22,22 +22,25 @@ public class ServletProductos extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         ServletContext application = request.getServletContext();
-        productos = new ArrayList<>();
         if (request.getParameterValues("productos") != null) {
+            productos = new ArrayList<>();
             for (String producto : request.getParameterValues("productos")) {
                 if (!productos.contains(producto)) {
                     productos.add(producto);
                 }
             }
+            application.setAttribute("productos", productos);
         }
-        application.setAttribute("productos", productos);
+        if(application.getAttribute("productos") == null){
+            productos.clear();
+        }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
         out.println("<head>");
         out.println("<title>Servlet ServletProductos</title>");
         out.println("<link rel=\"stylesheet\" href=\"./css/myStyle.css\"/>");
-        out.println("<script src=\"https://code.jquery.com/jquery-2.1.1.min.js\"></script>");
+        out.println("<script src=\"./js/jquery-3.3.1.min.js\"></script>");
         out.println("<script src=\"./js/functions.js\" ></script>");
         out.println("</head>");
         out.println("<body>");
@@ -85,6 +88,8 @@ public class ServletProductos extends HttpServlet {
                 + "            </div>\n"
                 + "        </form>\n";
         out.println(modal);
+        String borrarBtn = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
+        out.println(borrarBtn);
         out.println("</body>");
         out.println("</html>");
     }

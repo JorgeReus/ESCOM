@@ -8,6 +8,10 @@
         <servlet-name>ServletCarrito</servlet-name>
         <servlet-class>applicacion.ServletCarrito</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletBorrar</servlet-name>
+        <servlet-class>applicacion.ServletBorrar</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletProductos</servlet-name>
         <url-pattern>/ServletProductos</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ServletCarrito</servlet-name>
         <url-pattern>/ServletCarrito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletBorrar</servlet-name>
+        <url-pattern>/ServletBorrar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
