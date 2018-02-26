@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -18,23 +17,26 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletProductos extends HttpServlet {
 
     private List<String> productos = new ArrayList<>();
-    private List<Cookie> cookies = new ArrayList<>();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        productos = new ArrayList<>();
-        cookies = new ArrayList<>();
         if (request.getParameterValues("productos") != null) {
+            Cookie[] cookies = request.getCookies();
+            productos = new ArrayList<>();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    cookie.setValue("");
+                    cookie.setMaxAge(0);
+                    response.addCookie(cookie);
+                }
+            }
             for (String producto : request.getParameterValues("productos")) {
                 Cookie cookie = new Cookie(producto, producto);
-                cookie.setMaxAge(3600*24*365);
-                cookies.add(cookie);
+                cookie.setMaxAge(3600 * 24 * 365);
+                response.addCookie(cookie);
                 productos.add(cookie.getValue());
             }
-        }
-        for(Cookie cookie : cookies){
-            response.addCookie(cookie);
         }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
@@ -42,7 +44,7 @@ public class ServletProductos extends HttpServlet {
         out.println("<head>");
         out.println("<title>Servlet ServletProductos</title>");
         out.println("<link rel=\"stylesheet\" href=\"./css/myStyle.css\"/>");
-        out.println("<script src=\"https://code.jquery.com/jquery-2.1.1.min.js\"></script>");
+        out.println("<script src=\"./js/jquery-3.3.1.min.js\"></script>");
         out.println("<script src=\"./js/functions.js\" ></script>");
         out.println("</head>");
         out.println("<body>");
@@ -90,6 +92,8 @@ public class ServletProductos extends HttpServlet {
                 + "            </div>\n"
                 + "        </form>\n";
         out.println(modal);
+        String borrar = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
+        out.println(borrar);
         out.println("</body>");
         out.println("</html>");
     }
