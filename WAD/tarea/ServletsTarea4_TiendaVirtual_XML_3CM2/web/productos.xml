@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<productos>
+    <producto>
+        <nombre>XboxOne</nombre>
+    </producto>
+    <producto>
+        <nombre>Ps4</nombre>
+    </producto>
+    <producto>
+        <nombre>Switch</nombre>
+    </producto>
+</productos>

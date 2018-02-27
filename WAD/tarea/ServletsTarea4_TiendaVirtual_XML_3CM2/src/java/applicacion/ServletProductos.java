@@ -1,14 +1,20 @@
 package applicacion;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.ServletContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 /**
  *
@@ -16,23 +22,29 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ServletProductos extends HttpServlet {
 
+    private List<Element> elements = new ArrayList<>();
     private List<String> productos = new ArrayList<>();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JDOMException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext application = request.getServletContext();
         if (request.getParameterValues("productos") != null) {
-            productos = new ArrayList<>();
-            for (String producto : request.getParameterValues("productos")) {
-                if (!productos.contains(producto)) {
-                    productos.add(producto);
-                }
+            SAXBuilder builder = new SAXBuilder();
+            File productosXML = new File(this.getServletContext().getRealPath("/") + "productos.xml");
+            elements = new ArrayList<>();
+            try {
+                Document document = (Document) builder.build(productosXML);
+                Element rootNode = document.getRootElement();
+                elements = rootNode.getChildren("producto");
+            } catch (IOException io) {
+                System.out.println(io.getMessage());
             }
-            application.setAttribute("productos", productos);
-        }
-        if (application.getAttribute("productos") == null) {
-            productos.clear();
+            for(Element e : elements){
+                productos.add(e.getChildText("nombre"));
+            }
+//            for (String producto : request.getParameterValues("productos")) {
+//                
+//            }
         }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
@@ -58,7 +70,6 @@ public class ServletProductos extends HttpServlet {
                 + (productos.contains("Switch") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbSwitch\">Nintendo Switch</label><br>\n"
                 + "\n"
-                + "<h1>Departamento de Ropa</h1>"
                 + "    <input id=\"cbPlayera\" type=\"checkbox\" name=\"productos\" value=\"Playera\" "
                 + (productos.contains("Playera") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbPlayera\">Playera</label><br>\n"
@@ -70,19 +81,6 @@ public class ServletProductos extends HttpServlet {
                 + "    <input id=\"cbZapatos\" type=\"checkbox\" name=\"productos\" value=\"Zapatos\" "
                 + (productos.contains("Zapatos") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbZapatos\">Zapatos</label><br>\n"
-                + "\n"
-                + "<h1>Departamento de Electrodomésticos</h1>"
-                + "    <input id=\"cbLavadora\" type=\"checkbox\" name=\"productos\" value=\"Lavadora\" "
-                + (productos.contains("Lavadora") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbLavadora\">Lavadora</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbLicuadora\" type=\"checkbox\" name=\"productos\" value=\"Licuadora\" "
-                + (productos.contains("Licuadora") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbLicuadora\">Licuadora</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbRefrigerador\" type=\"checkbox\" name=\"productos\" value=\"Refrigerador\" "
-                + (productos.contains("Refrigerador") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbRefrigerador\">Refrigerador</label><br>\n"
                 + "\n"
                 + "    <button id=\"checkout\">Checkout</button>\n"
                 + "</form>";
@@ -102,8 +100,8 @@ public class ServletProductos extends HttpServlet {
                 + "            </div>\n"
                 + "        </form>\n";
         out.println(modal);
-        String borrarBtn = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
-        out.println(borrarBtn);
+        String borrar = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
+        out.println(borrar);
         out.println("</body>");
         out.println("</html>");
     }
@@ -111,12 +109,20 @@ public class ServletProductos extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JDOMException ex) {
+            Logger.getLogger(ServletProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JDOMException ex) {
+            Logger.getLogger(ServletProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
