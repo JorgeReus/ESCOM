@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +35,6 @@ public class ServletCarrito extends HttpServlet {
         SAXBuilder builder = new SAXBuilder();
         File productosXML = new File(this.getServletContext().getRealPath("/") + "productos.xml");
         List<Element> elements = new ArrayList<>();
-        List<String> productos = new ArrayList<>();
         try {
             Document document = (Document) builder.build(productosXML);
             Element rootNode = document.getRootElement();
@@ -45,9 +42,10 @@ public class ServletCarrito extends HttpServlet {
         } catch (IOException io) {
             System.out.println(io.getMessage());
         }
-        if (elements.isEmpty()) {
+        if (!elements.isEmpty()) {
+            out.println("<h3>Carrito de Productos</h3>");
             for (Element e : elements) {
-                productos.add(e.getChildText("nombre"));
+                out.println(e.getChildText("nombre") + "<br>");
             }
         } else {
             out.println("No hay productos en el carrito");

@@ -1,6 +1,7 @@
 package applicacion;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -15,10 +16,28 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 /**
  *
  * @author alyne
+ *
+ */
+/*
+<?xml version="1.0" encoding="UTF-8"?>
+<productos>
+    <producto>
+        <nombre>XboxOne</nombre>
+    </producto>
+    <producto>
+        <nombre>Ps4</nombre>
+    </producto>
+    <producto>
+        <nombre>Switch</nombre>
+    </producto>
+</productos>
+
  */
 public class ServletProductos extends HttpServlet {
 
@@ -28,23 +47,38 @@ public class ServletProductos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JDOMException {
         response.setContentType("text/html;charset=UTF-8");
+        SAXBuilder builder = new SAXBuilder();
+        File productosXML = new File(this.getServletContext().getRealPath("/") + "productos.xml");
+        try {
+            Document document = (Document) builder.build(productosXML);
+            Element rootNode = document.getRootElement();
+            elements = rootNode.getChildren("producto");
+        } catch (IOException io) {
+            System.out.println(io.getMessage());
+        }
+        if (!elements.isEmpty()) {
+            for (Element e : elements) {
+                productos.add(e.getChildText("nombre") + "<br>");
+            }
+        }
         if (request.getParameterValues("productos") != null) {
-            SAXBuilder builder = new SAXBuilder();
-            File productosXML = new File(this.getServletContext().getRealPath("/") + "productos.xml");
-            elements = new ArrayList<>();
+            File file = new File(this.getServletContext().getRealPath("/") + "productos.xml");
+            file.delete();
             try {
-                Document document = (Document) builder.build(productosXML);
-                Element rootNode = document.getRootElement();
-                elements = rootNode.getChildren("producto");
+                Element carrito = new Element("productos");
+                Document doc = new Document(carrito);
+                // Create Document with it's products
+                for (String parameter : request.getParameterValues("productos")) {
+                    Element producto = new Element("producto");
+                    producto.addContent(new Element("nombre").setText(parameter));
+                    doc.getRootElement().addContent(producto);
+                }
+                XMLOutputter xmlOutput = new XMLOutputter();
+                xmlOutput.setFormat(Format.getPrettyFormat());
+                xmlOutput.output(doc, new FileWriter(this.getServletContext().getRealPath("/") + "productos.xml"));
             } catch (IOException io) {
                 System.out.println(io.getMessage());
             }
-            for(Element e : elements){
-                productos.add(e.getChildText("nombre"));
-            }
-//            for (String producto : request.getParameterValues("productos")) {
-//                
-//            }
         }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
