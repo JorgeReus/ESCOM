@@ -11,9 +11,12 @@
   			std::vector<float> v1;
   			std::vector<float> v2;
   			double vw;
+  			double vx;
+  			double vy;
 		public:
 			Asteroid();
 			void draw();
 			void rotate(int);
+			void move();
 	};
 #endif

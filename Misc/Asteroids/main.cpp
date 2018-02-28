@@ -30,13 +30,17 @@ int main(int argc, char *argv[])
  		gfx_clear();
 		for(int i=0; i < num_asteroids; i++)
  		{
- 			asteroids[i].rotate(t++);
+ 			asteroids[i].move();
  		}
 		for(int i=0; i < num_asteroids; i++)
  		{
  			asteroids[i].draw();
  		}
- 		gfx_flush();
+ 		if(gfx_event_waiting()){
+ 			if(gfx_wait() == 'q'){
+ 				break;
+ 			}
+ 		}
 		usleep(41666); //24 por segundo
 	}
  	return 0;

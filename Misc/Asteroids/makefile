@@ -1,5 +1,7 @@
-all:
-	gcc gfx.c -c
+main: main.cpp Asteroide.o
+	g++ gfx.o main.cpp Asteroide.o -o main -lX11
+	rm gfx.o Asteroide.o
+Asteroide.o: Asteroide.cpp gfx.o Asteroide.h
 	g++ Asteroide.cpp -c
-	g++ main.cpp -c
-	g++ gfx.o main.o Asteroide.o -o main -lX11
+gfx.o: gfx.c gfx.h
+	gcc gfx.c -c
