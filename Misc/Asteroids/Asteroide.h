@@ -18,5 +18,7 @@
 			void draw();
 			void rotate(int);
 			void move();
+			bool outOfLimits();
+			~Asteroid();
 	};
 #endif

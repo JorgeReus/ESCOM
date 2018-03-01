@@ -11,21 +11,30 @@ const int MIN_X = 0;
 const int MIN_Y = 0;
 Asteroid::Asteroid()
 {
-    posX = 1 + rand() % (MAX_X);
-    posY = 1 + rand() % (MAX_Y);
+    int cuadrant = 1 + rand() % 4;
+    if(cuadrant == 1) // Upper Cuadrant
+    {
+        posX = rand() % (MAX_X + 1) + MAX_X;
+        posY = rand() % (1 - MAX_Y) - MAX_Y;
+    }
+    else if(cuadrant == 2) // Lower Cuadrant
+    {
+        posX = rand() % (MAX_X + 1) + MAX_X;
+        posY = rand() % (MAX_Y + 1) + MAX_Y;
+    }
     int minRadius = 30;
     int maxRadius = 50; 
     int granularity = 15;
     int minVary = 25;
     int maxVary = 75;
     radio = 1 + rand()%2;
-    vx = (1 + rand()%7)/radio;
-    vy = (1 + rand()%7)/radio;
+    vx = (rand()%(20) - 10)/radio;
+    vy = (rand()%(20) - 10)/radio;
     vw = 1 + rand() % 360;
     for (double theta=0; theta<=2*M_PI; theta+=2*M_PI/granularity)
     {
         int randVal = rand()%(maxVary - minVary + 1) + minVary;
-        double points = (2 * M_PI / granularity) * static_cast<double>(randVal) / 100;
+        double points = (2 * M_PI / granularity) * randVal / 100.0;
         double angle = theta + points - (M_PI / granularity);
         int radius = rand()%(maxRadius - minRadius + 1) + minRadius;
         double x = static_cast<double>(sin(angle) * radius);
@@ -34,6 +43,10 @@ Asteroid::Asteroid()
         v1.push_back(posX + radio * x);
         v2.push_back(posY + radio * y);
     }
+}
+Asteroid::~Asteroid()
+{
+
 }
 void Asteroid::rotate(int angle)
 {
@@ -56,18 +69,26 @@ void Asteroid::draw()
 }
 void Asteroid::move()
 {
-    if(posX > MAX_X)
-        vx = -vx;
-    if(posX < MIN_X)
-        vx = -vx;
-    if(posY > MAX_Y)
-        vy = -vy;
-    if(posY < MIN_Y)
-        vy = -vy;
     posX+=vx;
     posY+=vy;
-    for(int i=0; i<v1.size(); i++){
+    for(int i=0; i<v1.size(); i++)
+    {
         v1[i]+=vx;
         v2[i]+=vy;
     }
+}
+bool Asteroid::outOfLimits() 
+{
+    double aux = radio * 100;
+    bool isOut = false;
+    if(posX > MAX_X + aux)
+        isOut = true;
+    if(posX < MIN_X - aux)
+        isOut = true;
+    if(posY > MAX_Y + aux)
+        isOut = true;
+    if(posY < MIN_Y - aux)
+        isOut = true;
+
+    return isOut;
 }

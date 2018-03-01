@@ -34,6 +34,10 @@ int main(int argc, char *argv[])
  		}
 		for(int i=0; i < num_asteroids; i++)
  		{
+ 			if (asteroids[i].outOfLimits()){
+ 				asteroids.erase(asteroids.begin() + i);
+ 				asteroids.push_back(Asteroid());
+ 			}
  			asteroids[i].draw();
  		}
  		if(gfx_event_waiting()){
