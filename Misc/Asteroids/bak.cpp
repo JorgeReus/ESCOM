@@ -3,40 +3,71 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include "Coordinate.h"
 
 using namespace std;
-const int MAX_X = 800;
-const int MAX_Y = 500;
+const int MAX_X = 1300;
+const int MAX_Y = 740;
+const int MIN_X = 0;
+const int MIN_Y = 0;
 Asteroid::Asteroid()
 {
-    posX = 1 + rand() % (MAX_X + 100);
-    posY = 1 + rand() % (MAX_Y + 100);
+    int cuadrant = 1 + rand() % 4;
+    if(cuadrant == 1) // Upper Cuadrant
+    {
+        posX = rand() % (MAX_X - MIN_X + 1) + MIN_X;
+        posY = rand() % (1 - MAX_Y) - MAX_Y;
+    }
+    else if(cuadrant == 2) // Lower Cuadrant
+    {
+        posX = rand() % (MAX_X - MIN_X + 1) + MIN_X;
+        posY = rand() % (MAX_Y + 1) + MAX_Y;
+    }
+    else if(cuadrant == 3) // Left Cuadrant
+    {
+        posX = rand() % (1 - MAX_X) - MAX_X;
+        posY = rand() % (MAX_Y - MIN_Y + 1) + MIN_Y;
+    }
+    else if(cuadrant == 4) // Right Cuadrant
+    {
+        posX = rand() % (MAX_X + 1) + MAX_X;
+        posY = rand() % (MAX_Y - MIN_Y + 1) + MIN_Y;
+    }
+    // radius multiplier of the asteoroid
+    radio = 1 + rand()%2;
+    // Set the directional velocity
+    vx = (rand()%(40) - 20)/radio;
+    vy = (rand()%(40) - 20)/radio;
+
+    // Create cirlce around the main circle
     int minRadius = 30;
     int maxRadius = 50; 
     int granularity = 15;
     int minVary = 25;
     int maxVary = 75;
-    radio = 1 + rand()%3;
-    vw = 1 + rand() % 360;
     for (double theta=0; theta<=2*M_PI; theta+=2*M_PI/granularity)
     {
+        //Create the asteroid
         int randVal = rand()%(maxVary - minVary + 1) + minVary;
-        double points = (2 * M_PI / granularity) * static_cast<double>(randVal) / 100;
+        double points = (2 * M_PI / granularity) * randVal / 100.0;
         double angle = theta + points - (M_PI / granularity);
         int radius = rand()%(maxRadius - minRadius + 1) + minRadius;
         double x = static_cast<double>(sin(angle) * radius);
         double y = static_cast<double>(-cos(angle) * radius);
-
-        v1.push_back(posX + radio * x);
-        v2.push_back(posY + radio * y);
+        // Store in vector
+        v.push_back(Coordinate(posX + radio * x, posY + radio * y));
     }
+}
+Asteroid::~Asteroid()
+{
+
 }
 void Asteroid::rotate(int angle)
 {
-    int theta=M_PI*angle/180; // Radians
-    for(int i=0; i<v1.size(); i++){
-        v1[i]=cos(theta)*(v1[i] - posX) - sin(theta)*(v2[i] - posY) + posX;
-        v2[i]=sin(theta)*(v1[i] - posX) + cos(theta)*(v2[i] - posY) + posY;
+    int theta=M_PI*10/180; // Radians
+    for(int i=0; i<v.size(); i++){
+        v[i].setX(cos(theta)*(v[i].getX() - posX) - sin(theta)*(v[i].getY() - posY) + posX);
+        v[i].setY(sin(theta)*(v[i].getX() - posX) + cos(theta)*(v[i].getY() - posY) + posX);
     }
     return;
 }
@@ -44,9 +75,34 @@ void Asteroid::rotate(int angle)
 void Asteroid::draw()
 {
     gfx_point(posX, posY);
-    for(int i=1; i<v1.size(); i++){
-        gfx_line(v1[i-1], v2[i-1], v1[i], v2[i]);
+    for(int i=1; i<v.size(); i++){
+        gfx_line(v[i-1].getX(), v[i-1].getY(), v[i].getX(), v[i].getY());
     }
-    gfx_line(v1[v1.size()-1], v2[v2.size()-1], v1[0], v2[0]);
+    gfx_line(v[v.size()-1].getX(), v[v.size()-1].getY(), v[0].getX(), v[0].getY());
     return;
+}
+void Asteroid::move()
+{
+    posX+=vx;
+    posY+=vy;
+    for(int i=0; i<v.size(); i++)
+    {
+        v[i].setX(v[i].getX() + vx);
+        v[i].setY(v[i].getY() + vy);
+    }
+}
+bool Asteroid::outOfLimits() 
+{
+    double aux = radio * 100;
+    bool isOut = false;
+    if(posX > MAX_X + aux)
+        isOut = true;
+    if(posX < MIN_X - aux)
+        isOut = true;
+    if(posY > MAX_Y + aux)
+        isOut = true;
+    if(posY < MIN_Y - aux)
+        isOut = true;
+
+    return isOut;
 }

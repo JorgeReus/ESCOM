@@ -1,4 +1,5 @@
 #include <vector>
+#include "Coordinate.h"
 
 #ifndef ASTEROID_H_
 	#define ASTEROID_H_
@@ -8,9 +9,7 @@
 			int radio;
   			double posX;
   			double posY;
-  			std::vector<float> v1;
-  			std::vector<float> v2;
-  			double vw;
+  			std::vector<Coordinate> v;
   			double vx;
   			double vy;
 		public:
