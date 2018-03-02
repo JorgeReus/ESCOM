@@ -38,7 +38,7 @@ Asteroid::Asteroid()
     // Set the directional velocity
     vx = (rand()%(40) - 20)/radio;
     vy = (rand()%(40) - 20)/radio;
-
+    vw = rand()%(21) -10;
     // Create cirlce around the main circle
     int minRadius = 30;
     int maxRadius = 50; 
@@ -62,12 +62,16 @@ Asteroid::~Asteroid()
 {
 
 }
-void Asteroid::rotate(int angle)
+void Asteroid::rotate(double angle)
 {
-    int theta=M_PI*10/180; // Radians
-    for(int i=0; i<v.size(); i++){
-        v[i].setX(cos(theta)*(v[i].getX() - posX) - sin(theta)*(v[i].getY() - posY) + posX);
-        v[i].setY(sin(theta)*(v[i].getX() - posX) + cos(theta)*(v[i].getY() - posY) + posX);
+    double theta=M_PI*(angle + vw)/180.0; // Radians
+    for(int i=0; i < v.size(); i++){
+        double x1 = cos(theta)*(v[i].getX() - posX);
+        double x2 = sin(theta)*(v[i].getY() - posY);
+        double y1 = sin(theta)*(static_cast<double>(v[i].getX()) - posX);
+        double y2 = cos(theta)*(static_cast<double>(v[i].getY()) - posY);
+        v[i].setX(x1 - x2 + posX);
+        v[i].setY(y1 + y2 + posY);
     }
     return;
 }
@@ -79,6 +83,15 @@ void Asteroid::draw()
         gfx_line(v[i-1].getX(), v[i-1].getY(), v[i].getX(), v[i].getY());
     }
     gfx_line(v[v.size()-1].getX(), v[v.size()-1].getY(), v[0].getX(), v[0].getY());
+    return;
+}
+void Asteroid::showVertex(){
+    for(int i=0; i < v.size(); i++)
+        cout << "X:" << v[i].getX() << " Y:" << v[i].getY() << endl;
+    return;
+}
+void Asteroid::showCenter(){
+    cout << posX << "," << posY << endl;
     return;
 }
 void Asteroid::move()
