@@ -2,10 +2,14 @@ package applicacion;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  * @author alyne
+ *
  */
 public class ServletProductos extends HttpServlet {
 
@@ -21,22 +26,31 @@ public class ServletProductos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        if (request.getParameterValues("productos") != null) {
-            Cookie[] cookies = request.getCookies();
+        try {
+            Statement s;
+            ResultSet rs;
+            Connection con = null;
+            Class.forName("com.mysql.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/cart", "root", "root");
+            s = con.createStatement();
+            if (request.getParameterValues("productos") != null) {
+                String query = "UPDATE cart SET selected=CASE WHEN nombre in "
+                        + "(" + formatString(request.getParameterValues("productos"))
+                        + ") THEN 1 ELSE 0 END";
+                s.executeUpdate(query);
+            }
             productos = new ArrayList<>();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    cookie.setValue("");
-                    cookie.setMaxAge(0);
-                    response.addCookie(cookie);
-                }
+            rs = s.executeQuery("SELECT nombre FROM cart WHERE selected='1'");
+            while (rs.next()) {
+                productos.add(rs.getString("cart.nombre"));
             }
-            for (String producto : request.getParameterValues("productos")) {
-                Cookie cookie = new Cookie(producto, producto);
-                cookie.setMaxAge(3600 * 24 * 365);
-                response.addCookie(cookie);
-                productos.add(cookie.getValue());
-            }
+
+            con.close();
+        } catch (SQLException e) {
+            System.err.println("Error sql al intentar conectarse con la base de datos");
+            e.printStackTrace();
+        } catch (ClassNotFoundException ee) {
+            System.err.println("No se puede encontrar la clase:" + ee);
         }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
@@ -106,10 +120,19 @@ public class ServletProductos extends HttpServlet {
                 + "            </div>\n"
                 + "        </form>\n";
         out.println(modal);
-        String borrar = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
+        String borrar = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>";
         out.println(borrar);
         out.println("</body>");
         out.println("</html>");
+    }
+
+    private String formatString(String[] productos) {
+        String result = "";
+        for (String p : productos) {
+            result += "'" + p + "',";
+        }
+        result = result.substring(0, result.length() - 1);
+        return result;
     }
 
     @Override

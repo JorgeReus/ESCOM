@@ -106,6 +106,7 @@ public class ServletProductos extends HttpServlet {
                 + (productos.contains("Switch") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbSwitch\">Nintendo Switch</label><br>\n"
                 + "\n"
+                + "<h1>Departamento de Ropa</h1>"
                 + "    <input id=\"cbPlayera\" type=\"checkbox\" name=\"productos\" value=\"Playera\" "
                 + (productos.contains("Playera") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbPlayera\">Playera</label><br>\n"
@@ -117,6 +118,19 @@ public class ServletProductos extends HttpServlet {
                 + "    <input id=\"cbZapatos\" type=\"checkbox\" name=\"productos\" value=\"Zapatos\" "
                 + (productos.contains("Zapatos") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbZapatos\">Zapatos</label><br>\n"
+                + "\n"
+                + "<h1>Departamento de Electrodomésticos</h1>"
+                + "    <input id=\"cbLavadora\" type=\"checkbox\" name=\"productos\" value=\"Lavadora\" "
+                + (productos.contains("Lavadora") ? "checked>\n" : ">\n")
+                + "    <label for=\"cbLavadora\">Lavadora</label><br>\n"
+                + "\n"
+                + "    <input id=\"cbLicuadora\" type=\"checkbox\" name=\"productos\" value=\"Licuadora\" "
+                + (productos.contains("Licuadora") ? "checked>\n" : ">\n")
+                + "    <label for=\"cbLicuadora\">Licuadora</label><br>\n"
+                + "\n"
+                + "    <input id=\"cbRefrigerador\" type=\"checkbox\" name=\"productos\" value=\"Refrigerador\" "
+                + (productos.contains("Refrigerador") ? "checked>\n" : ">\n")
+                + "    <label for=\"cbRefrigerador\">Refrigerador</label><br>\n"
                 + "\n"
                 + "    <button id=\"checkout\">Checkout</button>\n"
                 + "</form>";
