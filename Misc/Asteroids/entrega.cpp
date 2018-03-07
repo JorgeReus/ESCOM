@@ -1,4 +1,33 @@
-#include "Asteroide.h"
+// Begin: Asteroid.h
+#include <vector>
+#include "Coordinate.h"
+
+#ifndef ASTEROID_H_
+	#define ASTEROID_H_
+	class Asteroid
+	{
+		private:
+			double radio;
+  			double posX;
+  			double posY;
+  			std::vector<Coordinate> v;
+  			double vx;
+  			double vy;
+  			double vw;
+		public:
+			Asteroid();
+			void draw();
+			void rotate(double);
+			void move();
+			bool outOfLimits();
+			void showVertex();
+			void showCenter();
+			~Asteroid();
+	};
+#endif
+// End: Asteroid.h
+// Begin: Asteroid.cpp
+#include "Asteroid.h"
 #include "gfx.h"
 #include <iostream>
 #include <cstdlib>
@@ -78,7 +107,6 @@ void Asteroid::rotate(double angle)
 
 void Asteroid::draw()
 {
-    gfx_point(posX, posY);
     for(int i=1; i<v.size(); i++){
         gfx_line(v[i-1].getX(), v[i-1].getY(), v[i].getX(), v[i].getY());
     }
@@ -119,3 +147,116 @@ bool Asteroid::outOfLimits()
 
     return isOut;
 }
+// End: Asteroid.cpp
+// Begin: Coordinate.h
+#ifndef COORDINATE_H_
+#define COORDINATE_H_
+class Coordinate{
+private:
+	double x;
+	double y;
+public:
+    Coordinate(double = 0, double = 0);
+    double getX();
+    double getY();
+    void setX(double);
+    void setY(double);
+ };
+#endif
+// Begin: Coordinate.h
+// Begin: Coordinate.cpp
+#include "Coordinate.h"
+#include <iostream>
+
+Coordinate::Coordinate(double xx, double yy) : x(xx), y(yy) { }
+
+double Coordinate::getX()
+{
+	return x;
+}
+
+double Coordinate::getY()
+{
+	return y;
+}
+
+void Coordinate::setX(double xx)
+{
+	x = xx;
+	return;
+}
+
+void Coordinate::setY(double yy)
+{
+	y = yy;
+	return;
+}
+// End: Coordinate.cpp
+// Begin: main.cpp
+#include "gfx.h"
+#include <unistd.h>
+#include <iostream>
+#include "Asteroid.h"
+#include <cstdlib>
+#include <vector>
+
+
+using namespace std;
+int main(int argc, char *argv[])
+{
+	if(argc != 2)
+	{
+		cout << "Solo 2 argumentos" << endl;
+		return 1;
+	}
+	int num_asteroids = atoi(argv[1]);
+ 	srand(time(0));
+ 	gfx_open(800, 600, "Simulación Asteroides");
+ 	gfx_color(0, 200, 100);
+ 	vector<Asteroid> asteroids;
+ 	for(int i=0; i < num_asteroids; i++)
+ 	{
+ 		Asteroid a;
+ 		asteroids.push_back(a);
+ 	}
+ 	int t=10;
+ 	while(1)
+ 	{
+ 		gfx_clear();
+		for(int i=0; i < num_asteroids; i++)
+ 		{
+ 			asteroids[i].move();
+ 		}
+ 		for(int i=0; i < num_asteroids; i++)
+ 		{
+ 			asteroids[i].rotate(1);
+ 		}
+		for(int i=0; i < num_asteroids; i++)
+ 		{
+ 			if (asteroids[i].outOfLimits()){
+ 				asteroids.erase(asteroids.begin() + i);
+ 				asteroids.push_back(Asteroid());
+ 			}
+ 			asteroids[i].draw();
+ 		}
+ 		if(gfx_event_waiting()){
+ 			if(gfx_wait() == 'q'){
+ 				break;
+ 			}
+ 		}
+		usleep(41666); //24 por segundo
+	}
+ 	return 0;
+}
+// End: main.cpp
+// Begin: makefile
+main: main.cpp Asteroid.o Coordinate.o
+	g++ gfx.o main.cpp Asteroid.o Coordinate.o -o main -lX11
+	rm *.o
+Asteroid.o: Asteroid.cpp Coordinate.o gfx.o Asteroid.h
+	g++ Asteroid.cpp -c
+gfx.o: gfx.c gfx.h
+	gcc gfx.c -c
+Coordinate.o: Coordinate.cpp Coordinate.h
+	g++ Coordinate.cpp -c
+// End: makefile

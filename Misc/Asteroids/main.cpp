@@ -1,7 +1,7 @@
 #include "gfx.h"
 #include <unistd.h>
 #include <iostream>
-#include "Asteroide.h"
+#include "Asteroid.h"
 #include <cstdlib>
 #include <vector>
 
