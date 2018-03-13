@@ -1,4 +1,4 @@
-package admin;
+package applicacion;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ public class ServletLogin extends HttpServlet {
         if (lb.validateUser(id, pass)){           
             HttpSession session = request.getSession(true);
             session.setAttribute("userName", id);
-            response.sendRedirect("ServletWelcome");
+            response.sendRedirect("ServletElectrodomesticos");
         } else {
             response.sendRedirect("ServletFailure");
         }

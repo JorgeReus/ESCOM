@@ -1,6 +1,8 @@
-package admin;
+package applicacion;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,23 +11,31 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author reus
+ * @author alyne
  */
-public class ServletLogin extends HttpServlet {
+public class ServletCarrito extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String id = (String) request.getParameter("id");
-        String pass = (String) request.getParameter("pass");
-        LoginBean lb = new LoginBean();
-        if (lb.validateUser(id, pass)){           
-            HttpSession session = request.getSession(true);
-            session.setAttribute("userName", id);
-            response.sendRedirect("ServletWelcome");
-        } else {
-            response.sendRedirect("ServletFailure");
+        HttpSession session = request.getSession();
+        PrintWriter out = response.getWriter();
+        out.println("<!DOCTYPE html>");
+        out.println("<html>");
+        out.println("<head>");
+        out.println("<title>Servlet ServletProductos</title>");
+        out.println("</head>");
+        out.println("<body>");
+        try {
+            ArrayList<String> res = (ArrayList<String>) session.getAttribute("productos");
+            for (String val : res) {
+                out.println(val + "<br>");
+            }
+        } catch (NullPointerException nullPointer) {
+            out.println("No hay Productos en el Carrito");
         }
+        out.println("</body>");
+        out.println("</html>");
     }
 
     @Override
@@ -39,5 +49,4 @@ public class ServletLogin extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
 }
