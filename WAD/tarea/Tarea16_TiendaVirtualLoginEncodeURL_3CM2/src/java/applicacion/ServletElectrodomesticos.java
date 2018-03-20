@@ -40,7 +40,6 @@ public class ServletElectrodomesticos extends HttpServlet {
                     }
                 }
             }
-
             session.setAttribute("productos", productos);
         }
         PrintWriter out = response.getWriter();
