@@ -17,20 +17,45 @@
 #include <sstream>
 #include <locale>
 #include <set>
-
+#include <unistd.h>
+#include <thread>
 
 using namespace std;
-int main(int argc, char *argv[])
-{   
-    locale loc("es_MX.utf8");
-    if (argc != 2)
-        exit(1);
-    queue<string> files;
-    DIR *directory = opendir("./files");
-    struct dirent *dir;
-    while ((dir = readdir(directory)) != NULL)
-        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, ".."))
-            files.push(dir->d_name);
+
+#include <queue>
+#include <mutex>
+
+template<typename T>
+class my_queue
+{
+public:
+    void push( const T& value )
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_queque.push(value);
+    }
+
+    void pop()
+    {
+        std::lock_guard<std::mutex> lock(m_mutex);
+        m_queque.pop();
+    }
+    T front() const
+    {
+        return m_queque.front();
+    }
+
+private:
+    std::queue<T> m_queque;
+    mutable std::mutex m_mutex;
+};
+
+my_queue<string> files;
+
+void calculateWords()
+{
+    string filename = files.front();
+    files.pop();
     // Declaring the type of Predicate that accepts 2 pairs and return a bool
     typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
     // Defining a lambda function to compare two pairs. It will compare two pairs using second field
@@ -38,7 +63,6 @@ int main(int argc, char *argv[])
     {
         return elem1.second > elem2.second;
     };
-    string filename = files.front();
     Archivo input("./files/" + filename);
     int nbytes;
     while((nbytes = input.lee(BUFSIZ)) > 0);
@@ -50,7 +74,6 @@ int main(int argc, char *argv[])
         // Remove non alpha characters
         for(int i = 0; i <= s.size(); ++i)
         {
-            //if(!isalpha(s[i]))
             if ((s[i] > ' ' && s[i] <= '@') || s[i]== *u8"¿")
                 s[i] = ' ';
         }
@@ -66,11 +89,46 @@ int main(int argc, char *argv[])
     set<std::pair<string, int>, Comparator> setOfWords(
             mapOfWords.begin(), mapOfWords.end(), compFunctor);
     int i=0; 
+    cout << filename << " :" << endl;
     for (std::pair<std::string, int> element : setOfWords){
         if (i <= 40){
-            std::cout << element.first << " :: " << element.second << std::endl;
+            std::cout << "   " <<element.first << " :: " << element.second << std::endl;
             i++;
         }
     }
-    return 0;
+    return;
+}
+
+
+int main(int argc, char *argv[])
+{   
+    locale loc("es_MX.utf8");
+    int n = atoi(argv[1]);
+    if (argc != 2)
+    {
+        cout << "Usage: ./words num_threads" << endl;
+        exit(1);
+    }
+    if (n > 8)
+    {
+        cout << "A maximum of 8 threads are allowed" << endl;
+        exit(1);
+    }
+    DIR *directory = opendir("./files");
+    struct dirent *dir;
+    while ((dir = readdir(directory)) != NULL)
+        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, ".."))
+            files.push(dir->d_name);
+    vector<thread> threads;
+    int i;
+    for(i=0; i < n; i++)
+    {
+        thread th(calculateWords);
+        threads.push_back(move(th));
+    }
+    for(i=0; i < n; i++)
+    {
+        threads[i].join();
+    }
+    exit(0);
 }
