@@ -55,6 +55,8 @@ private:
 };
 
 my_queue<string> files;
+vector<map<string, int>> maps;
+map<string, int> totalMap;
 
 // Declaring the type of Predicate that accepts 2 pairs and return a bool
 typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
@@ -63,6 +65,7 @@ Comparator compFunctor = [](std::pair<std::string, int> elem1 ,std::pair<std::st
 {
     return elem1.second > elem2.second;
 };
+mutex m;
 
 void calculateWords()
 {
@@ -92,17 +95,13 @@ void calculateWords()
             }
             else 
                 mapOfWords[s] = 1;
+            // Add to the total map
+            totalMap[s] = 0;
         }
-        set<std::pair<string, int>, Comparator> setOfWords(
-                mapOfWords.begin(), mapOfWords.end(), compFunctor);
-        int i=0; 
-        cout << filename << " :" << endl;
-        for (std::pair<std::string, int> element : setOfWords){
-            if (i <= 500){
-                std::cout << "   " <<element.first << " :: " << element.second << std::endl;
-                i++;
-            }
-        }
+        cout << filename << endl;       
+        m.lock();
+        maps.push_back(mapOfWords);
+        m.unlock();
     } 
     return;
 }
@@ -143,5 +142,20 @@ int main(int argc, char *argv[])
     {
         threads[i].join();
     }
+    cout << maps.size() << endl;
+    for(i=0; i<maps.size(); i++){
+        for (auto const& j : maps[i])
+        {
+            totalMap[j.first] += j.second;
+        }
+    }
+        set<std::pair<string, int>, Comparator> setOfWords(
+                totalMap.begin(), totalMap.end(), compFunctor);
+    for (std::pair<std::string, int> element : setOfWords){
+            if (i <= 500){
+                std::cout << "   " <<element.first << " :: " << element.second << std::endl;
+                i++;
+            }
+        }
     exit(0);
 }
