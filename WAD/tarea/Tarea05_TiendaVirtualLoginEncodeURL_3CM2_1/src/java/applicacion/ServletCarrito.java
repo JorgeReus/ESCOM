@@ -3,11 +3,11 @@ package applicacion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -18,7 +18,7 @@ public class ServletCarrito extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext application = request.getServletContext();
+        HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
         out.println("<html>");
@@ -27,7 +27,7 @@ public class ServletCarrito extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         try {
-            ArrayList<String> res = (ArrayList<String>) application.getAttribute("productos");
+            ArrayList<String> res = (ArrayList<String>) session.getAttribute("productos");
             for (String val : res) {
                 out.println(val + "<br>");
             }

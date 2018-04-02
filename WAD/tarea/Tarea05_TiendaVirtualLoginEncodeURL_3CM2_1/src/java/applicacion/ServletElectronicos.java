@@ -3,12 +3,13 @@ package applicacion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -17,22 +18,29 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletElectronicos extends HttpServlet {
 
     private List<String> productos = new ArrayList<>();
+    private final List<String> electronicos = Arrays.asList("XboxOne", "Ps4", "Switch");
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        ServletContext application = request.getServletContext();
+        HttpSession session = request.getSession();
         if (request.getParameterValues("productos") != null) {
-            productos = new ArrayList<>();
-            for (String producto : request.getParameterValues("productos")) {
-                if (!productos.contains(producto)) {
+            if (session.getAttribute("productos") == null) {
+                productos = new ArrayList<>();
+                for (String producto : request.getParameterValues("productos")) {
                     productos.add(producto);
                 }
+            } else {
+                productos = (ArrayList<String>) session.getAttribute("productos");
+                removeTheseProducts();
+                for (String producto : request.getParameterValues("productos")) {
+                    if (!productos.contains(producto)) {
+                        productos.add(producto);
+                    }
+                }
             }
-            application.setAttribute("productos", productos);
-        }
-        if (application.getAttribute("productos") == null) {
-            productos.clear();
+            
+            session.setAttribute("productos", productos);
         }
         PrintWriter out = response.getWriter();
         out.println("<!DOCTYPE html>");
@@ -45,7 +53,7 @@ public class ServletElectronicos extends HttpServlet {
         out.println("</head>");
         out.println("<body>");
         out.println("<h1>Departamento de Electrónicos</h1>");
-        String html = "<form id=\"prodForm\" method=\"GET\" action=\"ServletProductos\">\n"
+        String html = "<form id=\"prodForm\" method=\"GET\" action=\"ServletElectronicos\">\n"
                 + "    <input id=\"cbXboxOne\" type=\"checkbox\" name=\"productos\" value=\"XboxOne\" "
                 + (productos.contains("XboxOne") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbXboxOne\">Xbox One</label><br>\n"
@@ -57,33 +65,6 @@ public class ServletElectronicos extends HttpServlet {
                 + "    <input id=\"cbSwitch\" type=\"checkbox\" name=\"productos\" value=\"Switch\" "
                 + (productos.contains("Switch") ? "checked>\n" : ">\n")
                 + "    <label for=\"cbSwitch\">Nintendo Switch</label><br>\n"
-                + "\n"
-                + "<h1>Departamento de Ropa</h1>"
-                + "    <input id=\"cbPlayera\" type=\"checkbox\" name=\"productos\" value=\"Playera\" "
-                + (productos.contains("Playera") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbPlayera\">Playera</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbChamarra\" type=\"checkbox\" name=\"productos\" value=\"Chamarra\" "
-                + (productos.contains("Chamarra") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbChamarra\">Chamarra</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbZapatos\" type=\"checkbox\" name=\"productos\" value=\"Zapatos\" "
-                + (productos.contains("Zapatos") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbZapatos\">Zapatos</label><br>\n"
-                + "\n"
-                + "<h1>Departamento de Electrodomésticos</h1>"
-                + "    <input id=\"cbLavadora\" type=\"checkbox\" name=\"productos\" value=\"Lavadora\" "
-                + (productos.contains("Lavadora") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbLavadora\">Lavadora</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbLicuadora\" type=\"checkbox\" name=\"productos\" value=\"Licuadora\" "
-                + (productos.contains("Licuadora") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbLicuadora\">Licuadora</label><br>\n"
-                + "\n"
-                + "    <input id=\"cbRefrigerador\" type=\"checkbox\" name=\"productos\" value=\"Refrigerador\" "
-                + (productos.contains("Refrigerador") ? "checked>\n" : ">\n")
-                + "    <label for=\"cbRefrigerador\">Refrigerador</label><br>\n"
-                + "\n"
                 + "    <button id=\"checkout\">Checkout</button>\n"
                 + "</form>";
         out.println(html);
@@ -102,8 +83,12 @@ public class ServletElectronicos extends HttpServlet {
                 + "            </div>\n"
                 + "        </form>\n";
         out.println(modal);
-        String borrarBtn = "<button id=\"borrarBtn\" type=\"button\">Borrar Carrito</button>\n";
-        out.println(borrarBtn);
+        String ropa = "<br/><a href='" + response.encodeURL("ServletRopa") 
+                +  "' >Departamento de Ropa</a><br/>";
+        out.println(ropa);
+        String electrodomesticos = "<br/><a href='" + response.encodeURL("ServletElectrodomesticos") 
+                +  "' >Departamento de Electrodomesticos</a><br/>";
+        out.println(electrodomesticos);
         out.println("</body>");
         out.println("</html>");
     }
@@ -118,5 +103,11 @@ public class ServletElectronicos extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+    }
+    
+    private void removeTheseProducts(){
+        for (String prod : electronicos){
+            if(productos.remove(prod));
+        }
     }
 }

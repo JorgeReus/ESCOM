@@ -31,13 +31,7 @@ int main(int argc, char *argv[])
 		for(int i=0; i < num_asteroids; i++)
  		{
  			asteroids[i].move();
- 		}
- 		for(int i=0; i < num_asteroids; i++)
- 		{
  			asteroids[i].rotate(1);
- 		}
-		for(int i=0; i < num_asteroids; i++)
- 		{
  			if (asteroids[i].outOfLimits()){
  				asteroids.erase(asteroids.begin() + i);
  				asteroids.push_back(Asteroid());

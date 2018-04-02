@@ -20,6 +20,10 @@
         <servlet-name>ServletInicio</servlet-name>
         <servlet-class>applicacion.ServletInicio</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletElectrodomesticos</servlet-name>
+        <servlet-class>applicacion.ServletElectrodomesticos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletElectronicos</servlet-name>
         <url-pattern>/ServletElectronicos</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>ServletInicio</servlet-name>
         <url-pattern>/ServletInicio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletElectrodomesticos</servlet-name>
+        <url-pattern>/ServletElectrodomesticos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
