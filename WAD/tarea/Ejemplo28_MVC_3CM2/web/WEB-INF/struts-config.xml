@@ -7,7 +7,7 @@
 
 <struts-config>
     <form-beans>
-        <form-bean name="ActionFrom" type="admin.ActionFrom"/>
+        <form-bean name="ActionForm1" type="administrator.ActionForm1"/>
     
     </form-beans>
     
@@ -17,12 +17,12 @@
 
     <global-forwards>
         <forward name="welcome"  path="/Welcome.do"/>
-        <forward name="success"  path="/salida1.jsp"/>
-        <forward name="fail"  path="/output2.jsp"/>
+        <forward name="administrator"  path="/administrator.jsp"/>
+        <forward name="fail"  path="/falla.jsp"/>
     </global-forwards>
 
     <action-mappings>
-        <action input="/index.jsp" name="ActionFrom" path="/MVC" scope="session" type="admin.Action1" validate="false"/>
+        <action input="/input1.jsp" name="ActionForm1" path="/MVC" scope="session" type="administrator.Action1" validate="false"/>
         <action path="/Welcome" forward="/welcomeStruts.jsp"/>
     </action-mappings>
     
