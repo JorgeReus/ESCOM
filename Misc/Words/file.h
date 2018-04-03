@@ -15,7 +15,7 @@
 	std::string nombreArchivo;
 	Archivo(std::string filename);
 	Archivo(std::string filename, int banderas, mode_t modo);
-	size_t lee(size_t nbytes);
+	size_t lee();
 	size_t escribe(void *buffer, size_t nbytes);
 	size_t obtieneNum_bytes();
 	const char *get_contenido();

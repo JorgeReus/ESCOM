@@ -1,60 +1,26 @@
 #include <iostream>
 #include <map>
 #include <stdio.h>
-#include <string>
+#include <cctype>
 #include <iterator>
 #include <sys/types.h> 
 #include <dirent.h>
-#include <unistd.h>
 #include <cstdlib>
-#include <queue>
-#include <algorithm>
 #include <cstring>
 #include <fcntl.h>
-#include <string>
 #include "file.h"
 #include <vector>
 #include <sstream>
 #include <locale>
 #include <set>
-#include <unistd.h>
+#include <algorithm>
 #include <thread>
-
-using namespace std;
-
-#include <queue>
 #include <mutex>
+#include <queue>
 
 #define DIRECTORY "./files" 
 
-template<typename T>
-class my_queue
-{
-public:
-    void push( const T& value )
-    {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        m_queque.push(value);
-    }
-
-    void pop()
-    {
-        std::lock_guard<std::mutex> lock(m_mutex);
-        m_queque.pop();
-    }
-    T front() const
-    {
-        return m_queque.front();
-    }
-    bool empty()
-    {
-        return  m_queque.empty();
-    }
-
-private:
-    std::queue<T> m_queque;
-    mutable std::mutex m_mutex;
-};
+using namespace std;
 
 queue<string> files;
 map<string, int> totalMap;
@@ -68,24 +34,20 @@ void calculateWords()
         string filename = "/" + files.front();
         files.pop();
         m1.unlock();
-        Archivo input(DIRECTORY +filename);
+        Archivo* input = new Archivo(DIRECTORY +filename);
         int nbytes;
-        while((nbytes = input.lee(BUFSIZ)) > 0);
-        istringstream iss(input.get_contenido());
+        while((nbytes = input->lee()) > 0);
+        istringstream iss(input->get_contenido());
         vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
         map<string, int> mapOfWords;
-        cout << input.nombreArchivo << endl; 
-        cout << tokens.size() << endl;      
         for(auto const& token: tokens) {
             string s = token;
-            // // Remove non alpha characters
-            // for(int i = 0; i <= s.size(); ++i)
-            // {
-            //     if (s[i] > ' ' && s[i] <= '@')
-            //     s[i] = ' ';
-            // }
-            // string::iterator end_pos = remove(s.begin(), s.end(), ' ');
-            // s.erase(end_pos, s.end());
+            // Remove non alpha characters
+            for(int i = 0; i <= s.size(); ++i)
+            {
+                if (s[i] > ' ' && s[i] <= '@')
+                s[i] = ' ';
+            }
             // Not Found
             if(mapOfWords.find(s) != mapOfWords.end()){  
                 mapOfWords[s] += 1;
@@ -93,9 +55,12 @@ void calculateWords()
             else 
                 mapOfWords[s] = 1;
         }
-        // map<string, int>::iterator it = mapOfWords.find("de");
-        // cout << it->first << ":" << it->second << endl;
         m.lock();
+        // cout << "Name: " <<input->nombreArchivo << ": "; 
+        // cout << "Tokens size: " <<tokens.size() << "- ";
+        // cout << "Content Length: " << strlen(input->get_contenido()) << "- ";
+        // cout << "Map size: " <<mapOfWords.size() << endl;      
+        delete input;
         for(auto const& element: mapOfWords) {
             if(totalMap.find(element.first) != totalMap.end()){          
                 totalMap[element.first] += element.second;
@@ -148,17 +113,16 @@ int main(int argc, char *argv[])
     }
     // map<string, int>::iterator it = totalMap.find("de");
     // cout << it->first << ":" << it->second << endl;
-    // multimap<int, string> finalMap;
-    // for(auto const& element: totalMap)      
-    //     finalMap.insert(pair<int, string>(element.second, element.first));
-    // i=0;
-    // for(multimap<int, string>::reverse_iterator it = finalMap.rbegin(); it != finalMap.rend(); it++)  {
-    //     if (i > 500){
-    //         break;
-    //     }
-    //     std::cout << "   " <<it->second << " :: " << it->first << std::endl;
-    //     i++;
-    // }    
-
+    multimap<int, string> finalMap;
+    for(auto const& element: totalMap)      
+        finalMap.insert(pair<int, string>(element.second, element.first));
+    i=0;
+    for(multimap<int, string>::reverse_iterator it = finalMap.rbegin(); it != finalMap.rend(); it++)  {
+        if (i > 500){
+            break;
+        }
+        std::cout << "   " <<it->second << " :: " << it->first << std::endl;
+        i++;
+    }    
     exit(0);
 }
