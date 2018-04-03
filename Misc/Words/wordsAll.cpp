@@ -25,6 +25,8 @@ using namespace std;
 #include <queue>
 #include <mutex>
 
+#define DIRECTORY "./files" 
+
 template<typename T>
 class my_queue
 {
@@ -54,53 +56,53 @@ private:
     mutable std::mutex m_mutex;
 };
 
-my_queue<string> files;
-vector<map<string, int>> maps;
+queue<string> files;
 map<string, int> totalMap;
-
-// Declaring the type of Predicate that accepts 2 pairs and return a bool
-typedef std::function<bool(std::pair<std::string, int>, std::pair<std::string, int>)> Comparator;
-// Defining a lambda function to compare two pairs. It will compare two pairs using second field
-Comparator compFunctor = [](std::pair<std::string, int> elem1 ,std::pair<std::string, int> elem2)
-{
-    return elem1.second > elem2.second;
-};
-mutex m;
+mutex m, m1;
 
 void calculateWords()
 {
     while(!files.empty()) 
     {
-        string filename = files.front();
+        m1.lock();
+        string filename = "/" + files.front();
         files.pop();
-        Archivo input("./files/" + filename);
+        m1.unlock();
+        Archivo input(DIRECTORY +filename);
         int nbytes;
         while((nbytes = input.lee(BUFSIZ)) > 0);
         istringstream iss(input.get_contenido());
         vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
         map<string, int> mapOfWords;
+        cout << input.nombreArchivo << endl; 
+        cout << tokens.size() << endl;      
         for(auto const& token: tokens) {
             string s = token;
-            // Remove non alpha characters
-            for(int i = 0; i <= s.size(); ++i)
-            {
-                if ((s[i] > ' ' && s[i] <= '@') || s[i]== *u8"¿")
-                    s[i] = ' ';
-            }
-            std::string::iterator end_pos = remove(s.begin(), s.end(), ' ');
-            s.erase(end_pos, s.end());
+            // // Remove non alpha characters
+            // for(int i = 0; i <= s.size(); ++i)
+            // {
+            //     if (s[i] > ' ' && s[i] <= '@')
+            //     s[i] = ' ';
+            // }
+            // string::iterator end_pos = remove(s.begin(), s.end(), ' ');
+            // s.erase(end_pos, s.end());
             // Not Found
-            if(mapOfWords.find(s) != mapOfWords.end()){          
-                mapOfWords[s]++;
+            if(mapOfWords.find(s) != mapOfWords.end()){  
+                mapOfWords[s] += 1;
             }
             else 
                 mapOfWords[s] = 1;
-            // Add to the total map
-            totalMap[s] = 0;
         }
-        cout << filename << endl;       
+        // map<string, int>::iterator it = mapOfWords.find("de");
+        // cout << it->first << ":" << it->second << endl;
         m.lock();
-        maps.push_back(mapOfWords);
+        for(auto const& element: mapOfWords) {
+            if(totalMap.find(element.first) != totalMap.end()){          
+                totalMap[element.first] += element.second;
+            }
+            else 
+                totalMap[element.first] = 0;
+        }
         m.unlock();
     } 
     return;
@@ -121,16 +123,18 @@ int main(int argc, char *argv[])
         cout << "A maximum of 8 threads are allowed" << endl;
         exit(1);
     }
-    DIR *directory = opendir("./files");
+    DIR *directory = opendir(DIRECTORY);
     if(directory == NULL)
     {
-        cout << "Folder '/files' not found" << endl;
+        cout << "Folder" << DIRECTORY << " not found" << endl;
         exit(1);
     }
     struct dirent *dir;
-    while ((dir = readdir(directory)) != NULL)
-        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, ".."))
+    while ((dir = readdir(directory)) != NULL){       
+        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")) {
             files.push(dir->d_name);
+        }
+    }
     vector<thread> threads;
     int i;
     for(i=0; i < n; i++)
@@ -142,20 +146,19 @@ int main(int argc, char *argv[])
     {
         threads[i].join();
     }
-    cout << maps.size() << endl;
-    for(i=0; i<maps.size(); i++){
-        for (auto const& j : maps[i])
-        {
-            totalMap[j.first] += j.second;
-        }
-    }
-        set<std::pair<string, int>, Comparator> setOfWords(
-                totalMap.begin(), totalMap.end(), compFunctor);
-    for (std::pair<std::string, int> element : setOfWords){
-            if (i <= 500){
-                std::cout << "   " <<element.first << " :: " << element.second << std::endl;
-                i++;
-            }
-        }
+    // map<string, int>::iterator it = totalMap.find("de");
+    // cout << it->first << ":" << it->second << endl;
+    // multimap<int, string> finalMap;
+    // for(auto const& element: totalMap)      
+    //     finalMap.insert(pair<int, string>(element.second, element.first));
+    // i=0;
+    // for(multimap<int, string>::reverse_iterator it = finalMap.rbegin(); it != finalMap.rend(); it++)  {
+    //     if (i > 500){
+    //         break;
+    //     }
+    //     std::cout << "   " <<it->second << " :: " << it->first << std::endl;
+    //     i++;
+    // }    
+
     exit(0);
 }

@@ -61,6 +61,7 @@ const char *Archivo::get_contenido()
 {
 	return contenido;
 }
+
 Archivo::~Archivo()
 {
 	free(contenido);

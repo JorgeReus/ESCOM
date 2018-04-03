@@ -8,11 +8,11 @@
 	class Archivo
 	{
 	private:
-	std::string nombreArchivo;
 	int fd;
 	char *contenido;
 	size_t num_bytes;
 	public:
+	std::string nombreArchivo;
 	Archivo(std::string filename);
 	Archivo(std::string filename, int banderas, mode_t modo);
 	size_t lee(size_t nbytes);
