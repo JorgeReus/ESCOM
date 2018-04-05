@@ -19,7 +19,10 @@ Archivo::Archivo(std::string filename)
 		exit(-1);
 	}
 	contenido = NULL;
-	num_bytes = 0;
+	struct stat st;
+	fstat(fd, &st);
+	num_bytes = st.st_size;
+	contenido = (char*)malloc(num_bytes);
 }
 
 Archivo::Archivo(std::string filename, int banderas, mode_t modo)
@@ -35,12 +38,13 @@ Archivo::Archivo(std::string filename, int banderas, mode_t modo)
 	contenido = NULL;
 	num_bytes = 0;
 }
-size_t Archivo::lee(size_t nbytes)
+size_t Archivo::lee()
 {
-	contenido = (char*)realloc(contenido, num_bytes + nbytes);
-	size_t n = read(fd, contenido + num_bytes, nbytes);
-	num_bytes = num_bytes + n;
-
+	int n = read(fd, contenido, num_bytes);
+	if(n < 0) {
+		std::cout << "Error En la lectura del archivo " << std::endl;
+		exit(1); 
+	}
 	return n;
 }
 size_t Archivo::escribe(void *buffer ,size_t nbytes)
