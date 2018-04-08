@@ -18,11 +18,10 @@
 #include <mutex>
 #include <queue>
 
-#define DIRECTORY "./files" 
-
 using namespace std;
 
 queue<string> files;
+char *DIRECTORY;
 map<string, int> totalMap;
 mutex m, m1;
 
@@ -30,16 +29,21 @@ void calculateWords()
 {
     while(!files.empty()) 
     {
+        // get one file out of the string queue
         m1.lock();
         string filename = "/" + files.front();
         files.pop();
         m1.unlock();
+        // Create a new file based on the filename
         Archivo* input = new Archivo(DIRECTORY +filename);
         int nbytes;
+        // Read the file
         while((nbytes = input->lee()) > 0);
         istringstream iss(input->get_contenido());
+        // Tokenize the string
         vector<string> tokens{istream_iterator<string>{iss}, istream_iterator<string>{}};
         map<string, int> mapOfWords;
+        // Process Tokens
         for(auto const& token: tokens) {
             string s = token;
             // Remove non alpha characters
@@ -48,19 +52,16 @@ void calculateWords()
                 if (s[i] > ' ' && s[i] <= '@')
                 s[i] = ' ';
             }
-            // Not Found
-            if(mapOfWords.find(s) != mapOfWords.end()){  
+            // If found increment the count
+            if(mapOfWords.find(s) != mapOfWords.end())
                 mapOfWords[s] += 1;
-            }
+            // If not add a new entry
             else 
                 mapOfWords[s] = 1;
         }
         m.lock();
-        // cout << "Name: " <<input->nombreArchivo << ": "; 
-        // cout << "Tokens size: " <<tokens.size() << "- ";
-        // cout << "Content Length: " << strlen(input->get_contenido()) << "- ";
-        // cout << "Map size: " <<mapOfWords.size() << endl;      
         delete input;
+        // Add the entries into the total map
         for(auto const& element: mapOfWords) {
             if(totalMap.find(element.first) != totalMap.end()){          
                 totalMap[element.first] += element.second;
@@ -76,13 +77,14 @@ void calculateWords()
 
 int main(int argc, char *argv[])
 {   
-    if (argc != 2)
+    if (argc != 3)
     {
-        cout << "Usage: ./words num_threads" << endl;
+        cout << "Usage: ./main num_threads directory" << endl;
         exit(1);
     }
     locale loc("es_MX.utf8");
     int n = atoi(argv[1]);
+    DIRECTORY = argv[2];
     if (n > 8)
     {
         cout << "A maximum of 8 threads are allowed" << endl;
@@ -95,32 +97,26 @@ int main(int argc, char *argv[])
         exit(1);
     }
     struct dirent *dir;
-    while ((dir = readdir(directory)) != NULL){       
-        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, "..")) {
-            files.push(dir->d_name);
-        }
-    }
+    while ((dir = readdir(directory)) != NULL)       
+        if (strcmp(dir->d_name, ".") && strcmp(dir->d_name, ".."))
+            files.push(dir->d_name);    
     vector<thread> threads;
     int i;
+    // 1 thread for each file
     for(i=0; i < n; i++)
     {
         thread th(calculateWords);
         threads.push_back(move(th));
     }
     for(i=0; i < n; i++)
-    {
         threads[i].join();
-    }
-    // map<string, int>::iterator it = totalMap.find("de");
-    // cout << it->first << ":" << it->second << endl;
     multimap<int, string> finalMap;
     for(auto const& element: totalMap)      
         finalMap.insert(pair<int, string>(element.second, element.first));
     i=0;
     for(multimap<int, string>::reverse_iterator it = finalMap.rbegin(); it != finalMap.rend(); it++)  {
-        if (i > 500){
+        if (i > 500)
             break;
-        }
         std::cout << "   " <<it->second << " :: " << it->first << std::endl;
         i++;
     }    
