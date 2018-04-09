@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /WAD/tarea/ServletEjemplo13CM2/dist/
 /WAD/tarea/ServeltEjemplo2Paramaetro3CM2/nbproject/private/
 /WAD/tarea/ServeltEjemplo2Paramaetro3CM2/build/
@@ -188,3 +189,10 @@
 /WAD/tarea/WADLOGINWITH2FILTER/nbproject/private/
 /WAD/tarea/EJemplo32_ConnectionPool_3CM2/nbproject/private/
 /WAD/tarea/EJemplo32_ConnectionPool_3CM2/build/
+=======
+/WAD/tarea/Tarea12_LogIn_3CM2/nbproject/private/
+/WAD/tarea/Tarea19_LoginStrutsTipoUsuarioLog1_3CM2/nbproject/private/
+/WAD/tarea/Tarea19_LoginStrutsTipoUsuarioLog1_3CM2/dist/
+/WAD/tarea/Tarea19_LoginStrutsTipoUsuarioLog1_3CM2/build/
+/WAD/tarea/Tarea19_LoginStrutsTipoUsuarioLog2_3CM2/nbproject/private/
+>>>>>>> ee59a2ca9a6a116ac1f657c2c2ef81f5b367e6e7
