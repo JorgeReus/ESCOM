@@ -14,22 +14,21 @@
         <title>Success</title>
     </head>
     <body>
-        <h1>Welcome  <%= session.getAttribute("user")%></h1>
-        <% if (session.getAttribute("type").equals("admin")) {%>
-        <table>
+        <h1>Welcome  <%= application.getAttribute("user")%></h1>
+        <% if (application.getAttribute("type").equals("admin")) {%>
+            <table>
             <thead>
                 <th>User</th>
                 <th>Password</th>
                 <th>Type</th>
             </thead>
-            <% HashMap<String, String[]> users = (HashMap<String, String[]>) session.getAttribute("users");
+            <% HashMap<String, String[]> users = (HashMap<String, String[]>) application.getAttribute("users");
                 for (Map.Entry<String, String[]> pair : users.entrySet()) {
             %>
             <tr><td><%= pair.getKey() %></td><td><%= pair.getValue()[0] %></td><td><%= pair.getValue()[1] %></td></tr>
             <% } %>
-
-        </table>
+            </table>
         <% }%>
 
-</body>
+    </body>
 </html>
