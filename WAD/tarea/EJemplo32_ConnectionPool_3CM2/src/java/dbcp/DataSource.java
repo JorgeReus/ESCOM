@@ -15,9 +15,8 @@ public class DataSource {
         ds = new BasicDataSource();
         ds.setDriverClassName("com.mysql.jdbc.Driver");
         ds.setUsername("root");
-        ds.setPassword("root");
-        ds.setUrl("jdbc:mysql://localhost/BaseLoginServlet");
-       
+        ds.setPassword("");
+        ds.setUrl("jdbc:mysql://localhost/login");     
      // settings
         ds.setMinIdle(5);
         ds.setMaxIdle(20);

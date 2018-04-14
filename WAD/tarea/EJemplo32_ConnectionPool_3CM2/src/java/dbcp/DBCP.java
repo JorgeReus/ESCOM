@@ -16,10 +16,10 @@ public class DBCP  {
         try {
             connection = DataSource.getInstance().getConnection();
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("select * from Users");
+            resultSet = statement.executeQuery("select * from users");
              while (resultSet.next()) {
-                 System.out.println("user_id: " + resultSet.getString("idUser"));
-                 System.out.println("id: " + resultSet.getString("id"));
+                 System.out.println("user_id: " + resultSet.getString("user"));
+                 System.out.println("pass " + resultSet.getString("password"));
              }
         } catch (SQLException e) {
             e.printStackTrace();
