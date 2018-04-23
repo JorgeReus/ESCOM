@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cmath>
+#include "Coord.h"
 #include "datagramPaquet.h"
 #include "datagramSocket.h"
 #include <fstream>
@@ -17,52 +18,34 @@
 #include <vector>
 #include <tuple>
 
-int puerto = 7200;
 using namespace std;
-
-void loadIPs(vector<tuple<string, int, int> > &v){
-   string delimiter = "-";
-   vector<string> ips;
-   string line;
-   ifstream ip_file ("ips.txt");
-   // Read the file
-   int pos = 0;
-   string ip, port, percentage;
-   string::size_type sz;
-   if (ip_file.is_open()) {
-      while (getline (ip_file, line)) {
-         pos = line.find(delimiter);
-         ip = line.substr(0, pos);
-         line.erase(0, pos + delimiter.length());
-         pos = line.find(delimiter);
-         port = line.substr(0, pos);
-         line.erase(0, pos + delimiter.length());
-         v.push_back(make_tuple(ip, stoi(port, &sz), stoi(line, &sz)));
-      }
-      ip_file.close();
-   } else {
-      cout << "Couldn't open file" << endl;
-   }
-}
+int serverPort = 6666;
+string serverIP = "127.0.0.1";
 
 int main(int argc, char *argv[])
 { 
-   if(argc != 2) 
+   if(argc > 3) 
    {
-      printf("Usage: ./client num\n");
+      printf("Usage: ./client serverIP serverPort\n");
       exit(0);
+   } else if (argc == 3){
+      serverIP = argv[1];
+      serverPort = atoi(argv[2]);
    }
-   unsigned int num = atoi(argv[1]);
-   vector<tuple<string, int, int> > ip_s;
-   loadIPs(ip_s);
-   unsigned int start = 2;
-   unsigned int step = ceil(num*(float(get<2>(ip_s[0]))/100));
-   unsigned long end = start + step;
-   unsigned int dist[3];
-   dist[2] = num;
-   vector<PaqueteDatagrama> servers;
+   Coord coord(0,0);
+   int dist[4];
    SocketDatagrama* s = new SocketDatagrama(0);
-   for (int i=0; i < ip_s.size(); i++) {
+   PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), serverPort);
+   s->envia(p);
+   s->recibe(p);
+   printf("Server has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
+         htons(p.obtienePuerto()));
+   dist[0] = p.obtieneDatos()[0];
+   dist[1] = p.obtieneDatos()[1];
+   dist[2] = p.obtieneDatos()[2];
+   dist[3] = p.obtieneDatos()[3];
+   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", dist[0],dist[1],dist[2],dist[3]);
+   /*for (int i=0; i < ip_s.size(); i++) {
       if (end >= num)
          end = num;
       dist[0] = start;
@@ -75,21 +58,7 @@ int main(int argc, char *argv[])
       step = ceil(num*(float(get<2>(ip_s[i + 1]))/100));
       start += step + 1;
       end += step + 1;
-   }
-   char isPrime = 1;
-   for (int i = 0; i < servers.size(); i++) {
-      s->recibe(servers[i]);
-      printf("%s : %d = %c\n", servers[i].obtieneDireccion(), servers[i].obtienePuerto(), servers[i].obtieneDatos()[0]);
-      if(servers[i].obtieneDatos()[0] == 'n') {
-         isPrime = 0;
-         break;
-      }
-   }
-   if(isPrime != 0) {
-      cout << num << " is a prime number" << endl;
-   } else {
-      cout << num << " is not a prime number" << endl;
-   }
+   }*/
    delete s;
    return 0;
 }

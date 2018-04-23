@@ -1,17 +1,17 @@
 class PaqueteDatagrama {
 public:
-	PaqueteDatagrama(char *, unsigned int, char *, int );
+	PaqueteDatagrama(int *, unsigned int, char *, int );
 	PaqueteDatagrama(unsigned int );
 	~PaqueteDatagrama();
 	char *obtieneDireccion();
 	unsigned int obtieneLongitud();
 	int obtienePuerto();
-	char *obtieneDatos();
+	int *obtieneDatos();
 	void inicializaPuerto(int);
 	void inicializaIp(char *);
-	void inicializaDatos(char *);
+	void inicializaDatos(int *);
 private:
-	char *datos;
+	int *datos;
 //Almacena los datos
 	char ip[16];
 //Almacena la IP

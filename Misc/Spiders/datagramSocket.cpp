@@ -17,7 +17,7 @@ SocketDatagrama::SocketDatagrama(int port) {
 	direccionLocal.sin_addr.s_addr = INADDR_ANY;
 	direccionLocal.sin_port = htons(port);
 	bind(s, (struct sockaddr *)&direccionLocal,sizeof(direccionLocal));
-	printf("Started at: %d\n", direccionLocal.sin_port);
+	printf("Started at: %d\n", htons(direccionLocal.sin_port));
 }
 
 SocketDatagrama::~SocketDatagrama() {
@@ -27,8 +27,8 @@ SocketDatagrama::~SocketDatagrama() {
 int SocketDatagrama::recibe(PaqueteDatagrama &p) {
 	bzero((char *)&direccionForanea, sizeof(direccionForanea));
 	socklen_t clilen = sizeof(direccionForanea);
-	char *data = (char*)malloc(p.obtieneLongitud());
-	recvfrom(s, (char*)data, p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, &clilen);
+	int *data = (int*)malloc(p.obtieneLongitud());
+	recvfrom(s, (int*)data, p.obtieneLongitud(), 0, (struct sockaddr *)&direccionForanea, &clilen);
 	p.inicializaDatos(data);
 	p.inicializaIp(inet_ntoa(direccionForanea.sin_addr));
 	p.inicializaPuerto(htons(direccionForanea.sin_port));
