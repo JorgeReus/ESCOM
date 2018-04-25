@@ -21,44 +21,65 @@
 using namespace std;
 int serverPort = 6666;
 string serverIP = "127.0.0.1";
+double speed = 10.0;
+
+void intsToArray(int x0, int y0, int xf, int yf, int *dist) {
+   dist[0] = x0;
+   dist[1] = y0;
+   dist[2] = xf;
+   dist[3] = yf;
+}
+
+void arrayToInts(int *x0, int *y0, int *xf, int *yf, int *dist) {
+   *x0 = dist[0];
+   *y0 = dist[1];
+   *xf = dist[2];
+   *yf = dist[3];
+}
 
 int main(int argc, char *argv[])
 { 
-   if(argc > 3) 
+   if(argc > 4 || argc < 2) 
    {
-      printf("Usage: ./client serverIP serverPort\n");
+      printf("Usage: ./client speed serverIP serverPort\n");
       exit(0);
-   } else if (argc == 3){
-      serverIP = argv[1];
-      serverPort = atoi(argv[2]);
+   } else if (argc == 4){
+      serverIP = argv[2];
+      serverPort = atoi(argv[3]);
+   } else if (argc == 2) {
+      speed = atof(argv[1]); 
    }
+   // Initialize coords
    Coord coord(0,0);
    int dist[4];
+   int x0;
+   int y0;
+   int xf;
+   int yf;
+   // Initialize Socket
    SocketDatagrama* s = new SocketDatagrama(0);
    PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), serverPort);
+   // Send the first message to server
    s->envia(p);
    s->recibe(p);
-   printf("Server has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
-         htons(p.obtienePuerto()));
-   dist[0] = p.obtieneDatos()[0];
-   dist[1] = p.obtieneDatos()[1];
-   dist[2] = p.obtieneDatos()[2];
-   dist[3] = p.obtieneDatos()[3];
-   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", dist[0],dist[1],dist[2],dist[3]);
-   /*for (int i=0; i < ip_s.size(); i++) {
-      if (end >= num)
-         end = num;
-      dist[0] = start;
-      dist[1] = end;
-      PaqueteDatagrama p((char*)dist, 3 * sizeof(unsigned int), (char *)get<0>(ip_s[i]).c_str(), get<1>(ip_s[i]));
+   printf("Client has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
+      htons(p.obtienePuerto()));
+   arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
+   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+   // Cicle of send and recive
+   while(x0 < xf && y0 < yf) {
+      // Increase the position
+      x0 += speed;
+      y0 += speed;
+      // Conver corrds to array
+      intsToArray(x0, y0, xf, yf, dist);
+      p.inicializaDatos(dist);
+      // Send the coords and recive the new Ones
       s->envia(p);
-      cout << start << " : " << end << " assigned to ";
-      cout << get<0>(ip_s[i]) << "-" << get<1>(ip_s[i]) << endl;
-      servers.push_back(p);
-      step = ceil(num*(float(get<2>(ip_s[i + 1]))/100));
-      start += step + 1;
-      end += step + 1;
-   }*/
+      s->recibe(p);
+      arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
+      printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+   }
    delete s;
    return 0;
 }

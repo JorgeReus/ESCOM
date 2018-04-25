@@ -20,7 +20,7 @@
 #include <vector>
 
 
-#define NUM_CLIENTS 4
+#define NUM_CLIENTS 1
 
 using namespace std;
 
@@ -55,40 +55,32 @@ int main(int argc, char *argv[])
    vector<tuple<string, int, Coord, Coord> > clients;
    PaqueteDatagrama p(4 * sizeof(int));
    int dist[4];
+   // Wait for all client's message
    for (int i=0; i < NUM_CLIENTS; i++) {
-      // Recieve data
-      s->recibe(p); 
+      // Recieve the wake up
+      s->recibe(p);
       printf("Server has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
          htons(p.obtienePuerto()));
       // Save the client's address, port and coordinates
       Coord start = coordinates.front();
       coordinates.pop();
       clients.push_back(make_tuple(p.obtieneDireccion(), htons(p.obtienePuerto()), start, coordinates.front()));
-      dist[0] = start.x;
-      dist[1] = start.y;
-      dist[2] = coordinates.front().x;
-      dist[3] = coordinates.front().y;   
+   }
+   // Begin the distribution
+   for (int i=0; i < NUM_CLIENTS; i++) {
+      // Unpack the client's address, port and coordinates
+      dist[0] = get<2>(clients[i]).x;
+      dist[1] = get<2>(clients[i]).y;
+      dist[2] = get<3>(clients[i]).x;
+      dist[3] = get<3>(clients[i]).y;   
       p.inicializaDatos(dist);
-      printf("Start-x:%d,y:%d End-x:%d,y:%d\n", dist[0],dist[1],dist[2],dist[3]);
+      p.inicializaIp((char*)get<0>(clients[i]).c_str());
+      p.inicializaPuerto(get<1>(clients[i]));
+      printf("Begin: %d, %d - End: %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
+         p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
       s->envia(p);
    }
    //printClients(clients);
-
-   /*unsigned int *res = (unsigned int*)p.obtieneDatos();
-   unsigned int begin = res[0];
-   unsigned int end = res[1];
-   unsigned int num = res[2];
-   printf("    Begin: %u, End: %u, Num: %u\n", begin, end, num);
-   char message[] = {'y','\0'};
-   for(unsigned int i=begin; i < end; i++) {
-      if (num % i==0){
-         printf("Num: %u is divisible by: %u\n", num, i);
-         strcpy(message, "n\0");
-         break;
-      }
-   }
-   PaqueteDatagrama pSend((char*)message, 3 * sizeof(char), p.obtieneDireccion(), p.obtienePuerto());
-   s->envia(pSend);*/
    delete s;
    return 0;
 }
