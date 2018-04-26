@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
       exit(0);
    } else if (argc == 4){
       serverIP = argv[2];
-      serverPort = atoi(argv[3]);
+      serverPort = htons(atoi(argv[3]));
    } else if (argc == 2) {
       speed = atof(argv[1]); 
    }
@@ -58,19 +58,25 @@ int main(int argc, char *argv[])
    int yf;
    // Initialize Socket
    SocketDatagrama* s = new SocketDatagrama(0);
-   PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), serverPort);
+   PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), htons(serverPort));
    // Send the first message to server
    s->envia(p);
+   printf("Client send a message from: %s, on port: %d\n", p.obtieneDireccion(), 
+      htons(p.obtienePuerto()));
    s->recibe(p);
    printf("Client has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
       htons(p.obtienePuerto()));
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
    printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
    // Cicle of send and recive
-   while(x0 < xf && y0 < yf) {
+   while(x0 < xf || y0 < yf) {
       // Increase the position
-      x0 += speed;
-      y0 += speed;
+      if (x0 < xf) {
+         x0 += speed;
+      } 
+      if (y0 < yf) {
+         y0 += speed;
+      }
       // Conver corrds to array
       intsToArray(x0, y0, xf, yf, dist);
       p.inicializaDatos(dist);

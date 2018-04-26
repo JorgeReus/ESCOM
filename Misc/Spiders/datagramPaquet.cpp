@@ -10,6 +10,7 @@ PaqueteDatagrama::PaqueteDatagrama(int *data, unsigned int len, char *address, i
 	memcpy(datos, data, len);
 	longitud = len;
 	memcpy(ip, address, strlen(address));
+	ip[strlen(address)] = '\0';
 	puerto = port;
 }
 

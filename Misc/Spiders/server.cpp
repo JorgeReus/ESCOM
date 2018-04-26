@@ -14,6 +14,7 @@
 #include <string>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <thread>
 #include <unistd.h>
 #include <utility>
 #include <tuple>
@@ -32,6 +33,20 @@ void printClients(vector<tuple<string, int, Coord, Coord> > &clients) {
    }
 }
 
+void mainLoop(tuple<string, int, Coord, Coord> client) {
+   PaqueteDatagrama p(4 * sizeof(int));
+   int dist[4];
+   p.inicializaIp((char*)get<0>(client).c_str());
+   p.inicializaPuerto(get<1>(client));
+   dist[0] = get<2>(client).x;
+   dist[1] = get<2>(client).y;
+   dist[2] = get<3>(client).x;
+   dist[3] = get<3>(client).y;
+   p.inicializaDatos(dist);
+   while(x0 < xf || y0 < yf) {
+
+   }
+}
 
 int main(int argc, char *argv[])
 { 
@@ -67,6 +82,8 @@ int main(int argc, char *argv[])
       clients.push_back(make_tuple(p.obtieneDireccion(), htons(p.obtienePuerto()), start, coordinates.front()));
    }
    // Begin the distribution
+
+   vector<thread> threads;
    for (int i=0; i < NUM_CLIENTS; i++) {
       // Unpack the client's address, port and coordinates
       dist[0] = get<2>(clients[i]).x;
@@ -79,8 +96,14 @@ int main(int argc, char *argv[])
       printf("Begin: %d, %d - End: %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
          p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
       s->envia(p);
+      thread th(calculateWords);
+      threads.push_back(move(th));
    }
+
+   for(i=0; i < n; i++) {
+     threads[i].join();
+  }
    //printClients(clients);
-   delete s;
-   return 0;
+  delete s;
+  return 0;
 }
