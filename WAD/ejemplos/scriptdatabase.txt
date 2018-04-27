@@ -1,0 +1,9 @@
+CREATE DATABASE test;
+
+CREATE TABLE test.login (
+ idLOGIN INT NOT NULL ,
+ USERNAME VARCHAR(45) NULL ,
+ PASSWORD VARCHAR(45) NULL ,
+ PRIMARY KEY (idLOGIN) );
+GRANT ALL ON test.* TO admin@localhost IDENTIFIED BY 'adminAuto';
+INSERT INTO test.login (idLOGIN,USERNAME, PASSWORD) VALUES ('1','rperedo', 'rpv');
