@@ -20,7 +20,7 @@
 #include <vector>
 
 
-#define NUM_CLIENTS 1
+#define NUM_CLIENTS 2
 
 using namespace std;
 
@@ -30,6 +30,18 @@ void printClients(vector<tuple<string, int, Coord, Coord> > &clients) {
       printf("Begin: %d, %d - End: %d, %d - Assigned to: %s at %d\n", get<2>(clients[i]).x, get<2>(clients[i]).y, 
          get<3>(clients[i]).x, get<3>(clients[i]).y, get<0>(clients[i]).c_str(), get<1>(clients[i]));
    }
+}
+
+
+bool checkFinished(vector<tuple<string, int, Coord, Coord> > &clients) {
+   bool finished = true;
+   for (int i=0; i < NUM_CLIENTS; i++) {
+      if (get<2>(clients[i]).x != get<3>(clients[i]).x || get<3>(clients[i]).y != get<2>(clients[i]).y)  {
+         finished = false;
+      }
+      break;
+   }
+   return finished;
 }
 
 int main(int argc, char *argv[])
@@ -58,12 +70,11 @@ int main(int argc, char *argv[])
    for (int i=0; i < NUM_CLIENTS; i++) {
       // Recieve the wake up
       s->recibe(p);
-      printf("Server has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
-         htons(p.obtienePuerto()));
+      // printf("Server has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), p.obtienePuerto());
       // Save the client's address, port and coordinates
       Coord start = coordinates.front();
       coordinates.pop();
-      clients.push_back(make_tuple(p.obtieneDireccion(), htons(p.obtienePuerto()), start, coordinates.front()));
+      clients.push_back(make_tuple(p.obtieneDireccion(), p.obtienePuerto(), start, coordinates.front()));
    }
    // Begin the distribution
 
@@ -76,30 +87,42 @@ int main(int argc, char *argv[])
       p.inicializaDatos(dist);
       p.inicializaIp((char*)get<0>(clients[i]).c_str());
       p.inicializaPuerto(get<1>(clients[i]));
-      printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
-         p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
+      // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
+      //    p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
       s->envia(p);
    }
-while(1) {
-   for (int i=0; i < NUM_CLIENTS; i++) {
-      s->recibe(p);
-      printf("si\n");
-      // printf("Begin: %d, %d - End: %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
-      //    p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
-      // dist[0] = p.obtieneDatos()[0];
-      // dist[1] = p.obtieneDatos()[1];
-      // if (i + 1 == NUM_CLIENTS) {
-      //    dist[2] = get<3>(clients[0]).x;
-      //    dist[3] = get<3>(clients[0]).y; 
-      // } else {
-      //    dist[2] = get<3>(clients[i]).x;
-      //    dist[3] = get<3>(clients[i]).y; 
-      // }
-      // p.inicializaDatos(dist);
-      // s->envia(p);
+   while(!checkFinished(clients)) {
+      for (int i=0; i < NUM_CLIENTS; i++) {
+         // Recieve raw data
+         s->recibe(p);
+         // if (strcmp(get<0>(clients[i]).c_str(), p.obtieneDireccion()) == 0 && get<1>(clients[i]) == p.obtienePuerto())  {
+         //       //Your beginning is what you send me          
+         //    get<2>(clients[i]).x = p.obtieneDatos()[0];
+         //    get<2>(clients[i]).y = p.obtieneDatos()[1];
+         //    dist[0] = p.obtieneDatos()[0];
+         //    dist[1] = p.obtieneDatos()[1];
+         //       //Your end is the next client beginning
+         //    if (i + 1 == NUM_CLIENTS) {
+         //       get<3>(clients[i]).x = get<2>(clients[0]).x;
+         //       get<3>(clients[i]).y = get<2>(clients[0]).y;
+         //       dist[2] = get<2>(clients[0]).x;
+         //       dist[3] = get<2>(clients[0]).y; 
+         //    } else {
+         //       get<3>(clients[i]).x = get<2>(clients[i + 1]).x;
+         //       get<3>(clients[i]).y = get<2>(clients[i + 1]).y;
+         //       dist[2] = get<3>(clients[i + 1]).x;
+         //       dist[3] = get<3>(clients[i + 1]).y; 
+         //    }
+         // } else {
+         //    continue;
+         // }
+         printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
+            dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
+         p.inicializaDatos(dist);
+         s->envia(p);
+      }
    }
-}
    //printClients(clients);
-  delete s;
-  return 0;
+   delete s;
+   return 0;
 }
