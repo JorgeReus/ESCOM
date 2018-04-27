@@ -73,21 +73,29 @@ int main(int argc, char *argv[])
          x0 += speed;
          if (x0 > xf) 
             x0 = xf;
-      } 
-      if (y0 < yf) {
-         y0 += speed;
-         if (y0 > yf) 
-            y0 = yf;
-      }
-      // Conver corrds to array
-      intsToArray(x0, y0, dist);
-      p.inicializaDatos(dist);
-      // Send the coords and recive the new Ones
-      s->envia(p);
-      s->recibe(p);
-      arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
-      printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+      } else {
+        x0 -= speed;
+        if (x0 < xf) 
+         x0 = xf;
    }
-   delete s;
-   return 0;
+   if (y0 < yf) {
+      y0 += speed;
+      if (y0 > yf) 
+         y0 = yf;
+   } else {
+      y0 -= speed;
+        if (y0 < yf) 
+         y0 = yf;
+   }
+      // Conver corrds to array
+   intsToArray(x0, y0, dist);
+   p.inicializaDatos(dist);
+      // Send the coords and recive the new Ones
+   s->envia(p);
+   s->recibe(p);
+   arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
+   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+}
+delete s;
+return 0;
 }

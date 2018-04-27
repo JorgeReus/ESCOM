@@ -20,7 +20,7 @@
 #include <vector>
 
 
-#define NUM_CLIENTS 2
+#define NUM_CLIENTS 4
 
 using namespace std;
 
@@ -113,13 +113,13 @@ int main(int argc, char *argv[])
                break;
             }
          }
-         printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
-            dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
+         // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
+         //    dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
+         printClients(clients);
          p.inicializaDatos(dist);
          s->envia(p);
       }
    }
-   printClients(clients);
    delete s;
    return 0;
 }
