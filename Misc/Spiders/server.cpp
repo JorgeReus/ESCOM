@@ -87,42 +87,39 @@ int main(int argc, char *argv[])
       p.inicializaDatos(dist);
       p.inicializaIp((char*)get<0>(clients[i]).c_str());
       p.inicializaPuerto(get<1>(clients[i]));
-      // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
-      //    p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
+      printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
+         p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
       s->envia(p);
    }
    while(!checkFinished(clients)) {
       for (int i=0; i < NUM_CLIENTS; i++) {
          // Recieve raw data
          s->recibe(p);
-         // if (strcmp(get<0>(clients[i]).c_str(), p.obtieneDireccion()) == 0 && get<1>(clients[i]) == p.obtienePuerto())  {
-         //       //Your beginning is what you send me          
-         //    get<2>(clients[i]).x = p.obtieneDatos()[0];
-         //    get<2>(clients[i]).y = p.obtieneDatos()[1];
-         //    dist[0] = p.obtieneDatos()[0];
-         //    dist[1] = p.obtieneDatos()[1];
-         //       //Your end is the next client beginning
-         //    if (i + 1 == NUM_CLIENTS) {
-         //       get<3>(clients[i]).x = get<2>(clients[0]).x;
-         //       get<3>(clients[i]).y = get<2>(clients[0]).y;
-         //       dist[2] = get<2>(clients[0]).x;
-         //       dist[3] = get<2>(clients[0]).y; 
-         //    } else {
-         //       get<3>(clients[i]).x = get<2>(clients[i + 1]).x;
-         //       get<3>(clients[i]).y = get<2>(clients[i + 1]).y;
-         //       dist[2] = get<3>(clients[i + 1]).x;
-         //       dist[3] = get<3>(clients[i + 1]).y; 
-         //    }
-         // } else {
-         //    continue;
-         // }
+         // Modify you coords         
+         for (int j=0; j < NUM_CLIENTS; j++) { 
+            if (strcmp(get<0>(clients[j]).c_str(), p.obtieneDireccion()) == 0 && get<1>(clients[j]) == p.obtienePuerto()) { 
+               for (int k = 0; k < NUM_CLIENTS; k++) {
+                  if (get<2>(clients[j]).x == get<3>(clients[k]).x && get<2>(clients[j]).y == get<3>(clients[k]).y) {
+                     get<3>(clients[k]).x = p.obtieneDatos()[0];
+                     get<3>(clients[k]).y = p.obtieneDatos()[1];
+                  }
+               }
+               get<2>(clients[j]).x = p.obtieneDatos()[0];
+               get<2>(clients[j]).y = p.obtieneDatos()[1];
+               dist[0] = p.obtieneDatos()[0];
+               dist[1] = p.obtieneDatos()[1];   
+               dist[2] = get<3>(clients[j]).x;
+               dist[3] = get<3>(clients[j]).y;
+               break;
+            }
+         }
          printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
             dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
          p.inicializaDatos(dist);
          s->envia(p);
       }
    }
-   //printClients(clients);
+   printClients(clients);
    delete s;
    return 0;
 }

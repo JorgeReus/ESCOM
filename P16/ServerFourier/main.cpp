@@ -8,27 +8,29 @@ using namespace std;
 
 int main(int argc, char *argv[]) {
 
-	char datos[6];
-	char *ap;
-	ap = datos;
+	int port;
+	if (argc < 2) {
+		cout << "Useage: ./server port"<<  endl;
+	} else if (argc == 1) {
+		port = 6666;
+	} else {
+		port = atoi(argv[1]);
+	}
+	gfx_open(800, 600, "Fourier Server");
 
-	gfx_open(800, 600, "Fourier");
-
-	gfx_line(0,300,800,300);
-	gfx_line(400,0,400,600);
-	gfx_flush();
+	// gfx_line(0,300,800,300);
+	// gfx_line(400,0,400,600);
+	// gfx_flush();
 
 	gfx_color(255,0,0);
 
-	SocketDatagrama socket(9999);
-	PaqueteDatagrama paquete(2*sizeof(float));
+	SocketDatagrama socket(port);
+	PaqueteDatagrama p(2*sizeof(float));
 
 	while(1) {
-		socket.recibe(paquete);
-		ap = paquete.obtieneDatos();
-		char x[4] = {ap[0], ap[1], ap[2], '\0'};
-		char y[4] = {ap[3], ap[4], ap[5], '\0'};
-		cout << "Recibe\t" << atoi(x) << "\t" << atoi(y) << endl;
+		socket.recibe(p);
+		char x[4] = {p.obtieneDatos()[0], p.obtieneDatos()[1], p.obtieneDatos()[2], '\0'};
+		char y[4] = {p.obtieneDatos()[3], p.obtieneDatos()[4], p.obtieneDatos()[5], '\0'};
 		gfx_point(atoi(x),atoi(y));
 		gfx_flush();
 	}

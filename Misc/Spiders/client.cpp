@@ -83,10 +83,7 @@ int main(int argc, char *argv[])
       intsToArray(x0, y0, dist);
       p.inicializaDatos(dist);
       // Send the coords and recive the new Ones
-      for (int i =0;  i < 10; i++) {
-
-         s->envia(p);
-      }
+      s->envia(p);
       s->recibe(p);
       arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
       printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
