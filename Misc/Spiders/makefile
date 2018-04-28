@@ -6,5 +6,7 @@ coor: Coord.cpp Coord.h
 	g++ -c Coord.cpp
 client: client.cpp datagramPaquet.o datagramSocket.o Coord.o
 	g++ client.cpp datagramPaquet.o datagramSocket.o Coord.o -o client -std=c++11
-server: server.cpp datagramPaquet.o datagramSocket.o Coord.o
-	g++ server.cpp datagramPaquet.o datagramSocket.o Coord.o -o server -std=c++11
+server: server.cpp datagramPaquet.o datagramSocket.o Coord.o gfx.o
+	g++ server.cpp datagramPaquet.o datagramSocket.o Coord.o gfx.o -o server -std=c++11 -lX11
+gfx: gfx.c gfx.h
+	gcc -c gfx.c

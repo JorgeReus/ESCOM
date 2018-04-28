@@ -92,6 +92,9 @@ int main(int argc, char *argv[])
    p.inicializaDatos(dist);
       // Send the coords and recive the new Ones
    s->envia(p);
+   if (x0==xf && y0==yf) {
+      break;
+   }
    s->recibe(p);
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
    printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);

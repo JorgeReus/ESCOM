@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cmath>
 #include "Coord.h"
+#include "gfx.h"
 #include "datagramPaquet.h"
 #include "datagramSocket.h"
 #include <fstream>
@@ -20,13 +21,13 @@
 #include <vector>
 
 
-#define NUM_CLIENTS 4
+int NUM_CLIENTS = 4;
 
 using namespace std;
 
 
 void printClients(vector<tuple<string, int, Coord, Coord> > &clients) {
-   for (int i=0; i < NUM_CLIENTS; i++) {    
+   for (int i=0; i < NUM_CLIENTS; i++) {   
       printf("Begin: %d, %d - End: %d, %d - Assigned to: %s at %d\n", get<2>(clients[i]).x, get<2>(clients[i]).y, 
          get<3>(clients[i]).x, get<3>(clients[i]).y, get<0>(clients[i]).c_str(), get<1>(clients[i]));
    }
@@ -77,7 +78,8 @@ int main(int argc, char *argv[])
       clients.push_back(make_tuple(p.obtieneDireccion(), p.obtienePuerto(), start, coordinates.front()));
    }
    // Begin the distribution
-
+   gfx_open(800, 600, "Spiders");
+   gfx_color(0, 200, 100);
    for (int i=0; i < NUM_CLIENTS; i++) {
       // Unpack the client's address, port and coordinates
       dist[0] = get<2>(clients[i]).x;
@@ -87,10 +89,12 @@ int main(int argc, char *argv[])
       p.inicializaDatos(dist);
       p.inicializaIp((char*)get<0>(clients[i]).c_str());
       p.inicializaPuerto(get<1>(clients[i]));
-      printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
-         p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
+      // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
+      //    p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
+      gfx_point(p.obtieneDatos()[0], p.obtieneDatos()[1]);
       s->envia(p);
    }
+   vector<pair<string, int> > finished;
    while(!checkFinished(clients)) {
       for (int i=0; i < NUM_CLIENTS; i++) {
          // Recieve raw data
@@ -109,15 +113,20 @@ int main(int argc, char *argv[])
                dist[0] = p.obtieneDatos()[0];
                dist[1] = p.obtieneDatos()[1];   
                dist[2] = get<3>(clients[j]).x;
-               dist[3] = get<3>(clients[j]).y;
+               dist[3] = get<3>(clients[j]).y;                 
+               gfx_point(get<2>(clients[i]).x, get<2>(clients[i]).y); 
                break;
             }
+         }
+         if(gfx_event_waiting() && gfx_wait() == 'q'){
+               break;
          }
          // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
          //    dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
          printClients(clients);
          p.inicializaDatos(dist);
          s->envia(p);
+         usleep(41666); //24 por segundo
       }
    }
    delete s;
