@@ -50,6 +50,7 @@ int main(int argc, char *argv[])
    } else if (argc == 4){
       serverIP = argv[2];
       serverPort = atoi(argv[3]);
+      speed = atof(argv[1]); 
    } else if (argc == 2) {
       speed = atof(argv[1]); 
    }
@@ -74,11 +75,15 @@ int main(int argc, char *argv[])
    char chasedIp[16];
    int chasedPort;
    arrayToPortIp(chasedIp, &chasedPort, p.obtieneDatos());
+   // printf("I am chasing : %s on %d\n", chasedIp, chasedPort);
+   int distance;
    // Cicle of send and recive
    while(x0 != xf || y0 != yf) {
-      printf("(%d, %d) to (%d, %d) of %s on %d\n", x0, y0, xf, yf, chasedIp, chasedPort);
+      distance += speed;
+      //printf("(%d, %d) to (%d, %d) of %s on %d\n", x0, y0, xf, yf, chasedIp, chasedPort);
       if (strcmp(serverIP.c_str(), p.obtieneDireccion()) != 0 || serverPort != p.obtienePuerto()) {
-         break;
+         printf("Distance : %d\n", distance);
+         exit(0);
       }
       // Increase the position
       if (x0 < xf) {
@@ -108,7 +113,8 @@ int main(int argc, char *argv[])
       p.inicializaIp(chasedIp);
       p.inicializaPuerto(chasedPort);
       s->envia(p);
-      break;
+      printf("Distance : %d\n", distance);
+      exit(0);
    }
    s->recibe(p);
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
