@@ -35,6 +35,12 @@ void arrayToInts(int *x0, int *y0, int *xf, int *yf, int *dist) {
    *yf = dist[3];
 }
 
+void arrayToPortIp(char *ip, int *port, int *dist) {
+   char *ipPort = (char*)(dist + 4);
+   strcpy(ip, ipPort);
+   *port = atoi(ipPort + strlen(ipPort) + 1);
+}
+
 int main(int argc, char *argv[])
 { 
    if(argc > 4 || argc < 2) 
@@ -43,7 +49,8 @@ int main(int argc, char *argv[])
       exit(0);
    } else if (argc == 4){
       serverIP = argv[2];
-      serverPort = htons(atoi(argv[3]));
+      serverPort = atoi(argv[3]);
+      speed = atof(argv[1]); 
    } else if (argc == 2) {
       speed = atof(argv[1]); 
    }
@@ -56,7 +63,7 @@ int main(int argc, char *argv[])
    int yf;
    // Initialize Socket
    SocketDatagrama* s = new SocketDatagrama(0);
-   PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), serverPort);
+   PaqueteDatagrama p(dist, 10 * sizeof(int), (char*)serverIP.c_str(), serverPort);
    // Send the first message to server
    s->envia(p);
    // printf("Client send a message from: %s, on port: %d\n", p.obtieneDireccion(), 
@@ -65,25 +72,53 @@ int main(int argc, char *argv[])
    // printf("Client has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
    //    htons(p.obtienePuerto()));
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
-   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+   char chasedIp[16];
+   int chasedPort;
+   arrayToPortIp(chasedIp, &chasedPort, p.obtieneDatos());
+   // printf("I am chasing : %s on %d\n", chasedIp, chasedPort);
+   int distance;
    // Cicle of send and recive
-   while(x0 < xf || y0 < yf) {
+   while(x0 != xf || y0 != yf) {
+      distance += speed;
+      //printf("(%d, %d) to (%d, %d) of %s on %d\n", x0, y0, xf, yf, chasedIp, chasedPort);
+      if (strcmp(serverIP.c_str(), p.obtieneDireccion()) != 0 || serverPort != p.obtienePuerto()) {
+         printf("Distance : %d\n", distance);
+         exit(0);
+      }
       // Increase the position
       if (x0 < xf) {
          x0 += speed;
-      } 
-      if (y0 < yf) {
-         y0 += speed;
-      }
-      // Conver corrds to array
-      intsToArray(x0, y0, dist);
-      p.inicializaDatos(dist);
-      // Send the coords and recive the new Ones
-      s->envia(p);
-      //s->recibe(p);
-      //arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
-      printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+         if (x0 > xf) 
+            x0 = xf;
+      } else {
+        x0 -= speed;
+        if (x0 < xf) 
+         x0 = xf;
    }
-   delete s;
-   return 0;
+   if (y0 < yf) {
+      y0 += speed;
+      if (y0 > yf) 
+         y0 = yf;
+   } else {
+      y0 -= speed;
+        if (y0 < yf) 
+         y0 = yf;
+   }
+      // Conver corrds to array
+   intsToArray(x0, y0, dist);
+   p.inicializaDatos(dist);
+      // Send the coords and recive the new Ones
+   s->envia(p);
+   if (x0==xf && y0==yf) {
+      p.inicializaIp(chasedIp);
+      p.inicializaPuerto(chasedPort);
+      s->envia(p);
+      printf("Distance : %d\n", distance);
+      exit(0);
+   }
+   s->recibe(p);
+   arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
+}
+delete s;
+return 0;
 }
