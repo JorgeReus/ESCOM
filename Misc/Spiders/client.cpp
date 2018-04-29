@@ -35,6 +35,12 @@ void arrayToInts(int *x0, int *y0, int *xf, int *yf, int *dist) {
    *yf = dist[3];
 }
 
+void arrayToPortIp(char *ip, int *port, int *dist) {
+   char *ipPort = (char*)(dist + 4);
+   strcpy(ip, ipPort);
+   *port = atoi(ipPort + strlen(ipPort) + 1);
+}
+
 int main(int argc, char *argv[])
 { 
    if(argc > 4 || argc < 2) 
@@ -56,7 +62,7 @@ int main(int argc, char *argv[])
    int yf;
    // Initialize Socket
    SocketDatagrama* s = new SocketDatagrama(0);
-   PaqueteDatagrama p(dist, 4 * sizeof(unsigned int), (char*)serverIP.c_str(), serverPort);
+   PaqueteDatagrama p(dist, 10 * sizeof(int), (char*)serverIP.c_str(), serverPort);
    // Send the first message to server
    s->envia(p);
    // printf("Client send a message from: %s, on port: %d\n", p.obtieneDireccion(), 
@@ -65,9 +71,15 @@ int main(int argc, char *argv[])
    // printf("Client has recieved a message from: %s, on port: %d\n", p.obtieneDireccion(), 
    //    htons(p.obtienePuerto()));
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
-   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
+   char chasedIp[16];
+   int chasedPort;
+   arrayToPortIp(chasedIp, &chasedPort, p.obtieneDatos());
    // Cicle of send and recive
    while(x0 != xf || y0 != yf) {
+      printf("(%d, %d) to (%d, %d) of %s on %d\n", x0, y0, xf, yf, chasedIp, chasedPort);
+      if (strcmp(serverIP.c_str(), p.obtieneDireccion()) != 0 || serverPort != p.obtienePuerto()) {
+         break;
+      }
       // Increase the position
       if (x0 < xf) {
          x0 += speed;
@@ -93,11 +105,13 @@ int main(int argc, char *argv[])
       // Send the coords and recive the new Ones
    s->envia(p);
    if (x0==xf && y0==yf) {
+      p.inicializaIp(chasedIp);
+      p.inicializaPuerto(chasedPort);
+      s->envia(p);
       break;
    }
    s->recibe(p);
    arrayToInts(&x0, &y0, &xf, &yf, p.obtieneDatos());
-   printf("Start-x:%d,y:%d End-x:%d,y:%d\n", x0, y0, xf, yf);
 }
 delete s;
 return 0;

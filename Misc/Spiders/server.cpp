@@ -21,7 +21,7 @@
 #include <vector>
 
 
-int NUM_CLIENTS = 4;
+int NUM_CLIENTS = 2;
 
 using namespace std;
 
@@ -45,6 +45,12 @@ bool checkFinished(vector<tuple<string, int, Coord, Coord> > &clients) {
    return finished;
 }
 
+void printClient(PaqueteDatagrama p) {
+   printf("(%d, %d) to (%d, %d) : %s at %d, chases %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
+      p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto(), 
+      (char*)(p.obtieneDatos() + 4), atoi((char*)(p.obtieneDatos() + 4) + strlen((char*)(p.obtieneDatos() + 4)) + 1));
+}
+
 int main(int argc, char *argv[])
 { 
    int port = 6666;
@@ -65,7 +71,7 @@ int main(int argc, char *argv[])
    Coord start = coordinates.front();
    // For Storing the client's addresses and ports
    vector<tuple<string, int, Coord, Coord> > clients;
-   PaqueteDatagrama p(4 * sizeof(int));
+   PaqueteDatagrama p(10 * sizeof(int));
    int dist[4];
    // Wait for all client's message
    for (int i=0; i < NUM_CLIENTS; i++) {
@@ -80,17 +86,31 @@ int main(int argc, char *argv[])
    // Begin the distribution
    gfx_open(800, 600, "Spiders");
    gfx_color(0, 200, 100);
+   char auxIPport[30];
    for (int i=0; i < NUM_CLIENTS; i++) {
       // Unpack the client's address, port and coordinates
       dist[0] = get<2>(clients[i]).x;
       dist[1] = get<2>(clients[i]).y;
       dist[2] = get<3>(clients[i]).x;
       dist[3] = get<3>(clients[i]).y;   
-      p.inicializaDatos(dist);
+      memcpy(auxIPport, (char*)dist, 4 * sizeof(int));
+
+      // Your chased client
+      if (i + 1 == NUM_CLIENTS) {
+         memcpy(auxIPport + 16, (char*)get<0>(clients[0]).c_str(), get<0>(clients[0]).size());
+         auxIPport[get<0>(clients[0]).size() + 16] = '\0';
+         string po = to_string(get<1>(clients[0]));
+         memcpy(auxIPport + get<0>(clients[0]).size() + 17, (char*)po.c_str(), po.size());
+      } else {
+         memcpy(auxIPport + 16, (char*)get<0>(clients[i + 1]).c_str(), get<0>(clients[i + 1]).size() + 1);
+         auxIPport[get<0>(clients[0]).size() + 16] = '\0';
+         string po = to_string(get<1>(clients[i + 1]));
+         memcpy(auxIPport + get<0>(clients[0]).size() + 17, (char*)po.c_str(), po.size());
+      }
       p.inicializaIp((char*)get<0>(clients[i]).c_str());
       p.inicializaPuerto(get<1>(clients[i]));
-      // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", p.obtieneDatos()[0], p.obtieneDatos()[1], 
-      //    p.obtieneDatos()[2], p.obtieneDatos()[3], p.obtieneDireccion(), p.obtienePuerto());
+      p.inicializaDatos((int*)auxIPport);
+      printClient(p);
       gfx_point(p.obtieneDatos()[0], p.obtieneDatos()[1]);
       s->envia(p);
    }
@@ -119,7 +139,7 @@ int main(int argc, char *argv[])
             }
          }
          if(gfx_event_waiting() && gfx_wait() == 'q'){
-               break;
+            break;
          }
          // printf("%d, %d - %d, %d - Assigned to: %s at %d\n", dist[0], dist[1], 
          //    dist[2], dist[3], p.obtieneDireccion(), p.obtienePuerto());
