@@ -13,7 +13,7 @@
         <div style="color:red">
             <html:errors />
         </div>
-        <html:form action="Login" >
+        <html:form action="Login">
             User Name :<html:text name="LoginForm" property="userName" />
             Password  :<html:password name="LoginForm" property="password" />
             <html:submit value="Login" />
