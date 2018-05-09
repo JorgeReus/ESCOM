@@ -1,30 +1,30 @@
 package entity;
 
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  *
  * @author reus
  */
-public class UserType {
-    private int typeId;
-    private String typeName;
-        
-    public UserType() {
-    }
+@Entity
+@Table(name="user_type")
+public class UserType implements Serializable {
+    @Id
+    @Column(name="typeId")
+    private Integer typeId;
     
-    public UserType(int typeId) {
-        this.typeId = typeId;
-    }
+    @Column(name="typeName")
+    private String typeName;
 
-    public UserType(int typeId, String typeName) {
-        this.typeId = typeId;
-        this.typeName = typeName;
-    }
-
-    public int getTypeId() {
+    public Integer getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(int typeId) {
+    public void setTypeId(Integer typeId) {
         this.typeId = typeId;
     }
 
