@@ -40,5 +40,8 @@ made subject to such option by the copyright holder.
 Contributor(s):
 -->
 <hibernate-mapping>
-  <class name="entity.UserType" table="user_type"/>
+    <class name="entity.UserType" table="user_type">
+        <id name="typeId" type="int"/>
+        <property name="typeName" type="string"/>
+    </class>
 </hibernate-mapping>

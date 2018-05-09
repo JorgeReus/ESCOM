@@ -8,6 +8,8 @@ package Test;
 import entity.HibernateUtil;
 import entity.UserType;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 /**
  *
@@ -15,10 +17,14 @@ import org.hibernate.Session;
  */
 public class Test {
     public static void main(String[] args) {
-        Session hibernateSession = HibernateUtil.getSessionFactory().openSession();
-        hibernateSession.beginTransaction();
-        UserType userType = (UserType) hibernateSession.createQuery("FROM user_type WHERE typeId='1'");
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session hibernateSession = sessionFactory.openSession();
+        Transaction t = hibernateSession.beginTransaction();
+        UserType userType = (UserType) hibernateSession.createQuery("FROM UserType WHERE typeId='1'").uniqueResult();
         System.out.println(">>>>>>" + userType.getTypeName());
+        t.commit();
+        hibernateSession.close();
+        sessionFactory.close();
     }
     
 }

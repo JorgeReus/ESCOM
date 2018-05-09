@@ -5,18 +5,27 @@ package entity;
  * @author reus
  */
 public class UserType {
-    private Integer typeID;
+    private int typeId;
     private String typeName;
         
     public UserType() {
     }
-
-    public Integer getTypeID() {
-        return typeID;
+    
+    public UserType(int typeId) {
+        this.typeId = typeId;
     }
 
-    public void setTypeID(Integer typeID) {
-        this.typeID = typeID;
+    public UserType(int typeId, String typeName) {
+        this.typeId = typeId;
+        this.typeName = typeName;
+    }
+
+    public int getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getTypeName() {
