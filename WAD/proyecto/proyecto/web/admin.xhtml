@@ -10,8 +10,8 @@
     </h:head>
     <h:body>
         <f:facet name="last">
-                <h:outputStylesheet library="css" name="style.css"/>      
-            </f:facet>
+            <h:outputStylesheet library="css" name="style.css"/>      
+        </f:facet>
         <h:form>
             <div class="sidenav ui-panel-blank">
                 <p:menu toggleable="true" >
@@ -24,7 +24,7 @@
                 <p:outputLabel value="Hello #{loginMB.getSession().getAttribute('user')}"/>
                 <h:commandButton value="Logout"
                                  action="#{loginMB.logout()}"/>
-                
+
             </div>
         </h:form>
     </h:body>

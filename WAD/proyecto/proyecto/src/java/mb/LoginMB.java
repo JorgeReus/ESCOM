@@ -6,6 +6,8 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import util.BussinessConstants;
 import util.NavigationConstants;
 
@@ -31,7 +33,7 @@ public class LoginMB extends GenericMB implements Serializable {
     }
 
     public String validateLogin() {
-        
+
         String redirect = null;
         User userResult = userDAO.findByUserPassword(user, password);
         if (userResult != null) {
@@ -39,7 +41,7 @@ public class LoginMB extends GenericMB implements Serializable {
             getSession().setAttribute("userId", userResult.getUserId());
             switch (userResult.getUserType().getTypeId()) {
                 case BussinessConstants.USER_TYPE_ADMINISTRATOR:
-                     redirect = NavigationConstants.LOGIN_ADMIN;
+                    redirect = NavigationConstants.LOGIN_ADMIN;
                     break;
                 case BussinessConstants.USER_TYPE_TEACHER:
                     redirect = NavigationConstants.LOGIN_INDEX;
@@ -50,8 +52,9 @@ public class LoginMB extends GenericMB implements Serializable {
                 default:
                     redirect = NavigationConstants.LOGIN_INDEX;
                     break;
-            }   
+            }
         }
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fail to Login", "User or password incorrect"));
         return redirect;
     }
 

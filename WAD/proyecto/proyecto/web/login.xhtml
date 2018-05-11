@@ -12,6 +12,9 @@
             <f:facet name="last">
                 <h:outputStylesheet library="css" name="login.css"/>      
             </f:facet>
+            <p:messages id="messages" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
             <div style="height: 100%">
                 <p:panelGrid id="idPanel" 
                              styleClass="ui-panelgrid-blank login-panel"
@@ -20,17 +23,20 @@
                                    for="user" 
                                    value="Enter user"/>
                     <p:inputText id="user"
-                                 value="#{loginMB.user}"/>
+                                 value="#{loginMB.user}"
+                                 required="true"/>
 
                     <p:outputLabel id="passwordLabel"
                                    for="password" 
                                    value="Enter password"/>
-                    <p:inputText id="password"
-                                 value="#{loginMB.password}"/>
+                    <p:password id="password"
+                                value="#{loginMB.password}"
+                                required="true"/>
                     <p:commandButton action="#{loginMB.validateLogin()}"
                                      id="loginButton"
                                      styleClass="btn-large waves-effect"
-                                     value="Sumbit"/>
+                                     value="Sumbit"
+                                     update="messages"/>
                 </p:panelGrid>
             </div>
         </h:form>       
