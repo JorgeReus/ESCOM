@@ -12,4 +12,5 @@ package util;
 public class NavigationConstants {
     public final static String LOGIN_INDEX = "/login.xhtml";
     public final static String LOGIN_ADMIN = "/admin.xhtml";
+    public final static String MANAGE_USERS = "/usersManage.xhtml";
 }

@@ -4,6 +4,10 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
+import dao.GenericDAO;
+import entity.User;
+import java.util.ArrayList;
+import util.NavigationConstants;
 
 /**
  *
@@ -13,6 +17,8 @@ import javax.annotation.PostConstruct;
 @SessionScoped
 public class UserMB extends GenericMB implements Serializable{
 
+    private ArrayList<User> users;
+       
     public UserMB () {
         super();
     }   
@@ -73,9 +79,28 @@ public class UserMB extends GenericMB implements Serializable{
     }
 
 
+    
     @Override
     public String prepareIndex() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED); 
+        String redirect = null;
+        /*GenericDAO genericDAO = new GenericDAO();
+        users = (ArrayList<User>) genericDAO.findAll(User.class);
+        if (users != null) {
+            users.forEach((userIter) -> {
+                System.out.println("User: " + userIter.getUser() + " Password: " + userIter.getPassword());
+            });
+        }*/
+        redirect = NavigationConstants.MANAGE_USERS;
+        
+        return redirect;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(ArrayList<User> users) {
+        this.users = users;
     }
     
 }

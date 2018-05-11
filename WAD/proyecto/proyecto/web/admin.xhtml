@@ -23,9 +23,20 @@
                 </p:menu>             
             </div>        
             <div class="main">
+                <div id="divMessages">
+                <p:messages id="messages"
+                            styleClass="divMessages"
+                            showDetail="true" 
+                            closable="true"
+                            showIcon="false">
+                    <p:autoUpdate />
+                </p:messages>
+            </div>
                 <p:outputLabel value="Hello #{loginMB.getSession().getAttribute('user')}"/>
                 <h:commandButton value="Logout"
                                  action="#{loginMB.logout()}"/>
+                <h:commandButton value="Manage Users" 
+                                 action="#{userMB.prepareIndex()}"/>
 
             </div>
         </h:form>
