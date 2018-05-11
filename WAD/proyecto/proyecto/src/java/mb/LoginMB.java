@@ -6,7 +6,8 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpSession;
+import util.BussinessConstants;
+import util.NavigationConstants;
 
 /**
  *
@@ -30,19 +31,33 @@ public class LoginMB extends GenericMB implements Serializable {
     }
 
     public String validateLogin() {
-        String redirect = "/login.xhtml";
+        
+        String redirect = null;
         User userResult = userDAO.findByUserPassword(user, password);
         if (userResult != null) {
             getSession().setAttribute("user", userResult.getUser());
             getSession().setAttribute("userId", userResult.getUserId());
-            redirect = "/admin.xhtml";
+            switch (userResult.getUserType().getTypeId()) {
+                case BussinessConstants.USER_TYPE_ADMINISTRATOR:
+                     redirect = NavigationConstants.LOGIN_ADMIN;
+                    break;
+                case BussinessConstants.USER_TYPE_TEACHER:
+                    redirect = NavigationConstants.LOGIN_INDEX;
+                    break;
+                case BussinessConstants.USER_TYPE_STUDENT:
+                    redirect = NavigationConstants.LOGIN_INDEX;
+                    break;
+                default:
+                    redirect = NavigationConstants.LOGIN_INDEX;
+                    break;
+            }   
         }
         return redirect;
     }
 
     public String logout() {
         getSession().invalidate();
-        return "/login.xhtml";
+        return NavigationConstants.LOGIN_INDEX;
     }
 
     public String getUser() {
