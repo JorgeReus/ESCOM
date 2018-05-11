@@ -16,7 +16,9 @@
             <div class="sidenav ui-panel-blank">
                 <p:menu toggleable="true" >
                     <p:submenu label="Users">
-                        <p:menuitem value="Manage Users" icon="fa fa-user" />
+                        <p:menuitem value="Manage Users"
+                                    icon="fa fa-user" 
+                                    action="#{userMB.prepareIndex()}"/>
                     </p:submenu>
                 </p:menu>             
             </div>        
