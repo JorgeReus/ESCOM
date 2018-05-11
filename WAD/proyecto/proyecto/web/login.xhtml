@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Proyecto</title>
+    </h:head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" />
+    <h:body>
+        <h:form id="loginForm">
+            <p:panelGrid id="idPanel" 
+                         columns="2">
+                <p:outputLabel id="userLabel"
+                               for="user" 
+                               value="Enter user"/>
+                <p:inputText id="user"
+                             value="#{loginMB.user}"/>
+                
+                <p:outputLabel id="passwordLabel"
+                               for="password" 
+                               value="Enter password"/>
+                <p:inputText id="password"
+                             value="#{loginMB.password}"/>
+                <p:commandButton action="#{loginMB.validateLogin()}"
+                                 value="Sumbit"/>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,4 +1,4 @@
-package entity;
+package dao;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -15,7 +15,6 @@ public class HibernateUtil {
             serviceRegistryBuilder.applySettings(configuration.getProperties());
             sessionFactory = configuration.buildSessionFactory(serviceRegistryBuilder.build());
         } catch (Throwable ex) {
-            // Log the exception. 
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
         }
