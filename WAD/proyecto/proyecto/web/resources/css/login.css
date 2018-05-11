@@ -2,3 +2,7 @@
     width: 22%;
     margin: 0 auto;
 }
+
+.divMessages {
+    width: max-content;   
+}

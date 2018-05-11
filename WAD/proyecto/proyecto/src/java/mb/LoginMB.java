@@ -36,6 +36,7 @@ public class LoginMB extends GenericMB implements Serializable {
 
         String redirect = null;
         User userResult = userDAO.findByUserPassword(user, password);
+        // If its correct, redirect based on the user type
         if (userResult != null) {
             getSession().setAttribute("user", userResult.getUser());
             getSession().setAttribute("userId", userResult.getUserId());
@@ -53,8 +54,10 @@ public class LoginMB extends GenericMB implements Serializable {
                     redirect = NavigationConstants.LOGIN_INDEX;
                     break;
             }
+        } else {
+            // If not, show a message
+            addMessage("User/Password Incorrect", "messages", FacesMessage.SEVERITY_ERROR);
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Fail to Login", "User or password incorrect"));
         return redirect;
     }
 

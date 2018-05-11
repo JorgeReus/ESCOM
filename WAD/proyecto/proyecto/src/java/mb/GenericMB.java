@@ -13,9 +13,18 @@ public class GenericMB {
 
     protected final static String NOT_SUPPORTED = "Not Supported";
 
-    protected void addMessage(String message, String component, FacesMessage.Severity severity, String... strings) {
-        FacesContext.getCurrentInstance().addMessage(component, new FacesMessage(severity, "Incorrect Username and Passowrd",
-                "Please enter correct username and Password"));
+    protected void addMessage(String message, String component, FacesMessage.Severity severity) {
+        FacesMessage m = new FacesMessage();
+        String summary;
+        m.setSeverity(severity);
+        if (severity.equals(FacesMessage.SEVERITY_ERROR)) {
+            summary = "Error!, ";
+        } else {
+            summary = "Info: ";
+        }
+        m.setSummary(summary);
+        m.setDetail(message);
+        FacesContext.getCurrentInstance().addMessage(component, m);
     }
 
     public HttpSession getSession() {

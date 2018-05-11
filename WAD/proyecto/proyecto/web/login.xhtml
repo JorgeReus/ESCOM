@@ -12,10 +12,16 @@
             <f:facet name="last">
                 <h:outputStylesheet library="css" name="login.css"/>      
             </f:facet>
-            <p:messages id="messages" showDetail="true" closable="true">
-                <p:autoUpdate />
-            </p:messages>
-            <div style="height: 100%">
+            <div id="divMessages">
+                <p:messages id="messages"
+                            styleClass="divMessages"
+                            showDetail="true" 
+                            closable="true"
+                            showIcon="false">
+                    <p:autoUpdate />
+                </p:messages>
+            </div>
+            <div>
                 <p:panelGrid id="idPanel" 
                              styleClass="ui-panelgrid-blank login-panel"
                              columns="2">
