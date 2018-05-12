@@ -35,9 +35,6 @@
                 <p:outputLabel value="Hello #{loginMB.getSession().getAttribute('user')}"/>
                 <h:commandButton value="Logout"
                                  action="#{loginMB.logout()}"/>
-                <h:commandButton value="Manage Users" 
-                                 action="#{userMB.prepareIndex()}"/>
-
             </div>
         </h:form>
     </h:body>

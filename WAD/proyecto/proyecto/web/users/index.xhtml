@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Manage Users</title>
     </h:head>
@@ -18,7 +19,10 @@
                 <p:autoUpdate />
             </p:messages>
         </div>
-        Manage Users
+        <ui:repeat value="#{userMB.users}"
+                   var="userIter">
+            <h:outputText value="#{userIter.user} : #{userIter.password}"/><br/>
+        </ui:repeat>
     </h:body>
 </html>
 

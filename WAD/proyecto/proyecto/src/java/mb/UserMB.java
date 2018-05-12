@@ -18,6 +18,7 @@ import util.NavigationConstants;
 public class UserMB extends GenericMB implements Serializable{
 
     private ArrayList<User> users;
+    private GenericDAO genericDAO;
        
     public UserMB () {
         super();
@@ -25,7 +26,7 @@ public class UserMB extends GenericMB implements Serializable{
     
     @PostConstruct
     public void init() {
-        // Inicializar objetos
+        genericDAO = new GenericDAO();
     }
 
     @Override
@@ -77,21 +78,16 @@ public class UserMB extends GenericMB implements Serializable{
     public String prepareView() {
         throw new UnsupportedOperationException(NOT_SUPPORTED); 
     }
-
-
     
     @Override
     public String prepareIndex() {
-        String redirect = null;
-        /*GenericDAO genericDAO = new GenericDAO();
+        String redirect = NavigationConstants.MANAGE_USERS_INDEX;
         users = (ArrayList<User>) genericDAO.findAll(User.class);
         if (users != null) {
             users.forEach((userIter) -> {
                 System.out.println("User: " + userIter.getUser() + " Password: " + userIter.getPassword());
             });
-        }*/
-        redirect = NavigationConstants.MANAGE_USERS;
-        
+        }       
         return redirect;
     }
 
