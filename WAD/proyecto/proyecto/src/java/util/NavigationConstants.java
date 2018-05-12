@@ -13,4 +13,5 @@ public class NavigationConstants {
     public final static String LOGIN_INDEX = "/login.xhtml";
     public final static String LOGIN_ADMIN = "/admin.xhtml";
     public final static String MANAGE_USERS_INDEX = "/users/index.xhtml";
+    public final static String MANAGE_USERS_ADD = "/users/addUser.xhtml";
 }

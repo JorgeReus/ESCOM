@@ -31,20 +31,33 @@
                     </p:messages>
                 </div>
             </div>
-            <p:dataTable var="userIter" value="#{userMB.users}">
-                <p:column headerText="Id">
-                    <h:outputText value="#{userIter.userId}" />
-                </p:column>
+            <p:panelGrid id="addPanel" 
+                         styleClass="ui-panelgrid-blank login-panel"
+                         columns="1">
+                <p:outputLabel id="userLabel"
+                               for="user" 
+                               value="User name"/>
+                <p:inputText id="user"
+                             value="#{userMB.user.user}"
+                             required="true"/>
 
-                <p:column headerText="User">
-                    <h:outputText value="#{userIter.user}" />
-                </p:column>
-
-                <p:column headerText="User Type">
-                    <h:outputText value="#{userIter.userType.typeName}" />
-                </p:column>
-            </p:dataTable>
-            <p:commandButton value="Add User" action="#{userMB.prepareAdd()}"/>
+                <p:outputLabel id="passwordLabel"
+                               for="password" 
+                               value="Enter password"/>
+                <p:inputText id="password"
+                             value="#{userMB.user.password}"
+                             required="true"/>
+                <p:outputLabel id="typeLabel"
+                               for="type" 
+                               value="Type of User"/>
+                <p:inputText id="type"
+                             value="#{userMB.user.userType.typeId}"
+                             required="true"/>
+                <p:commandButton action="#{userMB.add()}"
+                                 id="addButton"
+                                 value="Add"
+                                 update="messages"/>
+            </p:panelGrid>
         </h:form>
     </h:body>
 </html>
