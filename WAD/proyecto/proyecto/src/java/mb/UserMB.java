@@ -43,7 +43,7 @@ public class UserMB extends GenericMB implements Serializable {
     public String prepareAdd() {
         userTypes = (ArrayList<UserType>) genericDAO.findAll(UserType.class);
         if (userTypes == null || userTypes.isEmpty()) {
-            addMessage("Error!, couldn't load User tyoe information", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Error!, couldn't load User type information", "messages", FacesMessage.SEVERITY_ERROR);
             canProceed = Boolean.FALSE;
         }
         return NavigationConstants.MANAGE_USERS_ADD;
