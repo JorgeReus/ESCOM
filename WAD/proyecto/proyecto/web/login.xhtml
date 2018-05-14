@@ -6,12 +6,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Proyecto</title>
+        <h:outputStylesheet library="css" name="login.css"/>      
+        <h:outputStylesheet library="css" name="materialize.min.css"/>      
+        <h:outputStylesheet library="css" name="style.css"/>   
     </h:head>
     <h:body>
         <h:form id="loginForm">
-            <f:facet name="last">
-                <h:outputStylesheet library="css" name="login.css"/>      
-            </f:facet>
             <div id="divMessages">
                 <p:messages id="messages"
                             styleClass="divMessages"
@@ -21,30 +21,27 @@
                     <p:autoUpdate />
                 </p:messages>
             </div>
-            <div>
-                <p:panelGrid id="idPanel" 
-                             styleClass="ui-panelgrid-blank login-panel"
-                             columns="2">
-                    <p:outputLabel id="userLabel"
-                                   for="user" 
-                                   value="Enter user"/>
-                    <p:inputText id="user"
-                                 value="#{loginMB.user}"
-                                 required="true"/>
-
-                    <p:outputLabel id="passwordLabel"
-                                   for="password" 
-                                   value="Enter password"/>
+            <div id="loginForm">
+                <div class="input-field">
+                    <h:inputText id="username"
+                                 value="#{loginMB.user}"/>
+                    <label for="username">Username</label> 
+                </div>
+                <div class="input-field">
                     <p:password id="password"
-                                value="#{loginMB.password}"
-                                required="true"/>
-                    <p:commandButton action="#{loginMB.validateLogin()}"
+                                value="#{loginMB.password}"/>
+                    <label for="password">Password</label>
+                </div>
+                <div>
+                    <h:commandButton action="#{loginMB.validateLogin()}"
+                                     styleClass="btn-large waves-effect waves-light teal lighten-1"
                                      id="loginButton"
-                                     value="Sumbit"
-                                     update="messages"/>
-                </p:panelGrid>
+                                     value="LogIn"/>       
+                </div>
             </div>
-        </h:form>       
+        </h:form>     
+        <h:outputScript library="js" name="materialize.min.js"/>
+        <h:outputScript library="js" name="init.js"/>
     </h:body>
 </html>
 

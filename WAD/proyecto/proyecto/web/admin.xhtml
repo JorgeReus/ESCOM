@@ -7,34 +7,41 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
-    </h:head>
-    <h:body>
         <f:facet name="last">
             <h:outputStylesheet library="css" name="style.css"/>      
         </f:facet>
+    </h:head>
+    <h:body>
         <h:form>
-            <div class="sidenav ui-panel-blank">
-                <p:menu toggleable="true" >
-                    <p:submenu label="Users">
-                        <p:menuitem value="Manage Users"
-                                    icon="fa fa-user" 
-                                    action="#{userMB.prepareIndex()}"/>
-                    </p:submenu>
-                </p:menu>             
-            </div>        
-            <div class="main">
-                <div id="divMessages">
-                <p:messages id="messages"
-                            styleClass="divMessages"
-                            showDetail="true" 
-                            closable="true"
-                            showIcon="false">
-                    <p:autoUpdate />
-                </p:messages>
-            </div>
-                <p:outputLabel value="Hello #{loginMB.getSession().getAttribute('user')}"/>
-                <h:commandButton value="Logout"
-                                 action="#{loginMB.logout()}"/>
+            <div id="container">
+                <div class="menu">
+                    <p:menu toggleable="true" >
+                        <p:submenu label="Users">
+                            <p:menuitem value="Manage Users"
+                                        icon="fa fa-user" 
+                                        action="#{userMB.prepareIndex()}"/>
+                        </p:submenu>
+                    </p:menu>             
+                </div>        
+                <div class="header">
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    styleClass="divMessages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
+                </div>
+                <div class="content">
+                    <p:outputLabel value="Hello #{loginMB.getSession().getAttribute('user')}"/>
+                    <h:commandButton value="Logout"
+                                     action="#{loginMB.logout()}"/>             
+                </div>
+                <div class="footer">
+                    
+                </div>
             </div>
         </h:form>
     </h:body>
