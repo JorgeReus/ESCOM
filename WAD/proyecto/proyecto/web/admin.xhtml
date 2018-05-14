@@ -11,19 +11,34 @@
             <h:outputStylesheet library="css" name="style.css"/>
             <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'/>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+            <h:outputStylesheet library="css" name="menu.css"/>
+            <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+            <h:outputScript library="js" name="menu.js"/>
         </f:facet>
     </h:head>
     <h:body>
         <h:form>
             <div id="container">
                 <div class="menu">
-                    <p:menu toggleable="true">
-                        <p:submenu label="Users">
-                            <p:menuitem value="Manage Users"
-                                        icon="fa fa-user" 
-                                        action="#{userMB.prepareIndex()}"/>
-                        </p:submenu>
-                    </p:menu>                   
+                    <div id='cssmenu'>
+                        <ul>
+                            <li class='active'><a href='#'><span>Home</span></a></li>
+                            <li class='has-sub'><a href='#'><span>Users</span></a>
+                                <ul>
+                                    <li><h:commandLink action="#{userMB.prepareIndex()}" value="Manage Users"/></li>
+                                    <li><a href='#'><span>Product 2</span></a></li>
+                                    <li class='last'><a href='#'><span>Product 3</span></a></li>
+                                </ul>
+                            </li>
+                            <li class='has-sub'><a href='#'><span>About</span></a>
+                                <ul>
+                                    <li><a href='#'><span>Company</span></a></li>
+                                    <li class='last'><a href='#'><span>Contact</span></a></li>
+                                </ul>
+                            </li>
+                            <li class='last'><a href='#'><span>Contact</span></a></li>
+                        </ul>
+                    </div>  
                 </div>
                 <div class="header">
                     <div id="divMessages">
@@ -46,5 +61,6 @@
                 </div>
             </div>
         </h:form>
+
     </h:body>
 </html>
