@@ -43,7 +43,7 @@ public class UserMB extends GenericMB implements Serializable {
     public String prepareAdd() {
         userTypes = (ArrayList<UserType>) genericDAO.findAll(UserType.class);
         if (userTypes == null || userTypes.isEmpty()) {
-            addMessage("Error!, couldn't load User tyoe information", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Couldn't load User type information", "messages", FacesMessage.SEVERITY_ERROR);
             canProceed = Boolean.FALSE;
         }
         return NavigationConstants.MANAGE_USERS_ADD;
@@ -120,7 +120,7 @@ public class UserMB extends GenericMB implements Serializable {
                 addMessage("Successfully Updated", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndex();
             } else {
-                addMessage("Error!, couln't update the user", "messages", FacesMessage.SEVERITY_ERROR);
+                addMessage("Couldn't update the user", "messages", FacesMessage.SEVERITY_ERROR);
             }
         }
         return redirect;
@@ -131,7 +131,7 @@ public class UserMB extends GenericMB implements Serializable {
         if (genericDAO.delete(user)) {
             addMessage("Successfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
         } else {
-            addMessage("Error!, couln't delete the user", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Couldn't delete the user", "messages", FacesMessage.SEVERITY_ERROR);
         }
         return prepareIndex();
     }
