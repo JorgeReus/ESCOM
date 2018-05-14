@@ -11,7 +11,7 @@
     </h:head>
     <h:body>
         <h:form>
-            <div class="sidenav ui-panel-blank">
+            <div class="ui-panel-blank">
                 <p:menu toggleable="true" >
                     <p:submenu label="Users">
                         <p:menuitem value="Manage Users"
@@ -20,7 +20,7 @@
                     </p:submenu>
                 </p:menu>             
             </div>        
-            <div class="main">
+            <div>
                 <div id="divMessages">
                     <p:messages id="messages"
                                 styleClass="divMessages"
@@ -31,7 +31,10 @@
                     </p:messages>
                 </div>
             </div>
-            <p:dataTable var="userIter" value="#{userMB.users}">
+            <p:dataTable 
+                id="usersTable"
+                var="userIter" 
+                value="#{userMB.users}">
                 <p:column headerText="Id">
                     <h:outputText value="#{userIter.userId}" />
                 </p:column>
@@ -43,8 +46,35 @@
                 <p:column headerText="User Type">
                     <h:outputText value="#{userIter.userType.typeName}" />
                 </p:column>
+                <p:column headerText="Actions">
+                    <p:commandLink action="#{userMB.delete()}"
+                                   update="@form">
+                        <p:confirm header="Delete Confirmation"
+                                   message="Are you sure?" 
+                                   icon="ui-icon-alert" />
+                        <i class="fa fa-remove fa-2x"/> 
+                        <f:setPropertyActionListener value="#{userIter}"
+                                                     target="#{userMB.user}"/>
+                    </p:commandLink> 
+                    <p:spacer width="10px"/>
+                    <p:commandLink action="#{userMB.prepareUpdate()}">
+                        <i class="fa fa-edit fa-2x"/>
+                        <f:setPropertyActionListener value="#{userIter}"
+                                                     target="#{userMB.user}"/>
+                    </p:commandLink>
+                </p:column>
             </p:dataTable>
-            <p:commandButton value="Add User" action="#{userMB.prepareAdd()}"/>
+            <p:commandButton value="Add User" 
+                             icon="fa fa-plus-circle fa-1.5x"
+                             update="usersTable"
+                             action="#{userMB.prepareAdd()}"/>
+
+            <p:confirmDialog global="true" 
+                             showEffect="fade"
+                             hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+            </p:confirmDialog>
         </h:form>
     </h:body>
 </html>

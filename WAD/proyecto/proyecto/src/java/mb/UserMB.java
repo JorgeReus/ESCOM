@@ -6,7 +6,9 @@ import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
 import dao.GenericDAO;
 import entity.User;
+import entity.UserType;
 import java.util.ArrayList;
+import javax.faces.application.FacesMessage;
 import util.NavigationConstants;
 
 /**
@@ -18,8 +20,11 @@ import util.NavigationConstants;
 public class UserMB extends GenericMB implements Serializable {
 
     private ArrayList<User> users;
+    private ArrayList<UserType> userTypes;
     private GenericDAO genericDAO;
+    private Boolean canProceed;
     User user;
+
     public UserMB() {
         super();
     }
@@ -27,74 +32,114 @@ public class UserMB extends GenericMB implements Serializable {
     @PostConstruct
     public void init() {
         genericDAO = new GenericDAO();
+        canProceed = Boolean.TRUE;
+        UserType userType = new UserType();
+        userTypes = new ArrayList<>();
         user = new User();
+        user.setUserType(userType);
     }
 
     @Override
     public String prepareAdd() {
-        String redirect = null;
-        //genericDAO.add(user);
-        redirect = NavigationConstants.MANAGE_USERS_ADD;
-
-        return redirect;
+        userTypes = (ArrayList<UserType>) genericDAO.findAll(UserType.class);
+        if (userTypes == null || userTypes.isEmpty()) {
+            addMessage("Error!, couldn't load User tyoe information", "messages", FacesMessage.SEVERITY_ERROR);
+            canProceed = Boolean.FALSE;
+        }
+        return NavigationConstants.MANAGE_USERS_ADD;
     }
 
     @Override
     protected Boolean validateAdd() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        Boolean isValid = Boolean.TRUE;
+        if (user.getUser().isEmpty()) {
+            addMessage("The User field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        if (user.getPassword().isEmpty()) {
+            addMessage("The password field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        if (user.getUserType().getTypeId() == null) {
+            addMessage("The User Type field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        return isValid;
     }
 
     @Override
     public String add() {
-        String redirect = null;
-  
-        genericDAO.add(user);
-        
-        redirect = NavigationConstants.MANAGE_USERS_INDEX;
-
+        String redirect = prepareAdd();
+        if (validateAdd()) {
+            if (genericDAO.add(user)) {
+                addMessage("Successfully Registered", "messages", FacesMessage.SEVERITY_INFO);
+                redirect = prepareIndex();
+            } else {
+                addMessage("Error!, couln't add the user", "messages", FacesMessage.SEVERITY_ERROR);
+            }
+        }
         return redirect;
     }
 
     @Override
     public String prepareUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        userTypes = (ArrayList<UserType>) genericDAO.findAll(UserType.class);
+        if (userTypes == null || userTypes.isEmpty()) {
+            addMessage("Error!, couldn't load User tyoe information", "messages", FacesMessage.SEVERITY_ERROR);
+            canProceed = Boolean.FALSE;
+        }
+        return NavigationConstants.MANAGE_USERS_EDIT;
     }
 
     @Override
     protected Boolean validateUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        Boolean isValid = Boolean.TRUE;
+        if (user.getUser().isEmpty()) {
+            addMessage("The User field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        if (user.getPassword().isEmpty()) {
+            addMessage("The password field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        if (user.getUserType().getTypeId() == null) {
+            addMessage("The User Type field is required", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
+        return isValid;
     }
 
     @Override
     public String update() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    public String prepareDelete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    protected Boolean validateDelete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        String redirect = prepareUpdate();
+        if (validateAdd()) {
+            if (genericDAO.update(user)) {
+                addMessage("Successfully Updated", "messages", FacesMessage.SEVERITY_INFO);
+                redirect = prepareIndex();
+            } else {
+                addMessage("Error!, couln't update the user", "messages", FacesMessage.SEVERITY_ERROR);
+            }
+        }
+        return redirect;
     }
 
     @Override
     public String delete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    public String prepareView() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        if (genericDAO.delete(user)) {
+            addMessage("Successfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
+        } else {
+            addMessage("Error!, couln't delete the user", "messages", FacesMessage.SEVERITY_ERROR);
+        }
+        return prepareIndex();
     }
 
     @Override
     public String prepareIndex() {
         String redirect = NavigationConstants.MANAGE_USERS_INDEX;
         users = (ArrayList<User>) genericDAO.findAll(User.class);
-
+        user = new User();
+        UserType userType = new UserType();
+        user.setUserType(userType);
         return redirect;
     }
 
@@ -112,6 +157,30 @@ public class UserMB extends GenericMB implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ArrayList<UserType> getUserTypes() {
+        return userTypes;
+    }
+
+    public void setUserTypes(ArrayList<UserType> userTypes) {
+        this.userTypes = userTypes;
+    }
+
+    public GenericDAO getGenericDAO() {
+        return genericDAO;
+    }
+
+    public void setGenericDAO(GenericDAO genericDAO) {
+        this.genericDAO = genericDAO;
+    }
+
+    public Boolean getCanProceed() {
+        return canProceed;
+    }
+
+    public void setCanProceed(Boolean canProceed) {
+        this.canProceed = canProceed;
     }
 
 }

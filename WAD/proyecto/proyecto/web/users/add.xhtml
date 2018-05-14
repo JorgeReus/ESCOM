@@ -33,27 +33,31 @@
             </div>
             <p:panelGrid id="addPanel" 
                          styleClass="ui-panelgrid-blank login-panel"
-                         columns="1">
+                         columns="2">
                 <p:outputLabel id="userLabel"
                                for="user" 
                                value="User name"/>
                 <p:inputText id="user"
-                             value="#{userMB.user.user}"
-                             required="true"/>
+                             value="#{userMB.user.user}"/>
 
                 <p:outputLabel id="passwordLabel"
                                for="password" 
                                value="Enter password"/>
                 <p:inputText id="password"
-                             value="#{userMB.user.password}"
-                             required="true"/>
+                             type="password"
+                             value="#{userMB.user.password}"/>
                 <p:outputLabel id="typeLabel"
                                for="type" 
-                               value="Type of User"/>
-                <p:inputText id="type"
-                             value="#{userMB.user.userType.typeId}"
-                             required="true"/>
+                               value="User type"/>
+                <p:selectOneMenu id="type" 
+                                 value="#{userMB.user.userType.typeId}">
+                    <f:selectItems value="#{userMB.userTypes}" 
+                                   var="userTypeIter"
+                                   itemLabel="#{userTypeIter.typeName}"
+                                   itemValue="#{userTypeIter.typeId}"/>
+                </p:selectOneMenu>
                 <p:commandButton action="#{userMB.add()}"
+                                 rendered="#{userMB.canProceed}"
                                  id="addButton"
                                  value="Add"
                                  update="messages"/>

@@ -46,37 +46,49 @@ public class GenericDAO {
         return objects;
     }
 
-    public void update(Object obj) {
+    public Boolean update(Object obj) {
+        Boolean successful;
         try {
             startOperation();
             session.update(obj);
             tx.commit();
+            successful = Boolean.TRUE;
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
+            successful = Boolean.FALSE;
         }
+        return successful;
     }
 
-    public void delete(Object obj) {
+    public Boolean delete(Object obj) {
+        Boolean successful;
         try {
             startOperation();
             session.delete(obj);
             tx.commit();
+            successful = Boolean.TRUE;
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
+            successful = Boolean.FALSE;
         }
+        return successful;
     }
     
-    public void add(Object obj) {
+    public Boolean add(Object obj) {
+        Boolean successful;
         try {
             startOperation();
             session.save(obj);
             tx.commit();
+            successful = Boolean.TRUE;
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
+            successful = Boolean.FALSE;
         }
+        return successful;
     }
 
     protected void startOperation() throws HibernateException {
