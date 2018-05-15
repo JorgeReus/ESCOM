@@ -21,6 +21,7 @@ public class LoginMB extends GenericMB implements Serializable {
     private UserDAO userDAO;
     private String user;
     private String password;
+    private String home;
 
     public LoginMB() {
         super();
@@ -32,13 +33,13 @@ public class LoginMB extends GenericMB implements Serializable {
     }
 
     public String validateLogin() {
-
         String redirect = null;
         User userResult = userDAO.findByUserPassword(user, password);
         // If its correct, redirect based on the user type
         if (userResult != null) {
             getSession().setAttribute("user", userResult.getUser());
             getSession().setAttribute("userId", userResult.getUserId());
+            getSession().setAttribute("userType", userResult.getUserType().getTypeName());
             switch (userResult.getUserType().getTypeId()) {
                 case BussinessConstants.USER_TYPE_ADMINISTRATOR:
                     redirect = NavigationConstants.LOGIN_ADMIN;
@@ -57,6 +58,7 @@ public class LoginMB extends GenericMB implements Serializable {
             // If not, show a message
             addMessage("User/Password Incorrect", "messages", FacesMessage.SEVERITY_ERROR);
         }
+        home = redirect;
         return redirect;
     }
 
@@ -79,6 +81,10 @@ public class LoginMB extends GenericMB implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+   
+    public String gotoHome() {
+        return home;
     }
 
 }
