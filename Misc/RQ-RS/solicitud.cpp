@@ -27,5 +27,7 @@ char *doOperation (char *IP, int puerto, int operationId, char *arguments) {
 	strcpy(msg.arguments, arguments);
 	PaqueteDatagrama paquete((char *)&msg, sizeof(msg), IP, puerto);
 	socket.envia(paquete);
+	socket.recibe(paquete);
+	return paquete.obtieneDatos();
 }
 
