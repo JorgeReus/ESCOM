@@ -45,10 +45,10 @@ public class LoginMB extends GenericMB implements Serializable {
                     redirect = NavigationConstants.LOGIN_ADMIN;
                     break;
                 case BussinessConstants.USER_TYPE_TEACHER:
-                    redirect = NavigationConstants.LOGIN_INDEX;
+                    redirect = NavigationConstants.LOGIN_TEACHER;
                     break;
                 case BussinessConstants.USER_TYPE_STUDENT:
-                    redirect = NavigationConstants.LOGIN_INDEX;
+                    redirect = NavigationConstants.LOGIN_STUDENT;
                     break;
                 default:
                     redirect = NavigationConstants.LOGIN_INDEX;

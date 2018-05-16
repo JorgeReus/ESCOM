@@ -11,5 +11,6 @@
     
     <mapping class="entity.UserType"/>
     <mapping class="entity.User"/>
+    <mapping class="entity.ActivityType"/>
   </session-factory>
 </hibernate-configuration>
