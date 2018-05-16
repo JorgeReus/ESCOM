@@ -62,6 +62,6 @@
     z-index: -2;
 }
 
-body {
+#loginBody {
     background: #DCDDDF url(img/loginBG.png);
 }

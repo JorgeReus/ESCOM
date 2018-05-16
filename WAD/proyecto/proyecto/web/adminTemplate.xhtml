@@ -13,7 +13,7 @@
             </ui:insert>
         </title>
         <f:facet name="last">   
-            <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'/>
+            <link href="https://fonts.googleapis.com/css?family=Roboto Condensed" rel='stylesheet'/>
             <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
             <h:outputStylesheet library="css" name="login.css"/>      
             <h:outputStylesheet library="css" name="menu.css"/>
@@ -49,13 +49,14 @@
                 <div class="header">
                     <div class="logo">
                         <h:graphicImage value="#{resource['/img/logo.png']}"
-                                        height="130vh"
-                                        width="130vw"/>
+                                        height="140vh"
+                                        width="270vw"/>
                     </div>
                     <div class="userInfo">
                         <h:outputText value="User: #{loginMB.getSession().getAttribute('user')}"/><br/>
                         <h:outputText value="Type: #{loginMB.getSession().getAttribute('userType')}"/><br/>
                         <p:commandButton value="Logout"
+                                         styleClass="ui-priority-primary"
                                          action="#{loginMB.logout()}"/>   
                     </div>
                 </div>
@@ -63,7 +64,8 @@
                     <div class="main"
                          id="mainContentContainer">
                         <ui:insert name="mainContent">
-                            <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" style="font-size: 500%"/>          
+                            <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" 
+                                           style="font-size: 500%"/>          
                         </ui:insert>
                     </div>
                 </div>

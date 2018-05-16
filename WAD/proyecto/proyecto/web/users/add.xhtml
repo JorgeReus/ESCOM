@@ -17,39 +17,45 @@
                         <p:autoUpdate />
                     </p:messages>
                 </div>
-                <p:panelGrid id="addPanel" 
-                             styleClass="ui-panelgrid-blank login-panel"
-                             columnClasses="ui-grid-col-6, ui-grid-col-6" 
-                             columns="2">
-                    <h:outputLabel id="userLabel"
-                                   for="user" 
-                                   value="User name"/>
-                    <h:inputText id="user"
-                                 value="#{userMB.user.user}"/>
+                <p:outputLabel value="Add User" 
+                                           style="font-size: 500%"/> 
+                <div class="panelgrid-container">
+                    <p:panelGrid id="addPanel" 
+                                 styleClass="ui-panelgrid-blank"
+                                 columnClasses="column-style"
+                                 columns="2">
+                        <h:outputLabel id="userLabel"
+                                       for="user" 
+                                       value="User name"/>
+                        <h:inputText id="user"
+                                     value="#{userMB.user.user}"/>
 
-                    <h:outputLabel id="passwordLabel"
-                                   for="password" 
-                                   value="Enter password"/>
-                    <h:inputSecret id="password"
-                                   value="#{userMB.user.password}"/>
-                    <h:outputLabel id="typeLabel"
-                                   for="type" 
-                                   value="User type"/>
-                    <p:selectOneMenu id="type" 
-                                     value="#{userMB.user.userType.typeId}">
-                        <f:selectItems value="#{userMB.userTypes}" 
-                                       var="userTypeIter"
-                                       itemLabel="#{userTypeIter.typeName}"
-                                       itemValue="#{userTypeIter.typeId}"/>
-                    </p:selectOneMenu>
-                    <p:commandButton action="#{userMB.add()}"
-                                     rendered="#{userMB.canProceed}"
-                                     id="addButton"
-                                     value="Add"
-                                     update="@form:messages"/>
-                    <p:commandButton action="#{userMB.prepareIndex()}"
-                                     value="Cancel"/>
-                </p:panelGrid>
+                        <h:outputLabel id="passwordLabel"
+                                       for="password" 
+                                       value="Enter password"/>
+                        <h:inputSecret id="password"
+                                       value="#{userMB.user.password}"/>
+                        <h:outputLabel id="typeLabel"
+                                       for="type" 
+                                       value="User type"/>
+                        <p:selectOneMenu id="type" 
+                                         value="#{userMB.user.userType.typeId}">
+                            <f:selectItems value="#{userMB.userTypes}" 
+                                           var="userTypeIter"
+                                           itemLabel="#{userTypeIter.typeName}"
+                                           itemValue="#{userTypeIter.typeId}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <div class="buttons-right">
+                        <p:commandButton action="#{userMB.add()}"
+                                         rendered="#{userMB.canProceed}"
+                                         id="addButton"
+                                         value="Add"
+                                         update="@form:messages"/>
+                        <p:commandButton action="#{userMB.prepareIndex()}"
+                                         value="Cancel"/>
+                    </div>
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>

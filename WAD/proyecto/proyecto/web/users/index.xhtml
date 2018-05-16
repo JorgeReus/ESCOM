@@ -17,40 +17,46 @@
                         <p:autoUpdate />
                     </p:messages>
                 </div>
-                <p:dataTable 
-                    id="usersTable"
-                    var="userIter" 
-                    value="#{userMB.users}">
-                    <p:column headerText="Id" priority="3">
-                        <h:outputText value="#{userIter.userId}" />
-                    </p:column>
+                <p:outputLabel value="Users Index" 
+                                           style="font-size: 500%"/>  
+                <div class="table-container">
+                    <p:dataTable 
+                        id="usersTable"
+                        var="userIter" 
+                        value="#{userMB.users}">
+                        <p:column headerText="Id" priority="3">
+                            <h:outputText value="#{userIter.userId}" />
+                        </p:column>
 
-                    <p:column headerText="User" priority="2">
-                        <h:outputText value="#{userIter.user}" />
-                    </p:column>
+                        <p:column headerText="User" priority="2">
+                            <h:outputText value="#{userIter.user}" />
+                        </p:column>
 
-                    <p:column headerText="User Type" priority="4">
-                        <h:outputText value="#{userIter.userType.typeName}" />
-                    </p:column>
-                    <p:column headerText="Actions">
-                        <p:commandLink action="#{userMB.delete()}"
-                                       update="@form:usersTable @form:messages">
-                            <f:setPropertyActionListener value="#{userIter}"
-                                                         target="#{userMB.user}"/>
-                            <i class="fa fa-remove fa-2x"/>
-                        </p:commandLink> 
-                        <p:spacer width="10px"/>
-                        <p:commandLink action="#{userMB.prepareUpdate()}">
-                            <i class="fa fa-edit fa-2x"/>
-                            <f:setPropertyActionListener value="#{userIter}"
-                                                         target="#{userMB.user}"/>
-                        </p:commandLink>
-                    </p:column>
-                </p:dataTable>
-                <p:commandButton value="Add User" 
-                                 icon="fa fa-plus-circle fa-1.5x"
-                                 update="usersTable"
-                                 action="#{userMB.prepareAdd()}"/>
+                        <p:column headerText="User Type" priority="4">
+                            <h:outputText value="#{userIter.userType.typeName}" />
+                        </p:column>
+                        <p:column headerText="Actions">
+                            <p:commandLink action="#{userMB.delete()}"
+                                           update="@form:usersTable @form:messages">
+                                <f:setPropertyActionListener value="#{userIter}"
+                                                             target="#{userMB.user}"/>
+                                <i class="fa fa-remove fa-2x"/>
+                            </p:commandLink> 
+                            <p:spacer width="10px"/>
+                            <p:commandLink action="#{userMB.prepareUpdate()}">
+                                <i class="fa fa-edit fa-2x"/>
+                                <f:setPropertyActionListener value="#{userIter}"
+                                                             target="#{userMB.user}"/>
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                    <div class="button-container">
+                        <p:commandButton value="Add User" 
+                                         icon="fa fa-plus-circle"
+                                         update="usersTable"
+                                         action="#{userMB.prepareAdd()}"/>
+                    </div>
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -17,31 +17,38 @@
                         <p:autoUpdate />
                     </p:messages>
                 </div>
-                <p:panelGrid id="addPanel" 
-                             styleClass="ui-panelgrid-blank login-panel"
-                             columns="2">
-                    <p:outputLabel id="userLabel"
-                                   for="user" 
-                                   value="User name"/>
-                    <p:inputText id="user"
-                                 value="#{userMB.user.user}"/>
+                <p:outputLabel value="Update User" 
+                               style="font-size: 500%"/> 
+                <div class="panelgrid-container">
+                    <p:panelGrid id="addPanel" 
+                                 styleClass="ui-panelgrid-blank"
+                                 columnClasses="column-style"
+                                 columns="2">
+                        <p:outputLabel id="userLabel"
+                                       for="user" 
+                                       value="User name"/>
+                        <p:inputText id="user"
+                                     value="#{userMB.user.user}"/>
 
-                    <p:outputLabel id="passwordLabel"
-                                   for="password" 
-                                   value="Enter password"/>
-                    <p:inputText id="password"
-                                 type="password"
-                                 value="#{userMB.user.password}"/>
-                    <p:outputLabel id="typeLabel"
-                                   for="type" 
-                                   value="User type"/>
-                    <p:selectOneMenu id="type" 
-                                     value="#{userMB.user.userType.typeId}">
-                        <f:selectItems value="#{userMB.userTypes}" 
-                                       var="userTypeIter"
-                                       itemLabel="#{userTypeIter.typeName}"
-                                       itemValue="#{userTypeIter.typeId}"/>
-                    </p:selectOneMenu>
+                        <p:outputLabel id="passwordLabel"
+                                       for="password" 
+                                       value="Enter password"/>
+                        <p:inputText id="password"
+                                     type="password"
+                                     value="#{userMB.user.password}"/>
+                        <p:outputLabel id="typeLabel"
+                                       for="type" 
+                                       value="User type"/>
+                        <p:selectOneMenu id="type" 
+                                         value="#{userMB.user.userType.typeId}">
+                            <f:selectItems value="#{userMB.userTypes}" 
+                                           var="userTypeIter"
+                                           itemLabel="#{userTypeIter.typeName}"
+                                           itemValue="#{userTypeIter.typeId}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                </div>
+                <div class="buttons-right">
                     <p:commandButton action="#{userMB.update()}"
                                      rendered="#{userMB.canProceed}"
                                      id="addButton"
@@ -50,7 +57,7 @@
                     <p:commandButton action="#{userMB.prepareIndex()}"
                                      id="cancelButton"
                                      value="Cancel"/>
-                </p:panelGrid>
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>
