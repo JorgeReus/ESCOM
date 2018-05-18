@@ -13,29 +13,26 @@
 #include <unistd.h>
 #include "PaqueteDatagrama.h"
 #include "SocketDatagrama.h"
-#include "Msg.h"
+#include "mensaje.h"
+#include "respuesta.h"
 
 #define PUERTO_LOCAL 7200
 
-SocketDatagrama socketlocal(PUERTO_LOCAL);
-struct mensaje mensajeCS;
-struct mensaje *ap;
+Respuesta::Respuesta (int p1){
+	socketlocal = new SocketDatagrama(PUERTO_LOCAL);
+}
 
-struct mensaje *getRequest(void)
+struct mensaje* Respuesta::getRequest(void)
 {
-	ap = mensajeCS;
 	PaqueteDatagrama p(TAM_MAX_DATA);
-	socketlocal.recibe(p);
-
-	mensajeCS = (struct mensaje*) p.obtieneDatos();
-
+	socketlocal->recibe(p);
+	mensajeCS = (struct mensaje*)p.obtieneDatos();
 	return mensajeCS;
 }
 
 
-void sendReply(char *respuesta, char *ipCliente, int puertoCliente)
+void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
-
-
-
+	PaqueteDatagrama paquete((char *)mensajeCS, sizeof(mensajeCS), ipCliente, puertoCliente);
+	socketlocal->envia(paquete);
 }
