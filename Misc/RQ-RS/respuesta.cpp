@@ -11,15 +11,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include "PaqueteDatagrama.h"
 #include "SocketDatagrama.h"
+#include "PaqueteDatagrama.h"
 #include "mensaje.h"
 #include "respuesta.h"
 
-#define PUERTO_LOCAL 7200
-
 Respuesta::Respuesta (int p1){
-	socketlocal = new SocketDatagrama(PUERTO_LOCAL);
+	socketlocal = new SocketDatagrama(p1);
 }
 
 struct mensaje* Respuesta::getRequest(void)
@@ -33,6 +31,13 @@ struct mensaje* Respuesta::getRequest(void)
 
 void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
-	PaqueteDatagrama paquete((char *)mensajeCS, sizeof(mensajeCS), ipCliente, puertoCliente);
+	struct mensaje msg;
+	msg.messageType = 0;
+	msg.requestId = 1;
+	strcpy(msg.IP, ipCliente);
+	msg.puerto = puertoCliente;	
+	msg.operationId = 0;
+	strcpy(msg.arguments, respuesta);
+	PaqueteDatagrama paquete((char*)&msg, sizeof(msg), ipCliente, puertoCliente);
 	socketlocal->envia(paquete);
 }

@@ -22,7 +22,7 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	msg.requestId = numRQ;
 	numRQ++;
 	strcpy(msg.IP, IP);
-	msg.puerto = puerto;
+	msg.puerto = socketlocal->getPuerto();
 	msg.operationId = operationId;
 	strcpy(msg.arguments, arguments);
 	PaqueteDatagrama paquete((char *)&msg, sizeof(msg), IP, puerto);

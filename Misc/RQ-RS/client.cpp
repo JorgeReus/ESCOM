@@ -22,4 +22,5 @@ int main (int argc, char *argv[]) {
 	}
 	char *ms = cliente.doOperation(ip, SERVER_PORT, operation, args);
 	struct mensaje *msg = (mensaje*)ms;
+	printf("%s\n", msg->arguments);
 }

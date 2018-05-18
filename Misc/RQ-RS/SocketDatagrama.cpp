@@ -23,6 +23,13 @@ SocketDatagrama::~SocketDatagrama() {
    close(s);
 }
 
+int SocketDatagrama::getPuerto() {
+   struct sockaddr_in localAddress;
+   socklen_t addressLength = sizeof(localAddress);
+   getsockname(s, (struct sockaddr*)&localAddress, &addressLength);
+   return (int) ntohs(localAddress.sin_port);
+}
+
 int SocketDatagrama::recibe(PaqueteDatagrama &p) {
    bzero((char *)&direccionForanea, sizeof(direccionForanea));
    char *data = (char *)malloc(p.obtieneLongitud());

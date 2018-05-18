@@ -1,3 +1,4 @@
+#include "SocketDatagrama.h"
 class Respuesta
 {
 public:
