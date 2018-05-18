@@ -3,11 +3,13 @@
 #include "solicitud.h"
 #include "mensaje.h"
 
-
 #define SERVER_PORT 7200
 
 
 int main (int argc, char *argv[]) {
+
+	solicitud cliente;
+
 	char *ip;
 	int operation;
 	char *args;
@@ -18,6 +20,6 @@ int main (int argc, char *argv[]) {
 		operation = atoi(argv[2]);
 		server_ip = argv[3];
 	}
-	char *ms = doOperation(ip, SERVER_PORT, operation, args);
+	char *ms = cliente.doOperation(ip, SERVER_PORT, operation, args);
 	struct mensaje *msg = ();
 }
