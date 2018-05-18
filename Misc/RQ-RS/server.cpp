@@ -1,13 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include "mensaje.h"
 #include "respuesta.h"
 #include <string>
 #include <stack>
 
-
 #define PUERTO_LOCAL 7200
 using namespace std;
+
+void invertString(char *dest, char *src);
 
 int main (int argc, char *argv[]) {
 
@@ -19,20 +21,31 @@ int main (int argc, char *argv[]) {
 	printf("Port: %d\n", msg->puerto);
 	printf("Operation 1d: %d\n", msg->operationId);
 	printf("Arguments: %s\n", msg->arguments);
-	string resp = "Recibido";
-	respuesta.sendReply((char*)resp.c_str(), msg->IP, msg->puerto);
+	
+	char dest[sizeof(msg->arguments)+1];
+	invertString(dest, (char *)msg->arguments);
+	respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+	
 }
 
 void invertString(char *dest, char *src) {
 	stack <string> st;
 	string aux = src;
 	int j = 0;
-	for(int i=0; i < aux.size(); i++) {
-		if(aux[i] == " ") {
-			st.push(aux.)
-			j = i;
-		}
-			
+	char *token;
+	token = strtok(src, " ");
 
+	while(token != NULL)
+	{
+		st.push(token);
+		token = strtok(NULL, " ");
 	}
+
+	while(!st.empty())
+	{
+		strcat(dest, st.top().c_str());
+		strcat(dest, " ");
+		st.pop();
+	}
+
 }
