@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
       printClients(clients);
       p.inicializaDatos(dist);
       s->envia(p);
-      gfx_clear();
+      // gfx_clear();
          usleep(41666); //24 por segundo
       }
       getchar();
