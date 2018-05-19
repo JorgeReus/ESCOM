@@ -17,10 +17,10 @@
                     <h:commandLink action="#{loginMB.gotoHome()}"
                                    value="Home"/>
                 </li>
-                <li class='has-sub'><a href='#'><span>About</span></a>
+                <li class='has-sub'><a href='#'><span>Activities</span></a>
                     <ul>
-                        <li><a href='#'><span>Company</span></a></li>
-                        <li class='last'><a href='#'><span>Contact</span></a></li>
+                        <li class='last'><h:commandLink action="#{activityMB.prepareIndex()}" 
+                                                        value="Manage Activities"/></li>
                     </ul>
                 </li>
                 <li class='last'><a href='#'><span>Contact</span></a></li>
