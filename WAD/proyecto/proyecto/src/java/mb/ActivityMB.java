@@ -83,6 +83,11 @@ public class ActivityMB extends GenericMB implements Serializable{
     public String delete() {
         throw new UnsupportedOperationException(NOT_SUPPORTED); 
     }
+    
+    @Override
+    public String prepareView() {
+        throw new UnsupportedOperationException(NOT_SUPPORTED);  
+    }
 
     public List<Activity> getActivities() {
         return activities;

@@ -1,13 +1,13 @@
--- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for Win32 (AMD64)
+-- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: proyecto
 -- ------------------------------------------------------
--- Server version	10.1.29-MariaDB
+-- Server version	10.1.29-MariaDB-6
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+/*!40101 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -26,9 +26,12 @@ CREATE TABLE `activity` (
   `activityId` int(11) NOT NULL,
   `activityName` varchar(50) NOT NULL,
   `activityType` int(11) NOT NULL,
+  `subjectId` int(11) NOT NULL,
   PRIMARY KEY (`activityId`),
   KEY `activity_type` (`activityType`),
-  CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`activityType`) REFERENCES `activity_type` (`typeId`)
+  KEY `subjectId` (`subjectId`),
+  CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`activityType`) REFERENCES `activity_type` (`typeId`),
+  CONSTRAINT `activity_ibfk_2` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`subjectId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -38,7 +41,7 @@ CREATE TABLE `activity` (
 
 LOCK TABLES `activity` WRITE;
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
-INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1);
+INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1,1);
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,6 +67,30 @@ LOCK TABLES `activity_type` WRITE;
 /*!40000 ALTER TABLE `activity_type` DISABLE KEYS */;
 INSERT INTO `activity_type` VALUES (1,'Texts'),(2,'Images'),(3,'Video'),(4,'Sound');
 /*!40000 ALTER TABLE `activity_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `subject`
+--
+
+DROP TABLE IF EXISTS `subject`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `subject` (
+  `subjectId` int(11) NOT NULL,
+  `subjectName` varchar(100) NOT NULL,
+  PRIMARY KEY (`subjectId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subject`
+--
+
+LOCK TABLES `subject` WRITE;
+/*!40000 ALTER TABLE `subject` DISABLE KEYS */;
+INSERT INTO `subject` VALUES (1,'Make predictions about a story'),(2,'Determine the themes of myths, fables and folktales'),(3,'Identify story elements'),(4,'Vocabulary review: Identify story elements'),(5,'Analize short stories'),(6,'Vocabulary review: Analize short stories'),(7,'Read and understand informational passages'),(8,'Vocabulary review: Read and understand informational passages');
+/*!40000 ALTER TABLE `subject` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -127,4 +154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-18 23:23:49
+-- Dump completed on 2018-05-20  0:57:50
