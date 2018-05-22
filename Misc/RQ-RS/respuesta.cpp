@@ -32,6 +32,7 @@ struct mensaje* Respuesta::getRequest(void)
 void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
 	struct mensaje msg;
+	
 	msg.messageType = 0;
 	msg.requestId = 1;
 	strcpy(msg.IP, ipCliente);
@@ -40,4 +41,10 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 	strcpy(msg.arguments, respuesta);
 	PaqueteDatagrama paquete((char*)&msg, sizeof(msg), ipCliente, puertoCliente);
 	socketlocal->envia(paquete);
+	bzero(respuesta, sizeof(respuesta));
+}
+
+void Respuesta::cleanReply()
+{
+	bzero(mensajeCS, sizeof(mensajeCS));
 }
