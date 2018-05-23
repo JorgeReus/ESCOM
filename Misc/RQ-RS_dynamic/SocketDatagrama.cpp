@@ -30,17 +30,6 @@ int SocketDatagrama::getPuerto() {
    return (int) ntohs(localAddress.sin_port);
 }
 
-char * SocketDatagrama::getIP() {
-   struct sockaddr_in localAddress;
-   char str[INET_ADDRSTRLEN];
-   socklen_t addressLength = sizeof(localAddress);
-   getsockname(s, (struct sockaddr*)&localAddress, &addressLength);
-
-   inet_ntop( AF_INET, &localAddress, str, INET_ADDRSTRLEN);
-
-   return str;
-}
-
 int SocketDatagrama::recibe(PaqueteDatagrama &p) {
    bzero((char *)&direccionForanea, sizeof(direccionForanea));
    char *data = (char *)malloc(p.obtieneLongitud());

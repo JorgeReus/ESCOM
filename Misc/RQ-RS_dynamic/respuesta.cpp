@@ -22,7 +22,7 @@ Respuesta::Respuesta (int p1){
 
 struct mensaje* Respuesta::getRequest(void)
 {
-	PaqueteDatagrama p(sizeof(mensajeCS));
+	PaqueteDatagrama p(sizeof(struct mensaje));
 
 	int bytes = socketlocal->recibe(p);
 
@@ -30,7 +30,7 @@ struct mensaje* Respuesta::getRequest(void)
 
 	strcpy(mensajeCS->IP, p.obtieneDireccion());
 	printf("Direccion cliente: %s\n", p.obtieneDireccion());
-	printf("Tamaño paquete: %s\n", strlen);
+	printf("Tamaño paquete: %u\n", p.obtieneLongitud());
 	return mensajeCS;
 }
 
