@@ -36,7 +36,8 @@ public class SubjectMB extends GenericMB implements Serializable{
     @Override
     public String prepareIndex() {
         subjects = (ArrayList<Subject>)genericDAO.findAll(Subject.class);
-        return NavigationConstants.MANAGE_ACTIVITIES_INDEX;
+        System.out.println("si");
+        return NavigationConstants.MANAGE_SUBJECTS_INDEX;
     }
 
     @Override

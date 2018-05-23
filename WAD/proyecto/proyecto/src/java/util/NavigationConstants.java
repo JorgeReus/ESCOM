@@ -18,4 +18,5 @@ public class NavigationConstants {
     public final static String MANAGE_USERS_ADD = "/users/add.xhtml";
     public final static String MANAGE_USERS_EDIT = "/users/edit.xhtml";
     public final static String MANAGE_ACTIVITIES_INDEX = "/activities/index.xhtml";
+    public final static String MANAGE_SUBJECTS_INDEX = "/subjects/index.xhtml";
 }
