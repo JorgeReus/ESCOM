@@ -25,9 +25,11 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	msg.puerto = socketlocal->getPuerto();
 	msg.operationId = operationId;
 	strcpy(msg.arguments, arguments);
-	PaqueteDatagrama paquete((char *)&msg, sizeof(msg), IP, puerto);
+	PaqueteDatagrama paquete((char *)&msg, sizeof(struct mensaje) - TAM_MAX_DATA + strlen(arguments),
+	 IP, puerto);
 	socketlocal->envia(paquete);
 	socketlocal->recibe(paquete);
+	printf("Tam RESPONSE: %d\n", paquete.obtieneLongitud());
 	return paquete.obtieneDatos();
 }
 

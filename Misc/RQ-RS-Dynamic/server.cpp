@@ -50,5 +50,8 @@ void invertString(char *dest, char *src) {
 		strcat(dest, " ");
 		st.pop();
 	}
+	if (dest[strlen(dest) - 1] == ' ') {
+		dest[strlen(dest) - 1] = '\0';
+	}
 
 }
