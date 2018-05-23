@@ -22,22 +22,15 @@ Respuesta::Respuesta (int p1){
 
 struct mensaje* Respuesta::getRequest(void)
 {
-<<<<<<< HEAD:Misc/RQ-RS_dynamic/respuesta.cpp
 	PaqueteDatagrama p(sizeof(struct mensaje));
 
 	int bytes = socketlocal->recibe(p);
 
-=======
-	PaqueteDatagrama p(sizeof(mensajeCS));
-	socketlocal->recibe(p);
->>>>>>> d004c7f2857e1cf53f124c79889142249396eeee:Misc/RQ-RS-Dynamic/respuesta.cpp
 	mensajeCS = (struct mensaje*)p.obtieneDatos();
+
 	strcpy(mensajeCS->IP, p.obtieneDireccion());
-<<<<<<< HEAD:Misc/RQ-RS_dynamic/respuesta.cpp
 	printf("Direccion cliente: %s\n", p.obtieneDireccion());
 	printf("Tamaño paquete: %u\n", p.obtieneLongitud());
-=======
->>>>>>> d004c7f2857e1cf53f124c79889142249396eeee:Misc/RQ-RS-Dynamic/respuesta.cpp
 	return mensajeCS;
 }
 
@@ -46,7 +39,7 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
 	struct mensaje msg;
 	
-	msg.messageType = 0;
+	msg.messageType = 1;
 	msg.requestId = 1;
 	strcpy(msg.IP, ipCliente);
 	msg.puerto = puertoCliente;	
