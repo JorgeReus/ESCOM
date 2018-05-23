@@ -45,12 +45,10 @@ int SocketDatagrama::recibe(PaqueteDatagrama &p) {
    bzero((char *)&direccionForanea, sizeof(direccionForanea));
    char *data = (char *)malloc(p.obtieneLongitud());
    socklen_t clilen = sizeof(direccionForanea);
-   int tamPaq = recvfrom(s, (char *)data, p.obtieneLongitud(), 0, (struct sockaddr*)&direccionForanea, &clilen);
+   recvfrom(s, (char *)data, p.obtieneLongitud(), 0, (struct sockaddr*)&direccionForanea, &clilen);
    p.inicializaDatos(data);
    p.inicializaIp(inet_ntoa(direccionForanea.sin_addr));
    p.inicializaPuerto(htons(direccionForanea.sin_port));
-
-   return tamPaq;
 }
 
 int SocketDatagrama::envia(PaqueteDatagrama &p) {

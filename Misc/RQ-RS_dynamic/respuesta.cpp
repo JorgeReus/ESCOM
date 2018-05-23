@@ -23,14 +23,9 @@ Respuesta::Respuesta (int p1){
 struct mensaje* Respuesta::getRequest(void)
 {
 	PaqueteDatagrama p(sizeof(mensajeCS));
-
-	int bytes = socketlocal->recibe(p);
-
+	socketlocal->recibe(p);
 	mensajeCS = (struct mensaje*)p.obtieneDatos();
-
 	strcpy(mensajeCS->IP, p.obtieneDireccion());
-	printf("Direccion cliente: %s\n", p.obtieneDireccion());
-	printf("Tamaño paquete: %s\n", strlen);
 	return mensajeCS;
 }
 
@@ -39,7 +34,7 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
 	struct mensaje msg;
 	
-	msg.messageType = 1;
+	msg.messageType = 0;
 	msg.requestId = 1;
 	strcpy(msg.IP, ipCliente);
 	msg.puerto = puertoCliente;	
