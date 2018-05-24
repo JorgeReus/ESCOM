@@ -14,5 +14,8 @@
     <mapping class="entity.ActivityType"/>
     <mapping class="entity.Activity"/>
     <mapping class="entity.Subject"/>
+    <mapping class="entity.ImageCategory"/>
+    <mapping class="entity.ImageType"/>
+    <mapping class="entity.Image"/>
   </session-factory>
 </hibernate-configuration>
