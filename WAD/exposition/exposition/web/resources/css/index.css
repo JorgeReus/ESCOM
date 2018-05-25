@@ -1,0 +1,34 @@
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+    padding: 5vh;
+    grid-gap:5vh;
+}
+
+body {
+    background-color: #fff;
+    animation: random 30s infinite;
+}
+h1 {
+    text-align: center;
+}
+
+@keyframes  random {
+    15% { background-color: #ff6666; } 
+    30% { background-color: #ffff80; } 
+    45% { background-color: #76ba4e; } 
+    60% { background-color: #669999; }
+    75% { background-color: #805085; }
+    100% { background-color: white; }  
+}
+
+.subContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(auto, 10vh);
+    
+}
+
+.gridHeader {
+    background-color: gray;
+}

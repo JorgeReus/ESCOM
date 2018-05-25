@@ -26,6 +26,7 @@ public class ExpositionMB implements Serializable{
     private Date testDate;
     private List<Exposition> items;   
     private Session session;
+    private Date auxDate;
     private Transaction tx;
      
     @PostConstruct
@@ -33,6 +34,7 @@ public class ExpositionMB implements Serializable{
         session = HibernateUtil.getSessionFactory().openSession();
         tx = session.beginTransaction();
         items = (ArrayList<Exposition>)findAll(Exposition.class);
+        auxDate = new Date();
     }
     
     public List findAll(Class clazz) {
@@ -66,6 +68,14 @@ public class ExpositionMB implements Serializable{
 
     public void setItems(List<Exposition> items) {
         this.items = items;
+    }
+
+    public Date getAuxDate() {
+        return auxDate;
+    }
+
+    public void setAuxDate(Date auxDate) {
+        this.auxDate = auxDate;
     }
 
       
