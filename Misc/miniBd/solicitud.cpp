@@ -31,7 +31,6 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	socketlocal->envia(paquete);
 	int tries = 7;
 	while(tries > 0) {
-		printf("Tries: %d\n", tries);
 		int n = socketlocal->recibe(paquete);
 		if(n > 0)
 			break;
@@ -41,7 +40,9 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	}
 	if (tries == 0)
 	{
-		printf("Server nto available\n");
+		printf("Server not available\n");
+		return "NO";
+
 	}
 	return paquete.obtieneDatos();
 }

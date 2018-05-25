@@ -9,10 +9,13 @@
 #define PUERTO_LOCAL 7200
 using namespace std;
 
-void invertString(char *dest, char *src);
+int escritura(int nbd) {
+	return nbd+1;
+}
 
 int main (int argc, char *argv[]) {
 
+	int nbd = 0;
 	Respuesta respuesta(PUERTO_LOCAL);
 	while(1)
 	{
@@ -23,35 +26,21 @@ int main (int argc, char *argv[]) {
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation 1d: %d\n", msg->operationId);
 		printf("Arguments: %s\n", msg->arguments);
-		char dest[sizeof(msg->arguments)];			//String to send :v 
-		invertString(dest, (char *)msg->arguments);
+
+
+		if(msg->operationId == 1) {
+			nbd = nbd;
+		} else if(msg->operationId == 2) {
+			nbd = escritura(nbd);
+		} else {
+			printf("ASCO DE CLIENTE");
+		}
+
+		char dest[4];
+		memcpy(dest,&nbd,4);
+		printf("Arguments to send: %d\n", *dest);
 		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
 		respuesta.cleanReply();
 	}
 	
-}
-
-void invertString(char *dest, char *src) {
-	stack <string> st;
-	string aux = src;
-	int j = 0;
-	char *token;
-	token = strtok(src, " ");
-
-	while(token != NULL)
-	{
-		st.push(token);
-		token = strtok(NULL, " ");
-	}
-
-	while(!st.empty())
-	{
-		strcat(dest, st.top().c_str());
-		strcat(dest, " ");
-		st.pop();
-	}
-	if (dest[strlen(dest) - 1] == ' ') {
-		dest[strlen(dest) - 1] = '\0';
-	}
-
 }

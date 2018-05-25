@@ -11,16 +11,46 @@ int main (int argc, char *argv[]) {
 	Solicitud cliente;
 
 	char *ip;
-	int operation;
-	char *args;
-	if (argc != 4) {
-		printf("Usage: ./client args operation server_ip\n");
+	char *args = "Hola";
+	int num;
+	if (argc != 3) {
+		printf("Usage: ./client num server_ip\n");
+		return 1;
 	} else {
-		args = argv[1];
-		operation = atoi(argv[2]);
-		ip = argv[3];
+		num = atoi(argv[1]);
+		ip = argv[2];
 	}
-	char *ms = cliente.doOperation(ip, SERVER_PORT, operation, args);
-	struct mensaje *msg = (mensaje*)ms;
-	printf("%s\n", msg->arguments);
+	char *ms;
+	struct mensaje *msg;
+	int result = 0;
+	for(int i=0; i < num; i++) {
+		ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
+		if(strcmp(ms, "NO") == 0) {
+			printf("Mátate ALV\n");
+			return 1;
+		}
+		msg = (mensaje*)ms;
+		printf("Read Operation: %d\n", *(msg->arguments));
+		if (*(msg->arguments) != result) {
+			printf("Está mal\n");
+			return 1;
+		} else {
+			result = *(msg->arguments);
+		}
+
+		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
+		if(strcmp(ms, "NO") == 0) {
+			printf("Mátate ALV\n");
+			return 1;
+		}
+		msg = (mensaje*)ms;
+		printf("Write Operation: %d\n", *(msg->arguments));
+		if (*(msg->arguments) != result + 1) {
+			printf("Está mal\n");
+			return 1;
+		} else {
+			result = *(msg->arguments);
+		}
+	}
+	return 0;
 }
