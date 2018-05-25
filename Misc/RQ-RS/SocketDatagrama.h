@@ -19,6 +19,7 @@ public:
 	~SocketDatagrama();
 	int recibe(PaqueteDatagrama & p);
 	int envia(PaqueteDatagrama & p);
+	char *getIP();
 	int getPuerto();
 private:
 	struct sockaddr_in direccionLocal;

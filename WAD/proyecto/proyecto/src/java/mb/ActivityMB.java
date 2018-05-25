@@ -2,6 +2,7 @@ package mb;
 
 import dao.GenericDAO;
 import entity.Activity;
+import entity.Subject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,9 +34,9 @@ public class ActivityMB extends GenericMB implements Serializable{
         genericDAO = new GenericDAO();
     }
     
-    @Override
-    public String prepareIndex() {
-        activities = (ArrayList<Activity>)genericDAO.findAll(Activity.class);
+    public String prepareIndexBySubject(Subject subjectRef) {
+        System.out.println(">>>>>>>>" + subjectRef.getSubjectId());
+//        activities = (ArrayList<Activity>)genericDAO.findAll(Activity.class);
         return NavigationConstants.MANAGE_ACTIVITIES_INDEX;
     }
 

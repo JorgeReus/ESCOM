@@ -12,8 +12,8 @@ import org.hibernate.Transaction;
  */
 public class GenericDAO {
 
-    private Session session;
-    private Transaction tx;
+    protected Session session;
+    protected Transaction tx;
 
     public GenericDAO() {
 

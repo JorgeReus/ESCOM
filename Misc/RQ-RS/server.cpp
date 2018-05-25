@@ -14,17 +14,20 @@ void invertString(char *dest, char *src);
 int main (int argc, char *argv[]) {
 
 	Respuesta respuesta(PUERTO_LOCAL);
-	struct mensaje *msg = respuesta.getRequest();
-	printf("Tipo: %d\n", msg->messageType);
-	printf("Request id: %d\n", msg->requestId);
-	printf("IP: %s\n", msg->IP);
-	printf("Port: %d\n", msg->puerto);
-	printf("Operation 1d: %d\n", msg->operationId);
-	printf("Arguments: %s\n", msg->arguments);
-	
-	char dest[sizeof(msg->arguments)+1];
-	invertString(dest, (char *)msg->arguments);
-	respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+	while(1)
+	{
+		struct mensaje *msg = respuesta.getRequest();
+		printf("Tipo: %d\n", msg->messageType);
+		printf("Request id: %d\n", msg->requestId);
+		printf("IP: %s\n", msg->IP);
+		printf("Port: %d\n", msg->puerto);
+		printf("Operation 1d: %d\n", msg->operationId);
+		printf("Arguments: %s\n", msg->arguments);
+		char dest[sizeof(msg->arguments)];			//String to send :v 
+		invertString(dest, (char *)msg->arguments);
+		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+		respuesta.cleanReply();
+	}
 	
 }
 

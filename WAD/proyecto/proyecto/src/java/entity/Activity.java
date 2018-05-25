@@ -16,19 +16,20 @@ import javax.persistence.Table;
  * @author reus
  */
 @Entity
-@Table(name="activity")
+@Table(name = "activity")
 public class Activity implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name="activityId")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "activityId")
     private Integer activityId;
-    
-    @Column(name="activityName")
+
+    @Column(name = "activityName")
     private String activityName;
-    
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "activityType")
-    private ActivityType activityType;
+    @JoinColumn(name = "subjectId")
+    private Subject subject;
 
     public Integer getActivityId() {
         return activityId;
@@ -46,15 +47,12 @@ public class Activity implements Serializable {
         this.activityName = activityName;
     }
 
-    public ActivityType getActivityType() {
-        return activityType;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setActivityType(ActivityType activityType) {
-        this.activityType = activityType;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 
-   
-    
-    
 }

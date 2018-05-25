@@ -22,9 +22,10 @@ Respuesta::Respuesta (int p1){
 
 struct mensaje* Respuesta::getRequest(void)
 {
-	PaqueteDatagrama p(TAM_MAX_DATA);
+	PaqueteDatagrama p(sizeof(mensajeCS));
 	socketlocal->recibe(p);
 	mensajeCS = (struct mensaje*)p.obtieneDatos();
+	strcpy(mensajeCS->IP, p.obtieneDireccion());
 	return mensajeCS;
 }
 
@@ -32,6 +33,7 @@ struct mensaje* Respuesta::getRequest(void)
 void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 {
 	struct mensaje msg;
+	
 	msg.messageType = 0;
 	msg.requestId = 1;
 	strcpy(msg.IP, ipCliente);
@@ -39,5 +41,12 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 	msg.operationId = 0;
 	strcpy(msg.arguments, respuesta);
 	PaqueteDatagrama paquete((char*)&msg, sizeof(msg), ipCliente, puertoCliente);
+
 	socketlocal->envia(paquete);
+	bzero(respuesta, sizeof(respuesta));
+}
+
+void Respuesta::cleanReply()
+{
+	bzero(mensajeCS, sizeof(mensajeCS));
 }

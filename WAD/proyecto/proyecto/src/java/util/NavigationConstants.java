@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package util;
 
 /**
@@ -18,4 +13,5 @@ public class NavigationConstants {
     public final static String MANAGE_USERS_ADD = "/users/add.xhtml";
     public final static String MANAGE_USERS_EDIT = "/users/edit.xhtml";
     public final static String MANAGE_ACTIVITIES_INDEX = "/activities/index.xhtml";
+    public final static String MANAGE_SUBJECTS_INDEX = "/subjects/index.xhtml";
 }
