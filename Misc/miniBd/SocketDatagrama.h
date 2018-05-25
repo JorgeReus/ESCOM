@@ -11,6 +11,7 @@
 #include <arpa/inet.h>
 #include <stdlib.h>
 #include "PaqueteDatagrama.h"
+#include <sys/time.h>
 
 
 class SocketDatagrama{
@@ -21,10 +22,12 @@ public:
 	int envia(PaqueteDatagrama & p);
 	char *getIP();
 	int getPuerto();
+	int recibeTimeout(PaqueteDatagrama & p, time_t segundos, suseconds_t microsegundos);
 private:
 	struct sockaddr_in direccionLocal;
 	struct sockaddr_in direccionForanea;
     int s;
+    struct timeval timeout;
 };
 
 #endif

@@ -25,9 +25,24 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	msg.puerto = socketlocal->getPuerto();
 	msg.operationId = operationId;
 	strcpy(msg.arguments, arguments);
-	PaqueteDatagrama paquete((char *)&msg, sizeof(msg), IP, puerto);
+	PaqueteDatagrama paquete((char *)&msg, sizeof(struct mensaje) - TAM_MAX_DATA + strlen(arguments),
+		IP, puerto);
+	socketlocal->recibeTimeout(paquete, 1, 20000);
 	socketlocal->envia(paquete);
-	socketlocal->recibe(paquete);
+	int tries = 7;
+	while(tries > 0) {
+		printf("Tries: %d\n", tries);
+		int n = socketlocal->recibe(paquete);
+		if(n > 0)
+			break;
+		else {
+			tries--;
+		}
+	}
+	if (tries == 0)
+	{
+		printf("Server nto available\n");
+	}
 	return paquete.obtieneDatos();
 }
 
