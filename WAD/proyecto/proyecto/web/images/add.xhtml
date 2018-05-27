@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="mainContent">
+            <h:form enctype="multipart/form-data">      
+                <div id="divMessages">
+                    <p:messages id="messages"
+                                showDetail="true" 
+                                closable="true"
+                                showIcon="false">
+                        <p:autoUpdate />
+                    </p:messages>
+                </div>
+                <p:outputLabel value="Add image" 
+                               style="font-size: 500%"/> 
+                <div class="panelgrid-container">
+                    <p:panelGrid id="addPanel" 
+                                 styleClass="ui-panelgrid-blank"
+                                 columnClasses="ui-grid-col-2, ui-grid-col-10"
+                                 columns="2">
+                        <h:outputLabel id="imageLabel"
+                                       for="image" 
+                                       value="Image file"/>
+                        <p:fileUpload id="image"
+                                      fileUploadListener="#{imageMB.handleFileUpload}"/>
+
+                        <h:outputLabel id="nameLabel"
+                                       for="name" 
+                                       value="Enter name"/>
+                        <h:inputText id="name"
+                                     value="#{imageMB.realImage.imageName}"/>
+                        <h:outputLabel id="typeLabel"
+                                       for="type" 
+                                       value="Image type"/>
+                        <p:selectOneMenu id="type" 
+                                         value="#{imageMB.realImage.imageType.typeId}">
+                            <f:selectItems value="#{imageMB.imageTypes}" 
+                                           var="imageTypeIter"
+                                           itemLabel="#{imageTypeIter.typeName}"
+                                           itemValue="#{imageTypeIter.typeId}"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel id="categoryLabel"
+                                       for="category" 
+                                       value="image category"/>
+                        <p:selectOneMenu id="category" 
+                                         value="#{imageMB.realImage.imageCategory.categoryId}">
+                            <f:selectItems value="#{imageMB.imageCategories}" 
+                                           var="imagecategoryIter"
+                                           itemLabel="#{imagecategoryIter.categoryName}"
+                                           itemValue="#{imagecategoryIter.categoryId}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <div class="buttons-right">
+                        <p:commandButton action="#{imageMB.add()}"
+                                         id="addButton"
+                                         ajax="false"
+                                         value="Add"
+                                         update="@form:messages"/>
+                        <p:commandButton action="#{imageMB.prepareIndex()}"
+                                         value="Cancel"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

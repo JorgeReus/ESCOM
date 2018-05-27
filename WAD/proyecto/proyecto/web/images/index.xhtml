@@ -7,6 +7,19 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="menuItems">
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{imageMB.prepareIndex()}" 
+                                                    value="Manage Images"/></li>
+                </ul>
+            </li>
+            <li class='last'><a href='#'><span>Contact</span></a></li>
+        </ui:define>
         <ui:define name="mainContent">
             <h:form id="imagesForm">    
                 <div id="divMessages">
@@ -37,22 +50,23 @@
                         </p:column>
 
                         <p:column headerText="Actions">
-                            <p:commandLink action="#{userMB.delete()}"
+                            <p:commandLink action="#{imageMB.delete()}"
                                            update="@form:imagesTable @form:messages">
                                 <f:setPropertyActionListener value="#{imageIter}"
-                                                             target="#{userMB.user}"/>
+                                                             target="#{imageMB.realImage}"/>
                                 <i class="fa fa-remove fa-2x"/>
                             </p:commandLink> 
                             <p:spacer width="10px"/>
-                            <p:commandLink action="#{userMB.prepareUpdate()}">
+                            <p:commandLink action="#{imageMB.prepareUpdate()}">
                                 <i class="fa fa-edit fa-2x"/>
                                 <f:setPropertyActionListener value="#{imageIter}"
-                                                             target="#{imageMB.image}"/>
+                                                             target="#{imageMB.realImage}"/>
                             </p:commandLink>
                         </p:column>
                     </p:dataTable>
                     <div class="button-container">
-                        <p:commandButton value="Add User" 
+                        <p:commandButton value="Add Image"
+                                         action="#{imageMB.prepareAdd()}"
                                          icon="fa fa-plus-circle"
                                          update="imagesTable"/>
                     </div>
