@@ -37,8 +37,8 @@
                         id="imagesTable"
                         var="imageIter" 
                         value="#{imageMB.images}">
-                        <p:column headerText="Id" priority="3">
-                            <h:outputText value="#{imageIter.imageId}" />
+                        <p:column headerText="Name" priority="3">
+                            <h:outputText value="#{imageIter.imageName}" />
                         </p:column>
 
                         <p:column headerText="Image" priority="2">
@@ -57,11 +57,6 @@
                                 <i class="fa fa-remove fa-2x"/>
                             </p:commandLink> 
                             <p:spacer width="10px"/>
-                            <p:commandLink action="#{imageMB.prepareUpdate()}">
-                                <i class="fa fa-edit fa-2x"/>
-                                <f:setPropertyActionListener value="#{imageIter}"
-                                                             target="#{imageMB.realImage}"/>
-                            </p:commandLink>
                         </p:column>
                     </p:dataTable>
                     <div class="button-container">

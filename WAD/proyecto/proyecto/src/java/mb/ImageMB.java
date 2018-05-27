@@ -108,26 +108,12 @@ public class ImageMB extends GenericMB implements Serializable {
                 addMessage("Succesfully added image", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndex();
             } else {
-                addMessage("Ca't Upload Image", "messages", FacesMessage.SEVERITY_ERROR);
+                addMessage("Can't Upload Image", "messages", FacesMessage.SEVERITY_ERROR);
             }
-        } 
+        }
         return redirect;
     }
 
-    @Override
-    public String prepareUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    protected Boolean validateUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    public String update() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
 
     @Override
     public String delete() {
@@ -143,11 +129,6 @@ public class ImageMB extends GenericMB implements Serializable {
             addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
         }
         return prepareIndex();
-    }
-
-    @Override
-    public String prepareView() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
     public List<Image> getImages() {
