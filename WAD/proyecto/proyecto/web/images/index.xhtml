@@ -37,6 +37,10 @@
                         id="imagesTable"
                         var="imageIter" 
                         value="#{imageMB.images}">
+                        <p:column headerText="Category" priority="3">
+                            <h:outputText value="#{imageIter.imageCategory.categoryName}" />
+                        </p:column>
+                        
                         <p:column headerText="Name" priority="3">
                             <h:outputText value="#{imageIter.imageName}" />
                         </p:column>
