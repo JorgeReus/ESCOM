@@ -6,9 +6,8 @@
 package dao;
 
 import entity.User;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 /**
  *
@@ -29,11 +28,14 @@ public class UserDAO extends GenericDAO{
             u = (User) session.createQuery(FIND_BY_USER_PASSWORD)
                     .setParameter("userParam", user)
                     .setParameter("passwordParam", password).uniqueResult();
+            Hibernate.initialize(u.getUserType());
             tx.commit();
         } catch (HibernateException e){
             tx.rollback();
             System.err.println(e);
             u = null;
+        } finally {
+            session.close();
         }
         return u;
     }
