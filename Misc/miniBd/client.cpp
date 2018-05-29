@@ -11,7 +11,7 @@ int main (int argc, char *argv[]) {
 	Solicitud cliente;
 
 	char *ip;
-	char *args = "Hola";
+	char *args = "Este es un mensaje de prueba      ";
 	int num;
 	if (argc != 3) {
 		printf("Usage: ./client num server_ip\n");
@@ -30,6 +30,7 @@ int main (int argc, char *argv[]) {
 			return 1;
 		}
 		msg = (struct mensaje*)ms;
+		
 		printf("\n\nNueva op\nRead Operation: %d\n", atoi(msg->arguments));
 		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
 		if(strcmp(ms, "NO") == 0) {
