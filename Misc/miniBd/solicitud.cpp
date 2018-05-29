@@ -38,8 +38,7 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 			tries--;
 		}
 	}
-	if (tries == 0)
-	{
+	if (tries == 0){
 		printf("Server not available\n");
 		return "NO";
 

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <sstream>
+#include <cstring>
 #include "mensaje.h"
 #include "respuesta.h"
 #include <string>
@@ -24,7 +26,7 @@ int main (int argc, char *argv[]) {
 		printf("Request id: %d\n", msg->requestId);
 		printf("IP: %s\n", msg->IP);
 		printf("Port: %d\n", msg->puerto);
-		printf("Operation 1d: %d\n", msg->operationId);
+		printf("Operation id: %d\n", msg->operationId);
 		printf("Arguments: %s\n", msg->arguments);
 
 
@@ -36,9 +38,14 @@ int main (int argc, char *argv[]) {
 			printf("ASCO DE CLIENTE");
 		}
 
-		char dest[4];
-		memcpy(dest,&nbd,4);
-		printf("Arguments to send: %d\n", *dest);
+		//char dest[4];
+		//memcpy(dest,&nbd,4);
+		stringstream strs;
+		strs << nbd;
+		string temp_str = strs.str();
+		char const *dest = temp_str.c_str();
+		printf("Nbd: %d\n", nbd);
+		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
 		respuesta.cleanReply();
 	}

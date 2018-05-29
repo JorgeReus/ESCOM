@@ -29,28 +29,15 @@ int main (int argc, char *argv[]) {
 			printf("Mátate ALV\n");
 			return 1;
 		}
-		msg = (mensaje*)ms;
-		printf("Read Operation: %d\n", *(msg->arguments));
-		if (*(msg->arguments) != result) {
-			printf("Está mal\n");
-			return 1;
-		} else {
-			result = *(msg->arguments);
-		}
-
+		msg = (struct mensaje*)ms;
+		printf("Read Operation: %d\n", atoi(msg->arguments));
 		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
 		if(strcmp(ms, "NO") == 0) {
 			printf("Mátate ALV\n");
 			return 1;
 		}
-		msg = (mensaje*)ms;
-		printf("Write Operation: %d\n", *(msg->arguments));
-		if (*(msg->arguments) != result + 1) {
-			printf("Está mal\n");
-			return 1;
-		} else {
-			result = *(msg->arguments);
-		}
+		msg = (struct mensaje*)ms;
+		printf("Write Operation: %d\n", atoi(msg->arguments));
 	}
 	return 0;
 }

@@ -41,7 +41,7 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 	strcpy(msg.arguments, respuesta);
 	PaqueteDatagrama paquete((char*)&msg, sizeof(struct mensaje) - TAM_MAX_DATA + strlen(msg.arguments), 
 		ipCliente, puertoCliente);
-	printf("Tam REQUEST: %d\n", paquete.obtieneLongitud());
+	//printf("Tam REQUEST: %d\n", paquete.obtieneLongitud());
 	socketlocal->envia(paquete);
 	bzero(respuesta, sizeof(respuesta));
 }
