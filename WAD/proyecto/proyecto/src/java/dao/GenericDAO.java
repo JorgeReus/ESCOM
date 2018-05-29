@@ -28,7 +28,7 @@ public class GenericDAO {
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-        }
+        } 
         return obj;
     }
 
@@ -42,7 +42,7 @@ public class GenericDAO {
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-        }
+        } 
         return objects;
     }
 
@@ -57,7 +57,7 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-        }
+        } 
         return successful;
     }
 
@@ -72,7 +72,7 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-        }
+        } 
         return successful;
     }
     
@@ -87,7 +87,7 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-        }
+        } 
         return successful;
     }
 

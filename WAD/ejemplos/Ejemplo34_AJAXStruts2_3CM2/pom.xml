@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.apache.struts</groupId>
-    <artifactId>Ejemplo34_AJAXStruts2_3CM2</artifactId>
+    <artifactId>Ejemplo35_AJAXStruts2_3CM2</artifactId>
     <version>2.2.3</version>
     <packaging>war</packaging>
 
-    <name>Ejemplo34_AJAXStruts2_3CM2</name>
+    <name>Ejemplo35_AJAXStruts2_3CM2</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
