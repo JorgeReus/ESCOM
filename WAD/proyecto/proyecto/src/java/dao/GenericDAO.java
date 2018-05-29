@@ -39,13 +39,9 @@ public class GenericDAO {
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-<<<<<<< HEAD
-        } 
-=======
         } finally {
             session.close();
         }
->>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return obj;
     }
 
@@ -71,13 +67,9 @@ public class GenericDAO {
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-<<<<<<< HEAD
-        } 
-=======
         } finally {
             session.close();
         }
->>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return objects;
     }
 
@@ -92,13 +84,9 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-<<<<<<< HEAD
-        } 
-=======
         } finally {
             session.close();
         }
->>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
 
@@ -113,13 +101,9 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-<<<<<<< HEAD
-        } 
-=======
         } finally {
             session.close();
         }
->>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
 
@@ -134,13 +118,9 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
-<<<<<<< HEAD
-        } 
-=======
         } finally {
             session.close();
         }
->>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
 
