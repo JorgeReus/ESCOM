@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>
+            <ui:insert name="title">
+                Admin
+            </ui:insert>
+        </title>
+        <f:facet name="last">   
+            <link href="https://fonts.googleapis.com/css?family=Roboto Condensed" rel='stylesheet'/>
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+            <h:outputStylesheet library="css" name="login.css"/>      
+            <h:outputStylesheet library="css" name="menu.css"/>
+            <h:outputStylesheet library="css" name="style.css"/>
+        </f:facet>
+    </h:head>
+    <h:body>
+        <h:form>
+            <div id="container">
+                <div class="menu">
+                    <div id='cssmenu'>
+                        <ul>
+                            <ui:insert name="menuItems">
+                                <li class='active'><h:commandLink action="#{loginMB.gotoHome()}"
+                                                                  value="Home"/></li>
+                                <li class='has-sub'><a href='#'><span>Users</span></a>
+                                    <ul>
+                                        <li class='last'><h:commandLink action="#{userMB.prepareIndex()}" 
+                                                                        value="Manage Users"/></li>
+                                    </ul>
+                                </li>
+                                <li class='has-sub'><a href='#'><span>About</span></a>
+                                    <ul>
+                                        <li><a href='#'><span>Company</span></a></li>
+                                        <li class='last'><a href='#'><span>Contact</span></a></li>
+                                    </ul>
+                                </li>
+                                <li class='last'><a href='#'><span>Contact</span></a></li>
+                            </ui:insert>
+                        </ul>
+                    </div>  
+                </div>
+                <div class="header">
+                    <div class="logo">
+                        <h:graphicImage value="#{resource['/img/logo.png']}"
+                                        height="140vh"
+                                        width="270vw"/>
+                    </div>
+                    <div class="userInfo">
+                        <h:outputText value="User: #{loginMB.getSession().getAttribute('user')}"/><br/>
+                        <h:outputText value="Type: #{loginMB.getSession().getAttribute('userType')}"/><br/>
+                        <p:commandButton value="Logout"
+                                         styleClass="ui-priority-primary"
+                                         action="#{loginMB.logout()}"/>   
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="main"
+                         id="mainContentContainer">
+                        <ui:insert name="mainContent">
+                            <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" 
+                                           style="font-size: 500%"/>          
+                        </ui:insert>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+        <h:outputScript library="js" name="menu.js"/>
+    </h:body>
+</html>

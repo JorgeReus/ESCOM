@@ -1,6 +1,9 @@
 package dao;
 
+import entity.Image;
+import entity.User;
 import java.util.List;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -24,11 +27,25 @@ public class GenericDAO {
         try {
             startOperation();
             obj = session.load(clazz, id);
+            if (clazz.equals(Image.class)) {
+                Image img = (Image) obj;
+                Hibernate.initialize(img.getImageType());
+                Hibernate.initialize(img.getImageCategory());
+            } else if (clazz.equals(User.class)) {
+                User u = (User) obj;
+                Hibernate.initialize(u.getUserType());
+            }
             tx.commit();
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
+<<<<<<< HEAD
         } 
+=======
+        } finally {
+            session.close();
+        }
+>>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return obj;
     }
 
@@ -38,11 +55,29 @@ public class GenericDAO {
             startOperation();
             Query query = session.createQuery("from " + clazz.getName());
             objects = query.list();
+            if (clazz.equals(Image.class)) {
+                for (Object object : objects) {
+                    Image img = (Image) object;
+                    Hibernate.initialize(img.getImageType());
+                    Hibernate.initialize(img.getImageCategory());
+                }
+            } else if (clazz.equals(User.class)) {
+                for (Object object : objects) {
+                    User u = (User) object;
+                    Hibernate.initialize(u.getUserType());
+                }
+            }
             tx.commit();
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
+<<<<<<< HEAD
         } 
+=======
+        } finally {
+            session.close();
+        }
+>>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return objects;
     }
 
@@ -57,7 +92,13 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
+<<<<<<< HEAD
         } 
+=======
+        } finally {
+            session.close();
+        }
+>>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
 
@@ -72,10 +113,16 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
+<<<<<<< HEAD
         } 
+=======
+        } finally {
+            session.close();
+        }
+>>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
-    
+
     public Boolean add(Object obj) {
         Boolean successful;
         try {
@@ -87,7 +134,13 @@ public class GenericDAO {
             tx.rollback();
             System.err.println(e);
             successful = Boolean.FALSE;
+<<<<<<< HEAD
         } 
+=======
+        } finally {
+            session.close();
+        }
+>>>>>>> 89f94aaca4a50e3492ff66bce2427f2025ce9512
         return successful;
     }
 
