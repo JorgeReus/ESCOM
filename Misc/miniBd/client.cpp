@@ -30,7 +30,7 @@ int main (int argc, char *argv[]) {
 			return 1;
 		}
 		msg = (struct mensaje*)ms;
-		printf("Read Operation: %d\n", atoi(msg->arguments));
+		printf("\n\nNueva op\nRead Operation: %d\n", atoi(msg->arguments));
 		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
 		if(strcmp(ms, "NO") == 0) {
 			printf("Mátate ALV\n");

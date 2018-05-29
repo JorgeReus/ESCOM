@@ -19,16 +19,16 @@ int main (int argc, char *argv[]) {
 
 	int nbd = 0;
 	Respuesta respuesta(PUERTO_LOCAL);
+	struct mensaje *msg;
 	while(1)
 	{
-		struct mensaje *msg = respuesta.getRequest();
+		msg = respuesta.getRequest();
 		printf("Tipo: %d\n", msg->messageType);
 		printf("Request id: %d\n", msg->requestId);
 		printf("IP: %s\n", msg->IP);
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation id: %d\n", msg->operationId);
 		printf("Arguments: %s\n", msg->arguments);
-
 
 		if(msg->operationId == 1) {
 			nbd = nbd;
@@ -38,14 +38,19 @@ int main (int argc, char *argv[]) {
 			printf("ASCO DE CLIENTE");
 		}
 
-		//char dest[4];
-		//memcpy(dest,&nbd,4);
-		stringstream strs;
+		/*stringstream strs;
 		strs << nbd;
 		string temp_str = strs.str();
-		char const *dest = temp_str.c_str();
+		char const *dest = temp_str.c_str();*/
+
+		char dest[10];
+		sprintf(dest, "%d", nbd);
+
+
 		printf("Nbd: %d\n", nbd);
+		printf("dest: %s\n", dest);
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
+
 		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
 		respuesta.cleanReply();
 	}

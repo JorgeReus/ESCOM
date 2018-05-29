@@ -25,7 +25,6 @@ struct mensaje* Respuesta::getRequest(void)
 	PaqueteDatagrama p(sizeof(struct mensaje));
 	unsigned int bytes = socketlocal->recibe(p);
 	mensajeCS = (struct mensaje*)p.obtieneDatos();
-	strcpy(mensajeCS->IP, p.obtieneDireccion());
 	return mensajeCS;
 }
 

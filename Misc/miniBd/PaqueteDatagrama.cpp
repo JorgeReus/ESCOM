@@ -6,18 +6,18 @@
 #include <stdlib.h>
 
 PaqueteDatagrama::PaqueteDatagrama(char *data, unsigned int len, char *address, int port) {
-	datos = (char *)malloc(len*sizeof(char));
+	datos = (char *)calloc(len,sizeof(char));
 	memcpy(datos, data, len);
 	longitud = len;
-	ip = (char *)malloc(strlen(address));
+	ip = (char *)calloc(strlen(address),sizeof(char));
 	memcpy(ip, address, strlen(address));
 	puerto = port;
 }
 
 PaqueteDatagrama::PaqueteDatagrama(unsigned int len) {
-	datos = (char *)malloc(len*sizeof(char));
+	datos = (char *)calloc(len,sizeof(char));
 	longitud = len;
-	ip = (char *)malloc(16);
+	ip = (char *)calloc(16,sizeof(char));
 	ip[0] = '\0';
 	puerto = 0;
 }
@@ -47,11 +47,11 @@ void PaqueteDatagrama::inicializaPuerto(int port) {
 } 
 
 void PaqueteDatagrama::inicializaIp(char *address) {
-	ip = (char *)malloc(strlen(address));
+	ip = (char *)calloc(strlen(address),sizeof(char));
 	memcpy(ip, address, strlen(address));
 }
 
 void PaqueteDatagrama::inicializaDatos(char *data) {
-	datos = (char *)malloc(sizeof(char)*longitud);
+	datos = (char *)calloc(sizeof(char),longitud);
 	memcpy(datos, data, longitud);
 }
