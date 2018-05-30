@@ -24,21 +24,22 @@ int main (int argc, char *argv[]) {
 	struct mensaje *msg;
 	int result = 0;
 	for(int i=0; i < num; i++) {
+		printf("\n\nNueva op\n");
 		ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
 		if(strcmp(ms, "NO") == 0) {
 			printf("Mátate ALV\n");
 			return 1;
 		}
 		msg = (struct mensaje*)ms;
-		
-		printf("\n\nNueva op\nRead Operation: %d\n", atoi(msg->arguments));
+		printf("Read: %d\n", atoi(msg->arguments));
+
 		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
 		if(strcmp(ms, "NO") == 0) {
 			printf("Mátate ALV\n");
 			return 1;
 		}
 		msg = (struct mensaje*)ms;
-		printf("Write Operation: %d\n", atoi(msg->arguments));
+		printf("Write: %d\n", atoi(msg->arguments));
 	}
 	return 0;
 }

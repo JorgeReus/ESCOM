@@ -38,20 +38,16 @@ int main (int argc, char *argv[]) {
 			printf("ASCO DE CLIENTE");
 		}
 
-		/*stringstream strs;
-		strs << nbd;
-		string temp_str = strs.str();
-		char const *dest = temp_str.c_str();*/
-
 		char dest[10];
 		sprintf(dest, "%d", nbd);
 
-
 		printf("Nbd: %d\n", nbd);
 		printf("dest: %s\n", dest);
-		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 
 		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+
+		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
+
 		respuesta.cleanReply();
 	}
 	
