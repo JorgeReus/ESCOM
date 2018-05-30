@@ -46,6 +46,13 @@ int main (int argc, char *argv[]) {
 
 		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
 
+		printf("Res Tipo: %d\n", msg->messageType);
+		printf("Res Request id: %d\n", msg->requestId);
+		printf("Res IP: %s\n", msg->IP);
+		printf("Res Port: %d\n", msg->puerto);
+		printf("Res Operation id: %d\n", msg->operationId);
+		printf("Res Arguments: %s\n", msg->arguments);
+
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 
 		respuesta.cleanReply();
