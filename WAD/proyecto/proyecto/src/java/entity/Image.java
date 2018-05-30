@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -42,6 +44,9 @@ public class Image implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imageType")
     private ImageType imageType;
+    
+    @ManyToMany(mappedBy = "images")
+    private List<Activity> activities;
 
     public Integer getImageId() {
         return imageId;
@@ -89,6 +94,14 @@ public class Image implements Serializable {
 
     public void setImageType(ImageType imageType) {
         this.imageType = imageType;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
 
     

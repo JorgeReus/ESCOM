@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -31,6 +34,17 @@ public class Activity implements Serializable {
     @JoinColumn(name = "subjectId")
     private Subject subject;
 
+    @ManyToMany
+    @JoinTable(
+            name = "activity_image",
+            joinColumns = {
+                @JoinColumn(name = "activityId")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "imageId")}
+    )
+    
+    private List<Image> images;
+    
     public Integer getActivityId() {
         return activityId;
     }
@@ -55,4 +69,13 @@ public class Activity implements Serializable {
         this.subject = subject;
     }
 
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    
 }

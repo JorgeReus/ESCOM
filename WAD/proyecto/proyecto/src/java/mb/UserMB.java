@@ -5,6 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
 import dao.GenericDAO;
+import entity.Image;
 import entity.User;
 import entity.UserType;
 import java.util.ArrayList;

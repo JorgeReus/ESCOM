@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Activity;
 import entity.Image;
 import entity.User;
 import java.util.List;
@@ -31,9 +32,13 @@ public class GenericDAO {
                 Image img = (Image) obj;
                 Hibernate.initialize(img.getImageType());
                 Hibernate.initialize(img.getImageCategory());
+                Hibernate.initialize(img.getActivities());
             } else if (clazz.equals(User.class)) {
                 User u = (User) obj;
                 Hibernate.initialize(u.getUserType());
+            } else if (clazz.equals(Activity.class)) {
+                Activity a = (Activity) obj;
+                Hibernate.initialize(a.getImages());
             }
             tx.commit();
         } catch (HibernateException e) {

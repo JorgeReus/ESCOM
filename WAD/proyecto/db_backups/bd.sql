@@ -27,6 +27,8 @@ CREATE TABLE `activity` (
   `activityName` varchar(50) NOT NULL,
   `activityType` int(11) NOT NULL,
   `subjectId` int(11) NOT NULL,
+  `questionImageid` int(11) DEFAULT NULL,
+  `answerImageid` int(11) DEFAULT NULL,
   PRIMARY KEY (`activityId`),
   KEY `activity_type` (`activityType`),
   KEY `subjectId` (`subjectId`),
@@ -41,8 +43,35 @@ CREATE TABLE `activity` (
 
 LOCK TABLES `activity` WRITE;
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
-INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1,1);
+INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1,1,NULL,NULL);
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `activity_image`
+--
+
+DROP TABLE IF EXISTS `activity_image`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `activity_image` (
+  `activityId` int(11) NOT NULL,
+  `imageId` int(11) NOT NULL,
+  PRIMARY KEY (`activityId`,`imageId`),
+  KEY `imageId` (`imageId`),
+  CONSTRAINT `activity_image_ibfk_1` FOREIGN KEY (`activityId`) REFERENCES `activity` (`activityId`),
+  CONSTRAINT `activity_image_ibfk_2` FOREIGN KEY (`imageId`) REFERENCES `image` (`imageId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `activity_image`
+--
+
+LOCK TABLES `activity_image` WRITE;
+/*!40000 ALTER TABLE `activity_image` DISABLE KEYS */;
+INSERT INTO `activity_image` VALUES (1,2),(1,3);
+/*!40000 ALTER TABLE `activity_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -234,4 +263,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-28  8:23:49
+-- Dump completed on 2018-05-30  1:08:09
