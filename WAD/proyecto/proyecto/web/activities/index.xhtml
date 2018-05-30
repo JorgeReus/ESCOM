@@ -11,18 +11,24 @@
             Manage Activities
         </ui:define>
         <ui:define name="menuItems">
-                <li class='active'>
-                    <h:commandLink action="#{loginMB.gotoHome()}"
-                                   value="Home"/>
-                </li>
-                <li class='has-sub'><a href='#'><span>Activities</span></a>
-                    <ul>
-                        <li class='last'><h:commandLink action="#{activityMB.prepareIndex()}" 
-                                                        value="Manage Activities"/></li>
-                    </ul>
-                </li>
-                <li class='last'><a href='#'><span>Contact</span></a></li>
-            </ui:define>
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink value="Manage Images"
+                                                    action="#{imageMB.prepareIndex()}"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Activities</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(1)}" 
+                                                    value="Manage Activities"/></li>
+                </ul>
+            </li>
+            <li class='last'><a href='#'><span>Contact</span></a></li>
+        </ui:define>
         <ui:define name="mainContent">
             <h:form id="activitiesFrom">    
                 <div id="divMessages">
@@ -34,26 +40,23 @@
                     </p:messages>
                 </div>
                 <p:outputLabel value="Activities Index" 
-                                           style="font-size: 500%"/>  
+                               style="font-size: 500%"/>  
                 <div class="table-container">
                     <p:dataTable 
                         id="activitiesTable"
                         var="activityIter" 
                         value="#{activityMB.activities}">
-                        <p:column headerText="Activity Id" priority="3">
-                            <h:outputText value="#{activityIter.activityId}" />
-                        </p:column>
 
                         <p:column headerText="Activity Name" priority="2">
                             <h:outputText value="#{activityIter.activityName}" />
                         </p:column>
 
-                        <p:column headerText="Activity Type" priority="4">
-                            <h:outputText value="#{activityIter.activityType.typeName}" />
+                        <p:column headerText="Subject" priority="4">
+                            <h:outputText value="#{activityIter.subject.subjectName}" />
                         </p:column>
                         <p:column headerText="Actions">
                             <p:commandLink 
-                                           update="@form:activitiesTable @form:messages">
+                                update="@form:activitiesTable @form:messages">
                                 <f:setPropertyActionListener value="#{activityIter}"
                                                              target="#{activityMB.activity}"/>
                                 <i class="fa fa-remove fa-2x"/>
