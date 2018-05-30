@@ -20,8 +20,9 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	struct mensaje msg;
 	msg.messageType = RQ; // Request
 	msg.requestId = numRQ;
-	numRQ++;
+	printf("Num RQ: %d\n", numRQ);
 	strcpy(msg.IP, IP);
+	numRQ++;
 	msg.puerto = socketlocal->getPuerto();
 	msg.operationId = operationId;
 	strcpy(msg.arguments, arguments);
@@ -35,6 +36,7 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 		if(n > 0)
 			break;
 		else {
+			socketlocal->envia(paquete);
 			tries--;
 		}
 	}
