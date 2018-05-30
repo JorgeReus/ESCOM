@@ -52,6 +52,6 @@ void PaqueteDatagrama::inicializaIp(char *address) {
 }
 
 void PaqueteDatagrama::inicializaDatos(char *data) {
-	datos = (char *)calloc(sizeof(char),longitud);
+	datos = (char *)calloc(longitud,sizeof(char));
 	memcpy(datos, data, longitud);
 }
