@@ -33,9 +33,9 @@ int main (int argc, char *argv[]) {
 		}
 		msg = (struct mensaje*)ms;
 		if(atoi(msg->arguments) == nbdLocal) {
-			printf("Read\n>>>>El servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+			printf("Read\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 		} else {
-			printf("Error de lectura\n>>>>El servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+			printf("Error de lectura\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 			return 1;
 		}
 
@@ -47,9 +47,9 @@ int main (int argc, char *argv[]) {
 		}
 		msg = (struct mensaje*)ms;
 		if(atoi(msg->arguments) == nbdLocal) {
-			printf("Write\n>>>>El servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+			printf("Write\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 		} else {
-			printf("Error de escritura\n>>>>El servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+			printf("Error de escritura\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 			return 1;
 		}
 		printf("------Fin de op------\n");
