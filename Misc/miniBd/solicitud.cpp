@@ -26,7 +26,7 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	msg.puerto = socketlocal->getPuerto();
 	msg.operationId = operationId;
 	strcpy(msg.arguments, arguments);
-	PaqueteDatagrama paquete((char *)&msg, sizeof(struct mensaje) - TAM_MAX_DATA + strlen(arguments),
+	PaqueteDatagrama paquete((char *)&msg,TAM_MAX_DATA,
 		IP, puerto);
 	socketlocal->recibeTimeout(paquete, 1, 20000);
 	socketlocal->envia(paquete);

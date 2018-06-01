@@ -40,7 +40,7 @@ void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
 	msg.puerto = puertoCliente;	
 	msg.operationId = 0;
 	strcpy(msg.arguments, respuesta);
-	PaqueteDatagrama paquete((char*)&msg, sizeof(struct mensaje) - TAM_MAX_DATA + strlen(msg.arguments), 
+	PaqueteDatagrama paquete((char*)&msg,TAM_MAX_DATA, 
 		ipCliente, puertoCliente);
 	socketlocal->envia(paquete);
 	bzero(respuesta, sizeof(respuesta));
