@@ -44,7 +44,7 @@ int main (int argc, char *argv[]) {
 		printf("Nbd: %d\n", nbd);
 		printf("dest: %s\n", dest);
 
-		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+		respuesta.sendReply((char*)dest, msg->IP, msg->puerto, msg->requestId);
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 
 		respuesta.cleanReply();
