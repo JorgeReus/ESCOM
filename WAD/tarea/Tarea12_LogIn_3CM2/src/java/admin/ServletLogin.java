@@ -46,7 +46,7 @@ public class ServletLogin extends HttpServlet {
             ResultSet rs;
             Connection con = null;
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/login", "root", "root");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/login", "root", "");
             s = con.createStatement();
             rs = s.executeQuery("SELECT pass FROM login WHERE id='" + id + "'");
             while (rs.next()) {

@@ -22,7 +22,7 @@ public class LoginBean {
             ResultSet rs;
             Connection con = null;
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/login", "root", "");
+            con = DriverManager.getConnection("jdbc:mysql://localhost/users", "root", "");
             s = con.createStatement();
             rs = s.executeQuery("SELECT * FROM users");
             while (rs.next()) {
