@@ -1,13 +1,13 @@
--- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.29-MariaDB, for Win32 (AMD64)
 --
 -- Host: localhost    Database: proyecto
 -- ------------------------------------------------------
--- Server version	10.1.29-MariaDB-6
+-- Server version	10.1.29-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,18 +23,16 @@ DROP TABLE IF EXISTS `activity`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `activity` (
-  `activityId` int(11) NOT NULL,
+  `activityId` int(11) NOT NULL AUTO_INCREMENT,
   `activityName` varchar(50) NOT NULL,
   `activityType` int(11) NOT NULL,
   `subjectId` int(11) NOT NULL,
-  `questionImageid` int(11) DEFAULT NULL,
-  `answerImageid` int(11) DEFAULT NULL,
   PRIMARY KEY (`activityId`),
   KEY `activity_type` (`activityType`),
   KEY `subjectId` (`subjectId`),
   CONSTRAINT `activity_ibfk_1` FOREIGN KEY (`activityType`) REFERENCES `activity_type` (`typeId`),
   CONSTRAINT `activity_ibfk_2` FOREIGN KEY (`subjectId`) REFERENCES `subject` (`subjectId`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +41,7 @@ CREATE TABLE `activity` (
 
 LOCK TABLES `activity` WRITE;
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
-INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1,1,NULL,NULL);
+INSERT INTO `activity` VALUES (1,'Reading Comprehension 1',1,1),(2,'Select all red fuits',2,1),(5,'Select Oranges',2,1);
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,8 +57,8 @@ CREATE TABLE `activity_image` (
   `imageId` int(11) NOT NULL,
   PRIMARY KEY (`activityId`,`imageId`),
   KEY `imageId` (`imageId`),
-  CONSTRAINT `activity_image_ibfk_1` FOREIGN KEY (`activityId`) REFERENCES `activity` (`activityId`),
-  CONSTRAINT `activity_image_ibfk_2` FOREIGN KEY (`imageId`) REFERENCES `image` (`imageId`)
+  CONSTRAINT `activity_image_ibfk_2` FOREIGN KEY (`imageId`) REFERENCES `image` (`imageId`),
+  CONSTRAINT `activity_image_ibfk_3` FOREIGN KEY (`activityId`) REFERENCES `activity` (`activityId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,7 +68,7 @@ CREATE TABLE `activity_image` (
 
 LOCK TABLES `activity_image` WRITE;
 /*!40000 ALTER TABLE `activity_image` DISABLE KEYS */;
-INSERT INTO `activity_image` VALUES (1,2),(1,3);
+INSERT INTO `activity_image` VALUES (1,2),(1,3),(2,2),(2,3),(2,4),(5,5);
 /*!40000 ALTER TABLE `activity_image` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +115,7 @@ CREATE TABLE `image` (
   KEY `imageType` (`imageType`),
   CONSTRAINT `image_ibfk_1` FOREIGN KEY (`imageCategory`) REFERENCES `image_category` (`categoryId`),
   CONSTRAINT `image_ibfk_2` FOREIGN KEY (`imageType`) REFERENCES `image_type` (`typeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,7 +239,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`userId`),
   KEY `typeId` (`typeId`),
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`typeId`) REFERENCES `user_type` (`typeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,4 +261,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-30  1:08:09
+-- Dump completed on 2018-06-03 23:41:41
