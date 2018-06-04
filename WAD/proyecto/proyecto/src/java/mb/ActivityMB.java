@@ -3,7 +3,9 @@ package mb;
 import dao.ActivityDAO;
 import dao.GenericDAO;
 import entity.Activity;
+import entity.ActivityType;
 import entity.Image;
+import entity.Subject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -12,6 +14,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.event.DragDropEvent;
@@ -30,6 +33,8 @@ public class ActivityMB extends GenericMB implements Serializable {
     private List<Activity> activities;
     private List<Image> images;
     private List<Image> selectedImages;
+    private List<Subject> subjects;
+    private List<ActivityType> activityTypes;
     private Activity activity;
     private GenericDAO genericDAO;
     private ActivityDAO activityDAO;
@@ -46,11 +51,18 @@ public class ActivityMB extends GenericMB implements Serializable {
         activityDAO = new ActivityDAO();
         images = new ArrayList<>();
         selectedImages = new ArrayList<>();
+        subjects = new ArrayList<>();
+        activityTypes = new ArrayList<>();
     }
 
     public String prepareIndexBySubject(Integer idSubject) {
+        images = new ArrayList<>();
+        selectedImages = new ArrayList<>();
+        activity = new Activity();
         // Se tiene que cambiar por tema
+        subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
         activities = (ArrayList<Activity>) activityDAO.findBySubjectId(idSubject);
+        activityTypes = (ArrayList<ActivityType>) genericDAO.findAll(ActivityType.class);
         return NavigationConstants.MANAGE_ACTIVITIES_INDEX;
     }
 
@@ -59,7 +71,7 @@ public class ActivityMB extends GenericMB implements Serializable {
         images = (ArrayList<Image>) genericDAO.findAll(Image.class);
         return NavigationConstants.MANAGE_ACTIVITIES_ADD;
     }
-    
+
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -73,8 +85,8 @@ public class ActivityMB extends GenericMB implements Serializable {
             return new DefaultStreamedContent(new ByteArrayInputStream(realImage.getImage()));
         }
     }
-    
-    public void onCarDrop(DragDropEvent ddEvent) {
+
+    public void onImageDrop(DragDropEvent ddEvent) {
         selectedImages.add(((Image) ddEvent.getData()));
     }
 
@@ -85,7 +97,23 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     @Override
     public String add() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD;
+        if (selectedImages.isEmpty()) {
+            addMessage("Select one image at least", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (activity.getActivityName() == null || activity.getActivityName().isEmpty())  {
+            addMessage("Activity Name is a required field", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (activity.getActivityType().getTypeId() == null) {
+            addMessage("Activity Type is a required field", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (activity.getSubject().getSubjectId() == null){
+            addMessage("Subject is a required field", "messages", FacesMessage.SEVERITY_ERROR);
+        } else {
+            activity.setImages(selectedImages);
+            if (genericDAO.add(activity)) {
+                addMessage("Succesfully add Activity", "messages", FacesMessage.SEVERITY_INFO);
+                redirect = prepareIndexBySubject(1);
+            } 
+        }
+        return redirect;
     }
 
     @Override
@@ -109,13 +137,13 @@ public class ActivityMB extends GenericMB implements Serializable {
     }
 
     @Override
-    protected Boolean validateDelete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
     public String delete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
+        if (genericDAO.delete(activity)) {
+            addMessage("Succesfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
+        } else {
+            addMessage("Couldn't not delete activity " + activity.getActivityName(), "messages", FacesMessage.SEVERITY_ERROR);
+        }
+        return prepareIndexBySubject(1);
     }
 
     @Override
@@ -155,6 +183,21 @@ public class ActivityMB extends GenericMB implements Serializable {
         this.selectedImages = selectedImages;
     }
 
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
+    }
+
+    public List<ActivityType> getActivityTypes() {
+        return activityTypes;
+    }
+
+    public void setActivityTypes(List<ActivityType> activityTypes) {
+        this.activityTypes = activityTypes;
+    }
     
     
 }

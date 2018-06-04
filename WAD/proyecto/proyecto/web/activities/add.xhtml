@@ -29,6 +29,9 @@
             </li>
             <li class='last'><a href='#'><span>Contact</span></a></li>
         </ui:define>
+        <ui:define name="facet-last">
+            <h:outputStylesheet library="css" name="activity.css"/>
+        </ui:define>
         <ui:define name="mainContent">
             <script type="text/javascript">
                 function handleDrop(event, ui) {
@@ -37,54 +40,95 @@
                     image.fadeOut('fast');
                 }
             </script>
-            <h:form id="activitiesFrom">    
-                <div id="divMessages">
-                    <p:messages id="messages"
-                                showDetail="true" 
-                                closable="true"
-                                showIcon="false">
-                        <p:autoUpdate />
-                    </p:messages>
+            <h:form id="activitiesFrom">  
+                <div id="title">
+                    <p:outputLabel value="Add Activities" 
+                                   style="font-size: 500%"/>  
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
                 </div>
-                <p:outputLabel value="Activities Add" 
-                               style="font-size: 500%"/>  
-                <p:fieldset id="availableImagesFieldSet" legend="AvailableImages">
-                    <p:dataGrid id="availableImages" var="image" value="#{activityMB.images}" columns="1">
-                        <p:panel id="imagePnl" header="#{image.imageName}" style="text-align:center">
-                            <h:panelGrid columns="1" style="width:100%">
-                                <p:graphicImage value="#{imageMB.image}"
-                                                width="100px"
-                                                height="100px">
-                                    <f:param name="imageId" value="#{image.imageId}" />
-                                </p:graphicImage>
-                            </h:panelGrid>
-                        </p:panel>
+                <p:panelGrid id="attribPanel" 
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="ui-grid-col-2, ui-grid-col-1" 
+                             columns="2" 
+                             layout="grid">
+                    <p:outputLabel value="Activity Name"/>
+                    <p:inputText value="#{activityMB.activity.activityName}"/>
+                    <p:outputLabel value="Subject"/>
+                    <p:selectOneMenu value="#{activityMB.activity.subject.subjectId}">
+                        <f:selectItems value="#{activityMB.subjects}"
+                                       var="subjectIter" 
+                                       itemLabel="#{subjectIter.subjectName}"
+                                       itemValue="#{subjectIter.subjectId}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel value="Activity Type"/>
+                    <p:selectOneMenu value="#{activityMB.activity.activityType.typeId}">
+                        <f:selectItems value="#{activityMB.activityTypes}"
+                                       var="activityTypeIter" 
+                                       itemLabel="#{activityTypeIter.typeName}"
+                                       itemValue="#{activityTypeIter.typeId}"/>
+                    </p:selectOneMenu>
 
-                        <p:draggable for="imagePnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
-                    </p:dataGrid>
-                </p:fieldset>
+                </p:panelGrid>
+                <div id="dnd-images">
+                    <p:outputLabel value="Available Images"
+                                   style="font-size: 200%"/>
+                    <div id="all-images">
+                        <p:fieldset id="availableImagesFieldSet" >
+                            <p:dataGrid id="availableImages" var="image" value="#{activityMB.images}" columns="1">
+                                <p:panel id="imagePnl" header="#{image.imageName}" style="text-align:center">
+                                    <h:panelGrid columns="1" style="width:100%">
+                                        <p:graphicImage value="#{imageMB.image}"
+                                                        width="100px"
+                                                        height="100px">
+                                            <f:param name="imageId" value="#{image.imageId}" />
+                                        </p:graphicImage>
+                                    </h:panelGrid>
+                                </p:panel>
 
-                <p:fieldset id="selectedImages" legend="Selected Images" style="margin-top:20px">
-                    <p:outputPanel id="dropArea">
-                        <h:outputText value="!!!Drop here!!!" rendered="#{empty activityMB.selectedImages}" style="font-size:24px;" />
-                        <p:dataTable id="selectedImagesTable" var="selectedImage" 
-                                     value="#{activityMB.selectedImages}" 
-                                     rendered="#{not empty activityMB.selectedImages}">
-                            <p:column headerText="Id">
-                                <h:outputText value="#{selectedImage.imageId}" />
-                            </p:column>
+                                <p:draggable for="imagePnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                            </p:dataGrid>
+                        </p:fieldset>
+                    </div>
+                    <p:outputLabel value="Selected Images"
+                                   style="font-size: 200%"/>
+                    <div id="main-body">
+                        <p:fieldset id="selectedImages" style="margin-top:20px">
+                            <p:outputPanel id="dropArea">
+                                <h:outputText value="!!!Drop here!!!" rendered="#{empty activityMB.selectedImages}" style="font-size:24px;" />
 
-
-                            <p:column headerText="Name">
-                                <h:outputText value="#{selectedImage.imageName}" />
-                            </p:column>
-                        </p:dataTable>
-                    </p:outputPanel>
-                </p:fieldset>
-
-                <p:droppable for="selectedImages" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableImages" onDrop="handleDrop">
-                    <p:ajax listener="#{activityMB.onCarDrop}" update="dropArea availableImages" />
-                </p:droppable>
+                                <p:dataGrid id="selectedImagesTable" var="selectedImage" value="#{activityMB.selectedImages}" columns="3"
+                                            rendered="#{not empty activityMB.selectedImages}">
+                                    <p:panel id="selectedImagePnl" header="#{selectedImage.imageName}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <p:graphicImage value="#{imageMB.image}"
+                                                            width="100px"
+                                                            height="100px">
+                                                <f:param name="imageId" value="#{selectedImage.imageId}" />
+                                            </p:graphicImage>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                    <p:draggable for="selectedImagePnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                                </p:dataGrid>
+                            </p:outputPanel>
+                        </p:fieldset>
+                        <p:droppable for="selectedImages" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableImages" onDrop="handleDrop">
+                            <p:ajax listener="#{activityMB.onImageDrop}" update="dropArea availableImages" />
+                        </p:droppable>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <p:commandButton value="Save Activity" 
+                                     icon="fa fa-plus-circle"
+                                     update="activitiesFrom:messages"
+                                     action="#{activityMB.add()}"/>
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>

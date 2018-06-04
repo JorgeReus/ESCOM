@@ -1,0 +1,23 @@
+#dnd-images {
+    display: grid;
+    grid-template-columns: 2fr 7fr;
+    grid-template-areas:
+        "t t"
+        "a mb"
+        "a mb"; 
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 50vh;
+}
+
+#main-body {
+    grid-area: mb;
+}
+
+#all-images {
+    grid-area: a;
+}
+
+#title {
+    grid-area: t;
+}

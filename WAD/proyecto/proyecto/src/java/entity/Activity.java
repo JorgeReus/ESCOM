@@ -22,6 +22,11 @@ import javax.persistence.Table;
 @Table(name = "activity")
 public class Activity implements Serializable {
 
+    public Activity() {
+        subject = new Subject();
+        activityType = new ActivityType();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "activityId")
@@ -29,6 +34,10 @@ public class Activity implements Serializable {
 
     @Column(name = "activityName")
     private String activityName;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "activityType")
+    private ActivityType activityType;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subjectId")
@@ -75,6 +84,14 @@ public class Activity implements Serializable {
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
     

@@ -92,7 +92,6 @@
   font-weight: normal;
 }
 #cssmenu ul ul a:before {
-  content: "»";
   position: absolute;
   left: 10px;
   color: #e94f31;

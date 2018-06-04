@@ -77,3 +77,12 @@ body {
 .panelgrid-container {
     padding-left: 2vw;
 }
+
+.ui-datagrid-content {
+	border: none;
+}
+
+.ui-fieldset-blank {
+background-color: transparent;
+border-color: transparent;
+}

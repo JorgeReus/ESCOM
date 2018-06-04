@@ -56,17 +56,12 @@
                         </p:column>
                         <p:column headerText="Actions">
                             <p:commandLink 
-                                update="@form:activitiesTable @form:messages">
+                                update="@form:activitiesTable @form:messages"
+                                action="#{activityMB.delete()}">
                                 <f:setPropertyActionListener value="#{activityIter}"
                                                              target="#{activityMB.activity}"/>
                                 <i class="fa fa-remove fa-2x"/>
                             </p:commandLink> 
-                            <p:spacer width="10px"/>
-                            <p:commandLink action="#{activityMB.prepareUpdate()}">
-                                <i class="fa fa-edit fa-2x"/>
-                                <f:setPropertyActionListener value="#{activityIter}"
-                                                             target="#{activityMB.activity}"/>
-                            </p:commandLink>
                             <p:spacer width="10px"/>
                             <p:commandLink action="#{activityMB.prepareView()}">
                                 <i class="fa fa-search fa-2x"/>
