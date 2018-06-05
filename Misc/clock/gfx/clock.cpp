@@ -35,16 +35,17 @@ int main()
     while(1) {
 
         gettimeofday(&tv, &tz);
+
         hms = tv.tv_sec % SEC_PER_DAY;
         hms += tz.tz_dsttime * SEC_PER_HOUR;
         hms -= tz.tz_minuteswest * SEC_PER_MIN;
-        // mod `hms` to insure in positive range of [0...SEC_PER_DAY)
+        
         hms = (hms + SEC_PER_DAY) % SEC_PER_DAY;
           
         hour = hms / SEC_PER_HOUR;
         min = (hms % SEC_PER_HOUR) / SEC_PER_MIN;
-        sec = (hms % SEC_PER_HOUR) % SEC_PER_MIN; // or hms % SEC_PER_MIN
-        usec = sec/10;
+        sec = (hms % SEC_PER_HOUR) % SEC_PER_MIN; 
+        usec = tv.tv_usec/100000;
         
         gfx_clear();
 
@@ -53,7 +54,7 @@ int main()
         drawSecond(sec);
         drawUSecond(usec);
         
-        sleep(1);
+        usleep(100000);
     }
     
 
@@ -85,9 +86,6 @@ void drawSecond(int sec){
 }
 
 void drawUSecond(int usec){
-    int aux = usec%10;
-    usec/=10;
     gfx_display_ascii(600, 20, 10 , usec+48);
-    gfx_display_ascii(680, 20, 10 , aux+48);
     gfx_flush();
 }
