@@ -1,6 +1,6 @@
-prueba_display_ascii:  prueba_display_ascii.o gfxModified.o
-	g++ -std=c++11 prueba_display_ascii.o gfxModified.o -o prueba_display_ascii -lX11
-prueba_display_ascii.o: prueba_display_ascii.cpp gfxModified.o
-	g++ -std=c++11 prueba_display_ascii.cpp -c
+clock:  clock.o gfxModified.o
+	g++ -std=c++11 clock.o gfxModified.o -o clock -lX11
+clock.o: clock.cpp gfxModified.o
+	g++ -std=c++11 clock.cpp -c
 gfxModified.o: gfxModified.c gfxModified.h
 	gcc gfxModified.c -c

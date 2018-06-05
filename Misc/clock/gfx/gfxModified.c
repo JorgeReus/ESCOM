@@ -286,6 +286,7 @@ void gfx_display_ascii(int x, int y , int f, int n) //Valor ASCII
         gfx_fill_rectangle( 4*f+x, 12*f+y, 2*f, f ); //5
     }
 
+
     if(n == 'M' || n== 'N' || n== 'X')
         gfx_fill_polygon(nueve, npuntos); //9
     if(n == 'B' || n== 'D' || n== 'I' || n== 'T')
@@ -302,6 +303,7 @@ void gfx_display_ascii(int x, int y , int f, int n) //Valor ASCII
         gfx_fill_rectangle( 3*f+x, 7*f+y, f, 5*f ); //17
     if(n == 'K' || n== 'N' || n== 'Q' || n== 'R' || n== 'W' || n== 'X')
         gfx_fill_polygon(trece, npuntos); //13    
+    
 }
 
 
