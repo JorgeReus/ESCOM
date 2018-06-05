@@ -31,11 +31,11 @@ struct mensaje* Respuesta::getRequest(void)
 }
 
 
-void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente)
+void Respuesta::sendReply(char *respuesta, char *ipCliente, int puertoCliente, int requestId)
 {
 	struct mensaje msg;
 	msg.messageType = 0;
-	msg.requestId = 1;
+	msg.requestId = requestId;
 	strcpy(msg.IP, ipCliente);
 	msg.puerto = puertoCliente;	
 	msg.operationId = 0;
