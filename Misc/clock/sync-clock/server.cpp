@@ -7,17 +7,24 @@
 #include "respuesta.h"
 #include <string>
 #include <stack>
+#include <time.h>
+#include <sys/time.h>
 
 #define PUERTO_LOCAL 7200
 using namespace std;
 
-int escritura(int nbd) {
-	return nbd+1;
-}
+
 
 int main (int argc, char *argv[]) {
 
-	int nbd = 0;
+
+	struct timeval tv;
+	struct timeval *tvmsg;
+	gettimeofday(&tv, NULL);
+
+	
+
+
 	Respuesta respuesta(PUERTO_LOCAL);
 	struct mensaje *msg;
 	while(1)
@@ -29,20 +36,16 @@ int main (int argc, char *argv[]) {
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation id: %d\n", msg->operationId);
 		printf("Arguments: %s\n", msg->arguments);
+		printf("request:%d\n",msg->requestId);
 
-		if(msg->operationId == 1) {
-			nbd = nbd;
-		} else {
-			printf("ASCO DE CLIENTE");
-		}
+		tvmsg=(struct timeval *)msg->arguments;
+		cout<<"Recibo: "<<tvmsg->tv_sec<<endl;
+		cout<<"envio: "<<tv.tv_sec<<endl;
 
-		char dest[10];
-		sprintf(dest, "%d", nbd);
+		
 
-		printf("Nbd: %d\n", nbd);
-		printf("dest: %s\n", dest);
 
-		respuesta.sendReply((char*)dest, msg->IP, msg->puerto, msg->requestId);
+		respuesta.sendReply((char *)&tv, msg->IP, msg->puerto, msg->requestId);
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 
 		respuesta.cleanReply();
