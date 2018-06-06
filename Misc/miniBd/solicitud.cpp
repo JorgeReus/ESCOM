@@ -28,7 +28,7 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	strcpy(msg.arguments, arguments);
 	PaqueteDatagrama paquete((char *)&msg,TAM_MAX_DATA,
 		IP, puerto);
-	socketlocal->recibeTimeout(paquete, 1, 20000);
+	socketlocal->recibeTimeout(paquete, 2, 50000);
 	socketlocal->envia(paquete);
 	int tries = 7;
 	int flag = 0;
@@ -39,11 +39,13 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 			printf("Request id mia: %d\tEl recibido: %d\n", msg.requestId, ap->requestId);
 			if(msg.requestId != ap->requestId) {
 				flag = 1;
+				printf("Server request\n");
 			} else {
 				flag = 0;
 			}
 			break;
 		} else {
+			printf("Enviando de new\n");
 			socketlocal->envia(paquete);
 			tries--;
 		}

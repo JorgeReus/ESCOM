@@ -3,7 +3,7 @@
 #include "mensaje.h"
 #include "solicitud.h"
 
-#define SERVER_PORT 7200
+#define SERVER_PORT 7400
 
 int nbdLocal = 0;
 
@@ -12,7 +12,7 @@ int main (int argc, char *argv[]) {
 	Solicitud cliente;
 
 	char *ip;
-	char *args = "100";
+	char *args = "1";
 	int num;
 	if (argc != 3) {
 		printf("Usage: ./client num server_ip\n");
