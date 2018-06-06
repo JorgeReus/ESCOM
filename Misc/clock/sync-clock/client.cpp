@@ -29,14 +29,13 @@ void drawMinute(int min);
 void drawSecond(int sec);
 void drawUSecond(int usec);
 
-int nbdLocal = 0;
 
 int main (int argc, char *argv[]) {
 
 	Solicitud cliente;
 
 	char *ip;
-	char *args = "get_Time";
+	char *args = "get_Time-perro-loko.-alv_asdasdasdasdasdasdasd";
 	int num;
 	if (argc != 2) {
 		printf("Usage: ./client server_ip\n");
@@ -48,12 +47,6 @@ int main (int argc, char *argv[]) {
 	struct mensaje *msg;
 	int result = 0;
 
-	printf("\n\n------Nueva op------\n");
-	ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
-
-	msg = (struct mensaje*)ms;
-	
-	printf("Read\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 /*
 	ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
 	nbdLocal += atoi(args);
@@ -73,16 +66,22 @@ int main (int argc, char *argv[]) {
     gfx_open(ANCHURA, ALTURA, "Ejemplo gfx_display_ascii");
     gfx_color(0,255,0);
     
+    gettimeofday(&tv, &tz);
+    args = (char*)&tv;
+    printf("Primero: %ld\n", tv.tv_sec);
+    ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
+    msg = (struct mensaje*)ms;
+    struct timeval *aux = (struct timeval*)msg->arguments;
+    tv = *aux;
+    printf("%ld\n", tv.tv_sec);
+    
     while(1) {
-
-        gettimeofday(&tv, &tz);
-
         hms = tv.tv_sec % SEC_PER_DAY;
         hms += tz.tz_dsttime * SEC_PER_HOUR;
         hms -= tz.tz_minuteswest * SEC_PER_MIN;
         
         hms = (hms + SEC_PER_DAY) % SEC_PER_DAY;
-          
+
         hour = hms / SEC_PER_HOUR;
         min = (hms % SEC_PER_HOUR) / SEC_PER_MIN;
         sec = (hms % SEC_PER_HOUR) % SEC_PER_MIN; 
@@ -90,14 +89,14 @@ int main (int argc, char *argv[]) {
         
         gfx_clear();
 
+        
         drawHour(hour);
         drawMinute(min);        
         drawSecond(sec);
-        drawUSecond(usec);
         
         usleep(100000);
     }
-	return 0;
+    return 0;
 }
 
 void drawHour(int hour){
