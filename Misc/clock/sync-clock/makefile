@@ -6,6 +6,7 @@ all:
 	g++ -c solicitud.cpp
 	g++ -std=c++11  client.cpp gfxModified.o PaqueteDatagrama.o SocketDatagrama.o solicitud.o -o client -lX11 -L/usr/X11R6/lib
 	g++ -std=c++11 server.cpp gfxModified.o PaqueteDatagrama.o SocketDatagrama.o respuesta.o -o server -lX11
+	-rm *.o
 gfxModified: gfxModified.c gfxModified.h
 	gcc gfxModified.c -c  -I/usr/X11R6/include
 paquet: PaqueteDatagrama.cpp PaqueteDatagrama.h
@@ -22,4 +23,6 @@ clock: clock.cpp gfxModified.o PaqueteDatagrama.o SocketDatagrama.o solicitud.o 
 	g++ -std=c++11 clock.cpp -c 
 server: server.cpp PaqueteDatagrama.o SocketDatagrama.o solicitud.o respuesta.o
 	g++ server.cpp PaqueteDatagrama.o SocketDatagrama.o solicitud.o respuesta.o -o server -std=c++11
-
+.PHONY: clean
+clean:
+	-rm *.o
