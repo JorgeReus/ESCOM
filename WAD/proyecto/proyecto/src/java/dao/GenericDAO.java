@@ -3,6 +3,7 @@ package dao;
 import entity.Activity;
 import entity.Image;
 import entity.User;
+import entity.Video;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
@@ -39,6 +40,9 @@ public class GenericDAO {
             } else if (clazz.equals(Activity.class)) {
                 Activity a = (Activity) obj;
                 Hibernate.initialize(a.getImages());
+            } else if (clazz.equals(Video.class)) {
+                Video vid = (Video) obj;
+                Hibernate.initialize(vid.getVideo());
             }
             tx.commit();
         } catch (HibernateException e) {

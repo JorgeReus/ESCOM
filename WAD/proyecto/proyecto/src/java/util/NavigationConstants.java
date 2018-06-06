@@ -23,4 +23,7 @@ public class NavigationConstants {
     // Images
     public final static String MANAGE_IMAGES_INDEX = "/images/index.xhtml";
     public final static String MANAGE_IMAGES_ADD = "/images/add.xhtml";
+    // Videos
+    public static final String MANAGE_VIDEOS_INDEX = "/videos/index.xhtml";
+    public static final String MANAGE_VIDEOS_ADD = "/videos/add.xhtml";
 }
