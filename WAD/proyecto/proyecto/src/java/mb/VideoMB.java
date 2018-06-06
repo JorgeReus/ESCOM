@@ -51,8 +51,8 @@ public class VideoMB extends GenericMB implements Serializable {
         } else {
             // So, browser is requesting the video. Return a real StreamedContent with the video bytes.
             String videoId = context.getExternalContext().getRequestParameterMap().get("videoId");
-            realVideo = (Video) genericDAO.findByID(Integer.valueOf(videoId), Video.class);
-            return new DefaultStreamedContent(new ByteArrayInputStream(realVideo.getVideo()), "video/quicktime");
+            Video vid = (Video) genericDAO.findByID(Integer.valueOf(videoId), Video.class);
+            return new DefaultStreamedContent(new ByteArrayInputStream(vid.getVideo()), "video/quicktime");
         }
     }
 

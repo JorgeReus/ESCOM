@@ -44,13 +44,10 @@ public class GenericDAO {
                 Video vid = (Video) obj;
                 Hibernate.initialize(vid.getVideo());
             }
-            tx.commit();
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-        } finally {
-            session.close();
-        }
+        } 
         return obj;
     }
 
