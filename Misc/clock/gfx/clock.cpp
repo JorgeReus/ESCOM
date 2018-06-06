@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "mensaje.h"
-#include "solicitud.h"
-
-
 #include <iostream>
 #include <string.h>
 #include <cmath>
@@ -14,9 +8,6 @@
 #define SEC_PER_DAY   86400
 #define SEC_PER_HOUR  3600
 #define SEC_PER_MIN   60
-
-#define SERVER_PORT 7200
-
 
 using namespace std;
 
@@ -29,47 +20,9 @@ void drawMinute(int min);
 void drawSecond(int sec);
 void drawUSecond(int usec);
 
-int nbdLocal = 0;
-
-int main (int argc, char *argv[]) {
-
-	Solicitud cliente;
-
-	char *ip;
-	char *args = "get_Time";
-	int num;
-	if (argc != 2) {
-		printf("Usage: ./client num server_ip\n");
-		return 1;
-	} else {
-		
-		ip = argv[1];
-	}
-	char *ms;
-	struct mensaje *msg;
-	int result = 0;
-
-
-		printf("\n\n------Nueva op------\n");
-		ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
-
-
-		msg = (struct mensaje*)ms;
-		
-		printf("Read\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
-/*
-
-		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
-		nbdLocal += atoi(args);
-
-		msg = (struct mensaje*)ms;
-
-		printf("Write\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
-*/
-		printf("------Fin de op------\n");
-
-
-int i, contador;
+int main()
+{
+    int i, contador;
 
     struct timeval tv;
     struct timezone tz;
@@ -103,11 +56,8 @@ int i, contador;
         
         usleep(100000);
     }
-		
+    
 
-
-	
-	return 0;
 }
 
 void drawHour(int hour){

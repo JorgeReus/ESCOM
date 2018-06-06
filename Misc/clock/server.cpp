@@ -23,8 +23,8 @@ int main (int argc, char *argv[]) {
 	while(1)
 	{
 		msg = respuesta.getRequest();
-		printf("Tipo: %d\n", msg->messageType);
-		printf("Request id: %d\n", msg->requestId);
+	
+		
 		printf("IP: %s\n", msg->IP);
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation id: %d\n", msg->operationId);
@@ -32,8 +32,6 @@ int main (int argc, char *argv[]) {
 
 		if(msg->operationId == 1) {
 			nbd = nbd;
-		} else if(msg->operationId == 2) {
-			nbd += atoi(msg->arguments);
 		} else {
 			printf("ASCO DE CLIENTE");
 		}
@@ -44,7 +42,7 @@ int main (int argc, char *argv[]) {
 		printf("Nbd: %d\n", nbd);
 		printf("dest: %s\n", dest);
 
-		respuesta.sendReply((char*)dest, msg->IP, msg->puerto);
+		respuesta.sendReply((char*)dest, msg->IP, msg->puerto, msg->requestId);
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
 
 		respuesta.cleanReply();
