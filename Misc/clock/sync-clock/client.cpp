@@ -45,7 +45,6 @@ int main (int argc, char *argv[]) {
 	}
 	char *ms;
 	struct mensaje *msg;
-	int result = 0;
 
 /*
 	ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
@@ -68,14 +67,34 @@ int main (int argc, char *argv[]) {
     
     gettimeofday(&tv, &tz);
     args = (char*)&tv;
+    struct timeval first = tv;
     printf("Primero: %ld\n", tv.tv_sec);
     ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
     msg = (struct mensaje*)ms;
     struct timeval *aux = (struct timeval*)msg->arguments;
     tv = *aux;
-    printf("%ld\n", tv.tv_sec);
+    printf("Recibo: %ld\n", tv.tv_sec);
+    struct timeval second = tv;
+    struct timeval third;
+    struct timeval result;
+    struct timeval final;
+    gettimeofday(&third, &tz);
+    // Diferencia
+    timersub(&third, &first, &result);
+    result.tv_sec/=2;
+    result.tv_usec/=2;
+    timeradd(&second, &result, &final);
+    printf("Final %ld\n", final.tv_sec);
+    if (settimeofday(&final, &tz) != -1) {
+        printf("Success\n");
+    } else {
+        printf("Errr: %d\n", errno);     
+    }
+    gettimeofday(&tv, &tz);
+    printf("Nueva %ld\n", tv.tv_sec);
     
     while(1) {
+        gettimeofday(&tv, &tz);
         hms = tv.tv_sec % SEC_PER_DAY;
         hms += tz.tz_dsttime * SEC_PER_HOUR;
         hms -= tz.tz_minuteswest * SEC_PER_MIN;
@@ -93,6 +112,7 @@ int main (int argc, char *argv[]) {
         drawHour(hour);
         drawMinute(min);        
         drawSecond(sec);
+        drawUSecond(usec);
         
         usleep(100000);
     }
