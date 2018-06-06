@@ -39,37 +39,31 @@ int main (int argc, char *argv[]) {
 	char *args = "get_Time";
 	int num;
 	if (argc != 2) {
-		printf("Usage: ./client num server_ip\n");
+		printf("Usage: ./client server_ip\n");
 		return 1;
 	} else {
-		
 		ip = argv[1];
 	}
 	char *ms;
 	struct mensaje *msg;
 	int result = 0;
 
+	printf("\n\n------Nueva op------\n");
+	ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
 
-		printf("\n\n------Nueva op------\n");
-		ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
-
-
-		msg = (struct mensaje*)ms;
-		
-		printf("Read\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+	msg = (struct mensaje*)ms;
+	
+	printf("Read\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 /*
+	ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
+	nbdLocal += atoi(args);
 
-		ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
-		nbdLocal += atoi(args);
+	msg = (struct mensaje*)ms;
 
-		msg = (struct mensaje*)ms;
-
-		printf("Write\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
+	printf("Write\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
 */
-		printf("------Fin de op------\n");
-
-
-int i, contador;
+	printf("------Fin de op------\n");
+    int i, contador;
 
     struct timeval tv;
     struct timezone tz;
@@ -103,10 +97,6 @@ int i, contador;
         
         usleep(100000);
     }
-		
-
-
-	
 	return 0;
 }
 
