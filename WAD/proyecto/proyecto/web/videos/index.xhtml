@@ -24,7 +24,6 @@
                                                     value="Manage Videos"/></li>
                 </ul>
             </li>
-            <li class='last'><a href='#'><span>Contact</span></a></li>
         </ui:define>
         <ui:define name="mainContent">
             <h:form id="videosForm">    
@@ -44,12 +43,16 @@
                         var="videoIter" 
                         value="#{videoMB.videos}">
 
-                        <p:column headerText="Name" priority="3">
+                        <p:column headerText="Name" priority="2">
                             <h:outputText value="#{videoIter.videoName}" />
                         </p:column>
 
-                        <p:column headerText="Video" priority="2">
-                            <p:media value="#{videoMB.video}" width="300px" height="300px" player="flash" cache="false" >
+                        <p:column headerText="Video" priority="1">
+                            <p:media value="#{videoMB.video}" 
+                                     width="200px"
+                                     height="200px" 
+                                     player="flash" 
+                                     cache="false" >
                                 <f:param name="auto-play" value="false" />
                                 <f:param name="auto-Start" value="false" />
                                 <f:param name="videoId" value="#{videoIter.videoId}" />
@@ -57,8 +60,10 @@
                         </p:column>
 
                         <p:column headerText="Actions">
-                            <p:commandLink 
+                            <p:commandLink action="#{videoMB.delete()}"
                                 update="@form:videosTable @form:messages">
+                                <f:setPropertyActionListener value="#{videoIter}"
+                                                             target="#{videoMB.realVideo}"/>
                                 <i class="fa fa-remove fa-2x"/>
                             </p:commandLink> 
                             <p:spacer width="10px"/>
@@ -67,6 +72,7 @@
                     <div class="button-container">
                         <p:commandButton value="Add Video"
                                          icon="fa fa-plus-circle"
+                                         action="#{videoMB.prepareAdd()}"
                                          update="videosTable"/>
                     </div>
                 </div>
