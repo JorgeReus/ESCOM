@@ -12,7 +12,7 @@
 using namespace std;
 
 //Resolución de la pantalla
-#define ANCHURA 800
+#define ANCHURA 700
 #define ALTURA 200
 
 void drawHour(int hour);
@@ -64,8 +64,10 @@ void drawHour(int hour){
     int aux = hour%10;
     hour/=10;
     
-    gfx_display_ascii(0, 20, 10 , hour+48);
+    gfx_display_ascii(10, 20, 10 , hour+48);
     gfx_display_ascii(80, 20, 10 , aux+48);
+    gfx_fill_rectangle(175,70,10,10);
+    gfx_fill_rectangle(175,110,10,10);
     gfx_flush();
 }
 
@@ -74,6 +76,8 @@ void drawMinute(int minute){
     minute/=10;
     gfx_display_ascii(200, 20, 10 , minute+48);
     gfx_display_ascii(280, 20, 10 , aux+48);
+    gfx_fill_rectangle(370,70,10,10);
+    gfx_fill_rectangle(370,110,10,10);
     gfx_flush();
 }
 
@@ -82,6 +86,8 @@ void drawSecond(int sec){
     sec/=10;
     gfx_display_ascii(400, 20, 10 , sec+48);
     gfx_display_ascii(480, 20, 10 , aux+48);
+    gfx_fill_rectangle(570, 70,10,10);
+    gfx_fill_rectangle(570, 110,10,10);
     gfx_flush();
 }
 

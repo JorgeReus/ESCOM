@@ -13,25 +13,17 @@
 #define PUERTO_LOCAL 7200
 using namespace std;
 
-
-
 int main (int argc, char *argv[]) {
-
 
 	struct timeval tv;
 	struct timeval *tvmsg;
-	gettimeofday(&tv, NULL);
-
-	
-
 
 	Respuesta respuesta(PUERTO_LOCAL);
 	struct mensaje *msg;
 	while(1)
 	{
 		msg = respuesta.getRequest();
-	
-		
+		gettimeofday(&tv, NULL);			//Get the actual time after every request
 		printf("IP: %s\n", msg->IP);
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation id: %d\n", msg->operationId);
@@ -39,11 +31,9 @@ int main (int argc, char *argv[]) {
 		printf("request:%d\n",msg->requestId);
 
 		tvmsg=(struct timeval *)msg->arguments;
-		cout<<"Recibo: "<<tvmsg->tv_sec<<endl;
-		cout<<"envio: "<<tv.tv_sec<<endl;
 
-		
-
+		printf("Recibo: %ld\n", tvmsg->tv_sec);
+		printf("Envio : %ld\n", tv.tv_sec);
 
 		respuesta.sendReply((char *)&tv, msg->IP, msg->puerto, msg->requestId);
 		printf(">>>>>>>>>>Fin de operacion<<<<<<<<<<\n\n\n");
