@@ -54,7 +54,6 @@ char* Solicitud::doOperation (char *IP, int puerto, int operationId, char *argum
 	if (tries == 0){
 		printf("Server not available\n");
 		return "NO";
-
 	}
 	return paquete.obtieneDatos();
 }

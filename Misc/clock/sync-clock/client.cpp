@@ -45,31 +45,24 @@ int main (int argc, char *argv[]) {
 	}
 	char *ms;
 	struct mensaje *msg;
-
-/*
-	ms = cliente.doOperation(ip, SERVER_PORT, 2, args);
-	nbdLocal += atoi(args);
-
-	msg = (struct mensaje*)ms;
-
-	printf("Write\tEl servidor: %d\tLocal: %d\n", atoi(msg->arguments), nbdLocal);
-*/
-	printf("------Fin de op------\n");
     int i, contador;
 
     struct timeval tv;
     struct timezone tz;
     int hour, min, sec, usec;
     long hms;
-
-    gfx_open(ANCHURA, ALTURA, "Ejemplo gfx_display_ascii");
-    gfx_color(0,255,0);
     
     gettimeofday(&tv, &tz);
     args = (char*)&tv;
     struct timeval first = tv;
     printf("Primero: %ld\n", tv.tv_sec);
     ms = cliente.doOperation(ip, SERVER_PORT, 1, args);
+
+    if(strcmp(ms, "NO") == 0) {
+            printf("Mátate ALV\n");
+            return 1;
+        }
+
     msg = (struct mensaje*)ms;
     struct timeval *aux = (struct timeval*)msg->arguments;
     tv = *aux;
@@ -85,13 +78,21 @@ int main (int argc, char *argv[]) {
     result.tv_usec/=2;
     timeradd(&second, &result, &final);
     printf("Final %ld\n", final.tv_sec);
-    if (settimeofday(&final, &tz) != -1) {
+
+    struct timeval prueba;
+    prueba.tv_sec = final.tv_sec;
+    prueba.tv_usec = final.tv_usec;
+
+    if (settimeofday(&prueba, NULL) != -1) {
         printf("Success\n");
     } else {
-        printf("Errr: %d\n", errno);     
+        perror("settimeofday");     
     }
     gettimeofday(&tv, &tz);
     printf("Nueva %ld\n", tv.tv_sec);
+
+    gfx_open(ANCHURA, ALTURA, "Ejemplo gfx_display_ascii");
+    gfx_color(0,255,0);
     
     while(1) {
         gettimeofday(&tv, &tz);
