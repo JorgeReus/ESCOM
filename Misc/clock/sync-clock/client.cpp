@@ -88,6 +88,7 @@ int main (int argc, char *argv[]) {
         printf("Success\n");
 
     } else {
+        printf("%d\n", z);
         perror("settimeofday");     
     }
     gettimeofday(&tv, &tz);
@@ -95,6 +96,8 @@ int main (int argc, char *argv[]) {
 
     gfx_open(ANCHURA, ALTURA, "Synclock");
     gfx_color(0,255,0);
+
+    int uSecaux = 0;
     
     while(1) {
         gettimeofday(&tv, &tz);
@@ -107,9 +110,17 @@ int main (int argc, char *argv[]) {
         hour = hms / SEC_PER_HOUR;
         min = (hms % SEC_PER_HOUR) / SEC_PER_MIN;
         sec = (hms % SEC_PER_HOUR) % SEC_PER_MIN; 
-        usec = tv.tv_usec/100000;
         
-        gfx_clear();
+        usec = tv.tv_usec/100000;
+
+        
+
+
+
+        if(usec >= 0.1 || usec == 0)
+        {
+            //uSecaux = usec;
+            gfx_clear();
 
         drawHour(hour);
         drawMinute(min);        
@@ -117,6 +128,8 @@ int main (int argc, char *argv[]) {
         drawUSecond(usec);
         
         usleep(100000);
+        }
+        
     }
     return 0;
 }
