@@ -2,7 +2,6 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import entity.User;
 
 /**
  *
@@ -33,7 +31,7 @@ public class Group implements Serializable {
     private String groupName;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "teacherId")
     private User teacherId;
 
     public Integer getGroupId() {
