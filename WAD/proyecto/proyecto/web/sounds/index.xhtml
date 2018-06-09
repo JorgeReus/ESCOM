@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="menuItems">
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink value="Manage Images"
+                                                    action="#{imageMB.prepareIndex()}"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Videos</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{videoMB.prepareIndex()}" 
+                                                    value="Manage Videos"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Sound</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{soundMB.prepareIndex()}" 
+                                                    value="Manage Sounds"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Activities</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(1)}" 
+                                                    value="Manage Activities"/></li>
+                </ul>
+            </li>
+        </ui:define>
+        <ui:define name="mainContent">
+            <h:form id="soundsForm">    
+                <div id="divMessages">
+                    <p:messages id="messages"
+                                showDetail="true" 
+                                closable="true"
+                                showIcon="false">
+                        <p:autoUpdate />
+                    </p:messages>
+                </div>
+                <p:outputLabel value="Sounds Index" 
+                               style="font-size: 500%"/>  
+                <div class="table-container">
+                    <p:dataTable 
+                        id="soundsTable"
+                        var="soundIter" 
+                        value="#{soundMB.sounds}">
+
+                        <p:column headerText="Name" priority="2">
+                            <h:outputText value="#{soundIter.soundName}" />
+                        </p:column>
+
+                        <p:column headerText="Sound" priority="1">
+                            <p:media value="#{soundMB.sound}" 
+                                     width="200px"
+                                     height="200px" 
+                                     player="flash" 
+                                     cache="false" >
+                                <f:param name="soundId" value="#{soundIter.soundId}" />
+                            </p:media>
+                        </p:column>
+
+                        <p:column headerText="Actions">
+                            <p:commandLink action="#{soundMB.delete()}"
+                                           update="@form:soundsTable @form:messages">
+                                <f:setPropertyActionListener value="#{soundIter}"
+                                                             target="#{soundMB.realSound}"/>
+                                <i class="fa fa-remove fa-2x"/>
+                            </p:commandLink> 
+                            <p:spacer width="10px"/>
+                        </p:column>
+                    </p:dataTable>
+                    <div class="button-container">
+                        <p:commandButton value="Add Sound"
+                                         icon="fa fa-plus-circle"
+                                         action="#{soundMB.prepareAdd()}"
+                                         update="soundsTable"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

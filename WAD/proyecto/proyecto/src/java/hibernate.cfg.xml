@@ -18,5 +18,6 @@
     <mapping class="entity.ImageType"/>
     <mapping class="entity.Image"/>
     <mapping class="entity.Video"/>
+    <mapping class="entity.Sound"/>
   </session-factory>
 </hibernate-configuration>
