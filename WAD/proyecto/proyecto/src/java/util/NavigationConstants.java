@@ -29,4 +29,7 @@ public class NavigationConstants {
     // Sounds
     public static final String MANAGE_SOUNDS_INDEX = "/sounds/index.xhtml";
     public static final String MANAGE_SOUNDS_ADD = "/sounds/add.xhtml";
+    // Groups
+    public static final String MANAGE_GROUPS_INDEX = "/groups/index.xhtml";
+    public static final String MANAGE_GROUPS_ADD = "/groups/add.xhtml";
 }

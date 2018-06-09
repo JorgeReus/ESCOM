@@ -20,10 +20,12 @@ int main (int argc, char *argv[]) {
 
 	Respuesta respuesta(PUERTO_LOCAL);
 	struct mensaje *msg;
+
 	while(1)
 	{
 		msg = respuesta.getRequest();
 		gettimeofday(&tv, NULL);			//Get the actual time after every request
+		printf("%d\n", sizeof(struct timeval));
 		printf("IP: %s\n", msg->IP);
 		printf("Port: %d\n", msg->puerto);
 		printf("Operation id: %d\n", msg->operationId);
