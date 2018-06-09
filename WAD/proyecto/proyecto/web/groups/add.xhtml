@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="mainContent">
+            <h:form>      
+                <div id="divMessages">
+                    <p:messages id="messages"
+                                showDetail="true" 
+                                closable="true"
+                                showIcon="false">
+                        <p:autoUpdate />
+                    </p:messages>
+                </div>
+                <p:outputLabel value="Add Group" 
+                                           style="font-size: 500%"/> 
+                <div class="panelgrid-container">
+                    <p:panelGrid id="addPanel" 
+                                 styleClass="ui-panelgrid-blank"
+                                 columnClasses="column-style"
+                                 columns="2">
+                        <h:outputLabel id="groupLabel"
+                                       for="group" 
+                                       value="Group name"/>
+                        <h:inputText id="group"
+                                     value="#{groupMB.group.groupName}"/>
+                        <h:outputLabel id="teacherLabel"
+                                       for="teacher" 
+                                       value="Teacher"/>
+                        <p:selectOneMenu id="teacher" 
+                                         value="#{groupMB.user.userId}">
+                            <f:selectItems value="#{groupMB.users}" 
+                                           var="userTypeIter"
+                                           itemLabel="#{userTypeIter.user}"
+                                           itemValue="#{userTypeIter.userId}"/>
+                        </p:selectOneMenu>
+                    </p:panelGrid>
+                    <div class="buttons-right">
+                        <p:commandButton action="#{groupMB.add()}"
+                                         rendered="#{groupMB.canProceed}"
+                                         id="addButton"
+                                         value="Add"
+                                         update="@form:messages"/>
+                        <p:commandButton action="#{groupMB.prepareIndex()}"
+                                         value="Cancel"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

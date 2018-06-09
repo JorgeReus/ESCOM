@@ -1,6 +1,7 @@
 package dao;
 
 import entity.User;
+import java.util.ArrayList;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
@@ -11,6 +12,7 @@ import org.hibernate.HibernateException;
 public class UserDAO extends GenericDAO {
 
     private static final String FIND_BY_USER_PASSWORD = "from User u where u.user=:userParam and u.password=:passwordParam";
+    private static final String FIND_BY_USER_TYPE = "from User u where u.userType.typeId=:typeIdParam";
 
     public UserDAO() {
 
@@ -35,6 +37,26 @@ public class UserDAO extends GenericDAO {
             session.close();
         }
         return u;
+    }
+    
+    public ArrayList<User> findByUserType(Integer typeId) {
+        ArrayList<User> users;
+        try {
+            startOperation();
+            users = (ArrayList<User>) session.createQuery(FIND_BY_USER_TYPE)
+                    .setParameter("typeIdParam", typeId).list();
+            if (users != null) {
+                Hibernate.initialize(typeId);
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            tx.rollback();
+            System.err.println(e);
+            users = null;
+        } finally {
+            session.close();
+        }
+        return users;
     }
 
 }
