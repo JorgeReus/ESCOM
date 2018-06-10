@@ -16,8 +16,14 @@ public class NavigationConstants {
     public final static String MANAGE_USERS_EDIT = "/users/edit.xhtml";
     // Activities
     public final static String MANAGE_ACTIVITIES_INDEX = "/activities/index.xhtml";
-    public final static String MANAGE_ACTIVITIES_VIEW = "/activities/view.xhtml";
-    public final static String MANAGE_ACTIVITIES_ADD = "/activities/add.xhtml";
+    public final static String MANAGE_ACTIVITIES_VIEW_IMAGES = "/activities/viewImages.xhtml";
+    public final static String MANAGE_ACTIVITIES_VIEW_VIDEO = "/activities/viewVideo.xhtml";
+    public final static String MANAGE_ACTIVITIES_VIEW_SOUND = "/activities/viewSound.xhtml";
+    public final static String MANAGE_ACTIVITIES_VIEW_TEXTS = "/activities/viewTexts.xhtml";
+    public final static String MANAGE_ACTIVITIES_ADD_IMAGES = "/activities/addImages.xhtml";
+    public final static String MANAGE_ACTIVITIES_ADD_VIDEO = "/activities/addVideo.xhtml";
+    public final static String MANAGE_ACTIVITIES_ADD_SOUND = "/activities/addSound.xhtml";
+    public final static String MANAGE_ACTIVITIES_ADD_TEXTS = "/activities/addTexts.xhtml";
     // Subjects
     public final static String MANAGE_SUBJECTS_INDEX = "/subjects/index.xhtml";
     // Images

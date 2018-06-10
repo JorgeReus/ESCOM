@@ -21,13 +21,24 @@
                                                     action="#{imageMB.prepareIndex()}"/></li>
                 </ul>
             </li>
+            <li class='has-sub'><a href='#'><span>Videos</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{videoMB.prepareIndex()}" 
+                                                    value="Manage Videos"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Sound</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{soundMB.prepareIndex()}" 
+                                                    value="Manage Sounds"/></li>
+                </ul>
+            </li>
             <li class='has-sub'><a href='#'><span>Activities</span></a>
                 <ul>
                     <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(1)}" 
                                                     value="Manage Activities"/></li>
                 </ul>
             </li>
-            <li class='last'><a href='#'><span>Contact</span></a></li>
         </ui:define>
         <ui:define name="facet-last">
             <h:outputStylesheet library="css" name="activity.css"/>
@@ -67,13 +78,7 @@
                                        itemLabel="#{subjectIter.subjectName}"
                                        itemValue="#{subjectIter.subjectId}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel value="Activity Type"/>
-                    <p:selectOneMenu value="#{activityMB.activity.activityType.typeId}">
-                        <f:selectItems value="#{activityMB.activityTypes}"
-                                       var="activityTypeIter" 
-                                       itemLabel="#{activityTypeIter.typeName}"
-                                       itemValue="#{activityTypeIter.typeId}"/>
-                    </p:selectOneMenu>
+
 
                 </p:panelGrid>
                 <div id="dnd-images">
@@ -128,7 +133,7 @@
                     <p:commandButton value="Save Activity" 
                                      icon="fa fa-plus-circle"
                                      update="activitiesFrom:messages"
-                                     action="#{activityMB.add()}"/>
+                                     action="#{activityMB.addImages()}"/>
                 </div>
             </h:form>
         </ui:define>

@@ -86,3 +86,8 @@ body {
 background-color: transparent;
 border-color: transparent;
 }
+
+.ui-panel
+{
+  border: none;
+}

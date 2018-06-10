@@ -33,7 +33,6 @@ public class GenericDAO {
                 Image img = (Image) obj;
                 Hibernate.initialize(img.getImageType());
                 Hibernate.initialize(img.getImageCategory());
-                Hibernate.initialize(img.getActivities());
             } else if (clazz.equals(User.class)) {
                 User u = (User) obj;
                 Hibernate.initialize(u.getUserType());
@@ -47,7 +46,7 @@ public class GenericDAO {
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
-        } 
+        }
         return obj;
     }
 
@@ -128,6 +127,23 @@ public class GenericDAO {
             session.close();
         }
         return successful;
+    }
+    
+    
+    public Object safeAdd(Object obj) {
+        Integer newObjectId;
+        try {
+            startOperation();
+            newObjectId = (Integer)session.save(obj);
+            tx.commit();
+        } catch (HibernateException e) {
+            tx.rollback();
+            System.err.println(e);
+            newObjectId = null;
+        } finally {
+            session.close();
+        }
+        return newObjectId;
     }
 
     protected void startOperation() throws HibernateException {

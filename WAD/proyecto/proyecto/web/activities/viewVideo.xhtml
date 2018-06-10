@@ -1,0 +1,95 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="title">
+            Manage Activities
+        </ui:define>
+        <ui:define name="menuItems">
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink value="Manage Images"
+                                                    action="#{imageMB.prepareIndex()}"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Videos</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{videoMB.prepareIndex()}" 
+                                                    value="Manage Videos"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Sound</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{soundMB.prepareIndex()}" 
+                                                    value="Manage Sounds"/></li>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Activities</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(1)}" 
+                                                    value="Manage Activities"/></li>
+                </ul>
+            </li>
+        </ui:define>
+        <ui:define name="facet-last">
+            <h:outputStylesheet library="css" name="activity.css"/>
+        </ui:define>
+        <ui:define name="mainContent">
+            <h:form id="activitiyForm">  
+                <div id="title">
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
+                    <p:outputLabel value="View Activity" 
+                                   style="font-size: 500%"/>  
+                </div>
+
+                <p:panel id="imagePanel" 
+                         header="#{activityMB.activity.activityName}">
+                    <p:media value="#{activityMB.video}" 
+                             width="400vw"
+                             height="400vh" 
+                             player="flash" 
+                             cache="false" >
+                    </p:media>
+
+                    <p:panelGrid styleClass="ui-panelgrid-blank"
+                                 style="margin: auto"
+                                 columns="3">
+                        <p:spacer/>
+                        <p:outputLabel value="Questions"/>
+                        <p:spacer/>
+                        <c:forEach items="#{activityMB.activity.questions}"
+                                   var="questionIter">
+                            <p:spacer/>
+                            <p:outputLabel value="#{questionIter.question}"/>
+                            <p:spacer/>
+                        </c:forEach>
+                    </p:panelGrid>
+                </p:panel>
+
+                <div class="button-container">
+                    <p:commandButton value="Return to Index" 
+                                     icon="fa fa-plus-circle"
+                                     action="#{activityMB.prepareIndexBySubject(1)}"/>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

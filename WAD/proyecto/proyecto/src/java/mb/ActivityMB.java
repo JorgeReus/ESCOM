@@ -5,7 +5,9 @@ import dao.GenericDAO;
 import entity.Activity;
 import entity.ActivityType;
 import entity.Image;
+import entity.Question;
 import entity.Subject;
+import entity.Video;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -18,8 +20,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import org.primefaces.event.DragDropEvent;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import org.primefaces.model.UploadedFile;
+import util.BussinessConstants;
 import util.NavigationConstants;
 
 /**
@@ -33,11 +38,15 @@ public class ActivityMB extends GenericMB implements Serializable {
     private List<Activity> activities;
     private List<Image> images;
     private List<Image> selectedImages;
+    private List<Video> videos;
     private List<Subject> subjects;
     private List<ActivityType> activityTypes;
     private Activity activity;
     private GenericDAO genericDAO;
     private ActivityDAO activityDAO;
+    private UploadedFile file;
+    private Video realVideo;
+    private List<Question> questions;
 
     public ActivityMB() {
         super();
@@ -51,25 +60,186 @@ public class ActivityMB extends GenericMB implements Serializable {
         activityDAO = new ActivityDAO();
         images = new ArrayList<>();
         selectedImages = new ArrayList<>();
-        subjects = new ArrayList<>();
-        activityTypes = new ArrayList<>();
+        // Se tiene que cambiar por tema
+        subjects = subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
+        activityTypes = (ArrayList<ActivityType>) genericDAO.findAll(ActivityType.class);
+        videos = new ArrayList<>();
+        realVideo = new Video();
+        questions = new ArrayList<>();
+    }
+
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
+        file = event.getFile();
+    }
+
+    public void extendQuestions() {
+        questions.add(new Question());
+    }
+
+    public void removeQuestion() {
+        if (questions.size() > 0) {
+            questions.remove(questions.size() - 1);
+        } else {
+            addMessage("Minimum one question", "messages", FacesMessage.SEVERITY_ERROR);
+        }
+    }
+
+    public String addVideo() {
+        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_VIDEO;
+        // Quitar
+        activity.getSubject().setSubjectId(1);
+        activity.setVideo(file.getContents());
+        boolean isValid = Boolean.TRUE;
+        for (Question question : questions) {
+            if (question.getQuestion() == null || question.getQuestion().trim().isEmpty()) {
+                addMessage("Question is Required Field", "messages", FacesMessage.SEVERITY_ERROR);
+                isValid = Boolean.FALSE;
+                break;
+            }
+        }
+        if (activity.getVideo() == null) {
+            addMessage("Field Video is Required", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (activity.getActivityName() == null || activity.getActivityName().trim().isEmpty()) {
+            addMessage("Field Name is Required", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (isValid) {
+            Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
+            if (newActivityId != null) {
+                boolean hasErrors = false;
+                Activity activity = new Activity();
+                activity.setActivityId(newActivityId);
+                for (Question question : questions) {
+                    question.setActivity(activity);
+                    if (!genericDAO.add(question)) {
+                        hasErrors = true;
+                        break;
+                    }
+                }
+                if (!hasErrors) {
+                    redirect = prepareIndexBySubject(1);
+                    addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
+                } else {
+                    addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
+                }
+            }
+        }
+        return redirect;
+    }
+
+    public String addSound() {
+        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_SOUND;
+        // Quitar
+        activity.getSubject().setSubjectId(1);
+        activity.setAudio(file.getContents());
+        boolean isValid = Boolean.TRUE;
+        for (Question question : questions) {
+            if (question.getQuestion() == null || question.getQuestion().trim().isEmpty()) {
+                addMessage("Question is Required Field", "messages", FacesMessage.SEVERITY_ERROR);
+                isValid = Boolean.FALSE;
+                break;
+            }
+        }
+        if (activity.getAudio() == null) {
+            addMessage("Field Audio is Required", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (activity.getActivityName() == null || activity.getActivityName().trim().isEmpty()) {
+            addMessage("Field Name is Required", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (isValid) {
+            Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
+            if (newActivityId != null) {
+                boolean hasErrors = false;
+                Activity activity = new Activity();
+                activity.setActivityId(newActivityId);
+                for (Question question : questions) {
+                    question.setActivity(activity);
+                    if (!genericDAO.add(question)) {
+                        hasErrors = true;
+                        break;
+                    }
+                }
+                if (!hasErrors) {
+                    redirect = prepareIndexBySubject(1);
+                    addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
+                } else {
+                    addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
+                }
+            }
+        }
+        return redirect;
+    }
+
+    public String addTexts() {
+        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_TEXTS;
+        // Quitar
+        activity.getSubject().setSubjectId(1);
+        boolean isValid = Boolean.TRUE;
+        for (Question question : questions) {
+            if (question.getQuestion() == null || question.getQuestion().trim().isEmpty()) {
+                addMessage("Question is Required Field", "messages", FacesMessage.SEVERITY_ERROR);
+                isValid = Boolean.FALSE;
+                break;
+            }
+        }
+        if (activity.getActivityName() == null || activity.getActivityName().trim().isEmpty()) {
+            addMessage("Field Name is Required", "messages", FacesMessage.SEVERITY_ERROR);
+        } else if (isValid) {
+            Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
+            if (newActivityId != null) {
+                boolean hasErrors = false;
+                Activity activity = new Activity();
+                activity.setActivityId(newActivityId);
+                for (Question question : questions) {
+                    question.setActivity(activity);
+                    if (!genericDAO.add(question)) {
+                        hasErrors = true;
+                        break;
+                    }
+                }
+                if (!hasErrors) {
+                    redirect = prepareIndexBySubject(1);
+                    addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
+                } else {
+                    addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
+                }
+            }
+        }
+        return redirect;
     }
 
     public String prepareIndexBySubject(Integer idSubject) {
         images = new ArrayList<>();
         selectedImages = new ArrayList<>();
         activity = new Activity();
-        // Se tiene que cambiar por tema
-        subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
         activities = (ArrayList<Activity>) activityDAO.findBySubjectId(idSubject);
-        activityTypes = (ArrayList<ActivityType>) genericDAO.findAll(ActivityType.class);
         return NavigationConstants.MANAGE_ACTIVITIES_INDEX;
     }
 
     @Override
     public String prepareAdd() {
-        images = (ArrayList<Image>) genericDAO.findAll(Image.class);
-        return NavigationConstants.MANAGE_ACTIVITIES_ADD;
+        String redirect;
+        activity.setImages(new ArrayList<>());
+        activity.setVideo(new byte[0]);
+        activity.setAudio(new byte[0]);
+        switch (activity.getActivityType().getTypeId()) {
+            case BussinessConstants.ACTIVITY_TYPE_IMAGES:
+                images = (ArrayList<Image>) genericDAO.findAll(Image.class);
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_IMAGES;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_VIDEO:
+                questions.add(new Question());
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_VIDEO;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_SOUND:
+                questions.add(new Question());
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_SOUND;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_TEXT:
+                questions.add(new Question());
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_TEXTS;
+                break;
+            default:
+                addMessage("Activity Type is a required field", "messages", FacesMessage.SEVERITY_ERROR);
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_INDEX;
+        }
+        return redirect;
     }
 
     public StreamedContent getImage() throws IOException {
@@ -95,45 +265,22 @@ public class ActivityMB extends GenericMB implements Serializable {
         throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
-    @Override
-    public String add() {
-        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD;
+    public String addImages() {
+        String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_IMAGES;
         if (selectedImages.isEmpty()) {
             addMessage("Select one image at least", "messages", FacesMessage.SEVERITY_ERROR);
-        } else if (activity.getActivityName() == null || activity.getActivityName().isEmpty())  {
+        } else if (activity.getActivityName() == null || activity.getActivityName().isEmpty()) {
             addMessage("Activity Name is a required field", "messages", FacesMessage.SEVERITY_ERROR);
-        } else if (activity.getActivityType().getTypeId() == null) {
-            addMessage("Activity Type is a required field", "messages", FacesMessage.SEVERITY_ERROR);
-        } else if (activity.getSubject().getSubjectId() == null){
+        } else if (activity.getSubject().getSubjectId() == null) {
             addMessage("Subject is a required field", "messages", FacesMessage.SEVERITY_ERROR);
         } else {
             activity.setImages(selectedImages);
             if (genericDAO.add(activity)) {
-                addMessage("Succesfully add Activity", "messages", FacesMessage.SEVERITY_INFO);
+                addMessage("Succesfully added Activity", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndexBySubject(1);
-            } 
+            }
         }
         return redirect;
-    }
-
-    @Override
-    public String prepareUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    protected Boolean validateUpdate() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    public String update() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    }
-
-    @Override
-    public String prepareDelete() {
-        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
     @Override
@@ -148,7 +295,46 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     @Override
     public String prepareView() {
-        return NavigationConstants.MANAGE_ACTIVITIES_VIEW;
+        String redirect;
+        switch (activity.getActivityType().getTypeId()) {
+            case BussinessConstants.ACTIVITY_TYPE_IMAGES:
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_VIEW_IMAGES;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_VIDEO:
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_VIEW_VIDEO;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_SOUND:
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_VIEW_SOUND;
+                break;
+            case BussinessConstants.ACTIVITY_TYPE_TEXT:
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_VIEW_TEXTS;
+                break;
+            default:
+                redirect = NavigationConstants.MANAGE_ACTIVITIES_INDEX;
+        }
+        return redirect;
+    }
+
+    public StreamedContent getVideo() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the video. Return a real StreamedContent with the video bytes.
+            return new DefaultStreamedContent(new ByteArrayInputStream(activity.getVideo()), "video/quicktime");
+        }
+    }
+
+    public StreamedContent getAudio() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            // So, we're rendering the HTML. Return a stub StreamedContent so that it will generate right URL.
+            return new DefaultStreamedContent();
+        } else {
+            // So, browser is requesting the video. Return a real StreamedContent with the video bytes.
+            return new DefaultStreamedContent(new ByteArrayInputStream(activity.getAudio()), "mp3");
+        }
     }
 
     public List<Activity> getActivities() {
@@ -198,6 +384,29 @@ public class ActivityMB extends GenericMB implements Serializable {
     public void setActivityTypes(List<ActivityType> activityTypes) {
         this.activityTypes = activityTypes;
     }
-    
-    
+
+    public List<Video> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
+    }
+
+    public Video getRealVideo() {
+        return realVideo;
+    }
+
+    public void setRealVideo(Video realVideo) {
+        this.realVideo = realVideo;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
 }

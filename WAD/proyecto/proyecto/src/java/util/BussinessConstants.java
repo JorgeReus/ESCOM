@@ -14,5 +14,9 @@ public class BussinessConstants {
     public static final int USER_TYPE_ADMINISTRATOR = 1;
     public static final int USER_TYPE_TEACHER = 2;
     public static final int USER_TYPE_STUDENT = 3;
+    public static final int ACTIVITY_TYPE_TEXT= 1;
+    public static final int ACTIVITY_TYPE_IMAGES = 2;
+    public static final int ACTIVITY_TYPE_VIDEO = 3;
+    public static final int ACTIVITY_TYPE_SOUND = 4;
     
 }

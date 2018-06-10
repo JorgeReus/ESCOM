@@ -2,6 +2,7 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -39,7 +43,7 @@ public class Activity implements Serializable {
     @JoinColumn(name = "activityType")
     private ActivityType activityType;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subjectId")
     private Subject subject;
 
@@ -50,9 +54,19 @@ public class Activity implements Serializable {
                 @JoinColumn(name = "activityId")},
             inverseJoinColumns = {
                 @JoinColumn(name = "imageId")}
-    )
-    
+    )    
     private List<Image> images;
+    
+    @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
+    private List<Question> questions;
+    
+    @Column(name = "video")  
+    @Lob
+    private byte[] video;
+    
+    @Column(name = "audio")  
+    @Lob
+    private byte[] audio;
     
     public Integer getActivityId() {
         return activityId;
@@ -94,5 +108,30 @@ public class Activity implements Serializable {
         this.activityType = activityType;
     }
 
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
+
+    public byte[] getVideo() {
+        return video;
+    }
+
+    public void setVideo(byte[] video) {
+        this.video = video;
+    }
+
+    public byte[] getAudio() {
+        return audio;
+    }
+
+    public void setAudio(byte[] audio) {
+        this.audio = audio;
+    }
+
+    
     
 }

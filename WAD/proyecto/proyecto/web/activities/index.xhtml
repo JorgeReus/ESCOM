@@ -54,6 +54,10 @@
                         <p:column headerText="Subject" priority="4">
                             <h:outputText value="#{activityIter.subject.subjectName}" />
                         </p:column>
+                        
+                        <p:column headerText="Subject" priority="4">
+                            <h:outputText value="#{activityIter.activityType.typeName}" />
+                        </p:column>
                         <p:column headerText="Actions">
                             <p:commandLink 
                                 update="@form:activitiesTable @form:messages"
@@ -71,9 +75,17 @@
                         </p:column>
                     </p:dataTable>
                     <div class="button-container">
+                        <p:outputLabel value="Activity Type"/>
+                        <p:selectOneMenu value="#{activityMB.activity.activityType.typeId}">
+                            <f:selectItems value="#{activityMB.activityTypes}"
+                                           var="activityTypeIter" 
+                                           itemLabel="#{activityTypeIter.typeName}"
+                                           itemValue="#{activityTypeIter.typeId}"/>
+                        </p:selectOneMenu>
+                        <p:spacer width="10vw"/>
                         <p:commandButton value="Add Activity" 
                                          icon="fa fa-plus-circle"
-                                         update="activitiesTable"
+                                         update="activitiesTable @form:messages"
                                          action="#{activityMB.prepareAdd()}"/>
                     </div>
                 </div>

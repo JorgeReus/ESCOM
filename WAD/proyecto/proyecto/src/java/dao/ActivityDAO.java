@@ -26,6 +26,9 @@ public class ActivityDAO extends GenericDAO{
             for(Activity a : results) {
                 Hibernate.initialize(a.getImages());
                 Hibernate.initialize(a.getSubject());             
+                Hibernate.initialize(a.getActivityType());             
+                Hibernate.initialize(a.getVideo());             
+                Hibernate.initialize(a.getQuestions());             
             }
             tx.commit();
         } catch (HibernateException e){
