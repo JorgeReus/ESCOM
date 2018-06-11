@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Activity;
+import entity.Group;
 import entity.Image;
 import entity.User;
 import entity.Video;
@@ -67,6 +68,11 @@ public class GenericDAO {
                     User u = (User) object;
                     Hibernate.initialize(u.getUserType());
                 }
+            } else if (clazz.equals(Group.class)) {
+                for (Object object : objects) {
+                    Group g = (Group) object;
+                    Hibernate.initialize(g.getTeacherId().getUser());
+                }
             }
             tx.commit();
         } catch (HibernateException e) {
@@ -128,13 +134,12 @@ public class GenericDAO {
         }
         return successful;
     }
-    
-    
+
     public Object safeAdd(Object obj) {
         Integer newObjectId;
         try {
             startOperation();
-            newObjectId = (Integer)session.save(obj);
+            newObjectId = (Integer) session.save(obj);
             tx.commit();
         } catch (HibernateException e) {
             tx.rollback();

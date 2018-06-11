@@ -19,13 +19,15 @@ import util.BussinessConstants;
 @SessionScoped
 public class GroupMB extends GenericMB implements Serializable{
     
-    Group group;
+    private Group group;
+    private ArrayList<Group> groups;
     private ArrayList<User> users;
     private ArrayList<UserType> userTypes;
     private GenericDAO genericDAO;
     private UserDAO userDAO;
     private Boolean canProceed;
-    User user;
+    private User user;
+    UserType userType;
 
     public GroupMB() {
         super();
@@ -36,16 +38,17 @@ public class GroupMB extends GenericMB implements Serializable{
         genericDAO = new GenericDAO();
         userDAO = new UserDAO();
         canProceed = Boolean.TRUE;
-        UserType userType = new UserType();
+        userType = new UserType();
         userTypes = new ArrayList<>();
         user = new User();
-        user.setUserType(userType);
         group = new Group();
+        groups = new ArrayList<>();
     }
     
     @Override
     public String prepareIndex() {
         String redirect = NavigationConstants.MANAGE_GROUPS_INDEX;
+        groups = (ArrayList<Group>) genericDAO.findAll(Group.class);
         return redirect;
     }
     
@@ -53,10 +56,7 @@ public class GroupMB extends GenericMB implements Serializable{
     public String prepareAdd() {
         users = (ArrayList<User>) userDAO.findByUserType(BussinessConstants.USER_TYPE_TEACHER);
         for (User user1 : users) {
-            System.out.println(": "+user1.getUser());
         }
-        
-        
         if (users == null || users.isEmpty()) {
             addMessage("Couldn't load User type information", "messages", FacesMessage.SEVERITY_ERROR);
             canProceed = Boolean.FALSE;
@@ -66,6 +66,7 @@ public class GroupMB extends GenericMB implements Serializable{
     
     @Override
     protected Boolean validateAdd() {
+        System.out.println("Validando");
         Boolean isValid = Boolean.TRUE;
         if (group.getGroupName().isEmpty()) {
             addMessage("The Group name field is required", "messages", FacesMessage.SEVERITY_ERROR);
@@ -75,6 +76,7 @@ public class GroupMB extends GenericMB implements Serializable{
             addMessage("The teacher field is required", "messages", FacesMessage.SEVERITY_ERROR);
             isValid = Boolean.FALSE;
         }
+        System.out.println("Termine de validar");
         return isValid;
     }
     
@@ -86,10 +88,21 @@ public class GroupMB extends GenericMB implements Serializable{
                 addMessage("Successfully Registered", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndex();
             } else {
-                addMessage("Error!, couln't add the user", "messages", FacesMessage.SEVERITY_ERROR);
+                addMessage("Error!, couln't add the group", "messages", FacesMessage.SEVERITY_ERROR);
             }
         }
         return redirect;
+    }
+    
+    @Override
+    public String delete() {
+        System.out.println("Delted: "+group.getGroupName());
+        if (genericDAO.delete(group)) {
+            addMessage("Successfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
+        } else {
+            addMessage("Couldn't delete the group", "messages", FacesMessage.SEVERITY_ERROR);
+        }
+        return prepareIndex();
     }
 
     public Group getGroup() {
@@ -138,6 +151,14 @@ public class GroupMB extends GenericMB implements Serializable{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        this.groups = groups;
     }
     
     

@@ -2,6 +2,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,9 +19,12 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name="group")
-
+@Table(name="groups")
 public class Group implements Serializable {
+
+    public Group() {
+        teacherId = new User();
+    }
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)

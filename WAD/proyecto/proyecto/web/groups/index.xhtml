@@ -8,7 +8,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="../adminTemplate.xhtml">
         <ui:define name="mainContent">
-            <h:form id="usersForm">    
+            <h:form id="groupsForm">    
                 <div id="divMessages">
                     <p:messages id="messages"
                                 showDetail="true" 
@@ -20,6 +20,31 @@
                 <p:outputLabel value="Groups Index" 
                                            style="font-size: 500%"/>  
                 <div class="table-container">
+                    <p:dataTable 
+                        id="groupsTable"
+                        var="groupIter" 
+                        value="#{groupMB.groups}">
+                        
+                        <p:column headerText="Id" priority="3">
+                            <h:outputText value="#{groupIter.groupId}" />
+                        </p:column>
+
+                        <p:column headerText="Name" priority="2">
+                            <h:outputText value="#{groupIter.groupName}" />
+                        </p:column>
+
+                        <p:column headerText="Teacher" priority="4">
+                            <h:outputText value="#{groupIter.teacherId.user}" />
+                        </p:column>
+                        <p:column headerText="Actions">
+                            <p:commandLink action="#{groupMB.delete()}"
+                                           update="@form:groupsTable @form:messages">
+                                <f:setPropertyActionListener value="#{groupIter}"
+                                                             target="#{groupMB.group}"/>
+                                <i class="fa fa-remove fa-2x"/>
+                            </p:commandLink> 
+                        </p:column>
+                    </p:dataTable>
                     
                     <div class="button-container">
                         <p:commandButton value="Add Group" 

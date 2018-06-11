@@ -33,7 +33,7 @@
                                        for="teacher" 
                                        value="Teacher"/>
                         <p:selectOneMenu id="teacher" 
-                                         value="#{groupMB.user.userId}">
+                                         value="#{groupMB.group.teacherId.userId}">
                             <f:selectItems value="#{groupMB.users}" 
                                            var="userTypeIter"
                                            itemLabel="#{userTypeIter.user}"
