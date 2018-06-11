@@ -43,7 +43,7 @@ public class GenericDAO {
             } else if (clazz.equals(Video.class)) {
                 Video vid = (Video) obj;
                 Hibernate.initialize(vid.getVideo());
-            }
+            } 
         } catch (HibernateException e) {
             tx.rollback();
             System.err.println(e);
