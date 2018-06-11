@@ -18,13 +18,13 @@
                     </p:messages>
                 </div>
                 <p:outputLabel value="Groups Index" 
-                                           style="font-size: 500%"/>  
+                               style="font-size: 500%"/>  
                 <div class="table-container">
                     <p:dataTable 
                         id="groupsTable"
                         var="groupIter" 
                         value="#{groupMB.groups}">
-                        
+
                         <p:column headerText="Id" priority="3">
                             <h:outputText value="#{groupIter.groupId}" />
                         </p:column>
@@ -43,9 +43,10 @@
                                                              target="#{groupMB.group}"/>
                                 <i class="fa fa-remove fa-2x"/>
                             </p:commandLink> 
+                            
                         </p:column>
                     </p:dataTable>
-                    
+
                     <div class="button-container">
                         <p:commandButton value="Add Group" 
                                          icon="fa fa-plus-circle"

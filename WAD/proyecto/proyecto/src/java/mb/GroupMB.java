@@ -22,6 +22,8 @@ public class GroupMB extends GenericMB implements Serializable{
     private Group group;
     private ArrayList<Group> groups;
     private ArrayList<User> users;
+    private ArrayList<User> students;
+    private ArrayList<User> selectedStudents;
     private ArrayList<UserType> userTypes;
     private GenericDAO genericDAO;
     private UserDAO userDAO;
@@ -43,6 +45,7 @@ public class GroupMB extends GenericMB implements Serializable{
         user = new User();
         group = new Group();
         groups = new ArrayList<>();
+        selectedStudents = new ArrayList<>();
     }
     
     @Override
@@ -55,10 +58,14 @@ public class GroupMB extends GenericMB implements Serializable{
     @Override
     public String prepareAdd() {
         users = (ArrayList<User>) userDAO.findByUserType(BussinessConstants.USER_TYPE_TEACHER);
-        for (User user1 : users) {
-        }
+        userDAO = new UserDAO();
+        students = (ArrayList<User>) userDAO.findByUserType(BussinessConstants.USER_TYPE_STUDENT);
         if (users == null || users.isEmpty()) {
-            addMessage("Couldn't load User type information", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Couldn't load teacher information", "messages", FacesMessage.SEVERITY_ERROR);
+            canProceed = Boolean.FALSE;
+        }
+        if (students == null || students.isEmpty()) {
+            addMessage("Couldn't load teacher information", "messages", FacesMessage.SEVERITY_ERROR);
             canProceed = Boolean.FALSE;
         }
         return NavigationConstants.MANAGE_GROUPS_ADD;
@@ -66,7 +73,7 @@ public class GroupMB extends GenericMB implements Serializable{
     
     @Override
     protected Boolean validateAdd() {
-        System.out.println("Validando");
+        
         Boolean isValid = Boolean.TRUE;
         if (group.getGroupName().isEmpty()) {
             addMessage("The Group name field is required", "messages", FacesMessage.SEVERITY_ERROR);
@@ -76,7 +83,10 @@ public class GroupMB extends GenericMB implements Serializable{
             addMessage("The teacher field is required", "messages", FacesMessage.SEVERITY_ERROR);
             isValid = Boolean.FALSE;
         }
-        System.out.println("Termine de validar");
+        if (selectedStudents.isEmpty()) {
+            addMessage("Select at least one student", "messages", FacesMessage.SEVERITY_ERROR);
+            isValid = Boolean.FALSE;
+        }
         return isValid;
     }
     
@@ -160,6 +170,23 @@ public class GroupMB extends GenericMB implements Serializable{
     public void setGroups(ArrayList<Group> groups) {
         this.groups = groups;
     }
+
+    public ArrayList<User> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<User> students) {
+        this.students = students;
+    }
+
+    public ArrayList<User> getSelectedStudents() {
+        return selectedStudents;
+    }
+
+    public void setSelectedStudents(ArrayList<User> selectedStudents) {
+        this.selectedStudents = selectedStudents;
+    }
+    
     
     
 }

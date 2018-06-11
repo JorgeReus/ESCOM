@@ -18,7 +18,7 @@
                     </p:messages>
                 </div>
                 <p:outputLabel value="Add Group" 
-                                           style="font-size: 500%"/> 
+                               style="font-size: 500%"/> 
                 <div class="panelgrid-container">
                     <p:panelGrid id="addPanel" 
                                  styleClass="ui-panelgrid-blank"
@@ -40,7 +40,25 @@
                                            itemValue="#{userTypeIter.userId}"/>
                         </p:selectOneMenu>
                     </p:panelGrid>
-                    <div class="buttons-right">
+                    <div class="table-container">
+                        <p:dataTable id="checkboxDT" var="studentsIter" 
+                                     value="#{groupMB.students}" 
+                                     selection="#{groupMB.selectedStudents}" 
+                                     rowKey="#{studentsIter.userId}" 
+                                     style="margin-bottom:20">
+                            <f:facet name="header">
+                                Add Students
+                            </f:facet>
+                            <p:column selectionMode="multiple" style="width:36px;text-align:center"/>
+                            <p:column headerText="Id" style="width:200px;">
+                                <h:outputText value="#{studentsIter.userId}" />
+                            </p:column>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{studentsIter.user}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                    <div class="buttons-right" style="margin-top:20px">
                         <p:commandButton action="#{groupMB.add()}"
                                          rendered="#{groupMB.canProceed}"
                                          id="addButton"

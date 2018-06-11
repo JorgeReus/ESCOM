@@ -24,7 +24,7 @@ public class User implements Serializable {
     @Column(name="userId")
     private Integer userId;
     
-    @Column(name="user")
+    @Column(name="user") 
     private String user;
     
     @Column(name="password")
@@ -33,6 +33,10 @@ public class User implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "typeId")
     private UserType userType;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "groupId")
+    private Group groupId;
 
     public Integer getUserId() {
         return userId;
@@ -64,6 +68,14 @@ public class User implements Serializable {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
+    }
+
+    public Group getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Group groupId) {
+        this.groupId = groupId;
     }
     
     
