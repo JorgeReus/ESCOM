@@ -39,7 +39,6 @@ public class ActivityMB extends GenericMB implements Serializable {
     private List<Image> images;
     private List<Image> selectedImages;
     private List<Video> videos;
-    private List<Subject> subjects;
     private List<ActivityType> activityTypes;
     private Activity activity;
     private GenericDAO genericDAO;
@@ -47,6 +46,7 @@ public class ActivityMB extends GenericMB implements Serializable {
     private UploadedFile file;
     private Video realVideo;
     private List<Question> questions;
+    private Subject subject;
 
     public ActivityMB() {
         super();
@@ -60,11 +60,10 @@ public class ActivityMB extends GenericMB implements Serializable {
         activityDAO = new ActivityDAO();
         images = new ArrayList<>();
         selectedImages = new ArrayList<>();
-        // Se tiene que cambiar por tema
-        subjects = subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
         activityTypes = (ArrayList<ActivityType>) genericDAO.findAll(ActivityType.class);
         videos = new ArrayList<>();
         realVideo = new Video();
+        subject = new Subject();
         questions = new ArrayList<>();
     }
 
@@ -83,11 +82,15 @@ public class ActivityMB extends GenericMB implements Serializable {
             addMessage("Minimum one question", "messages", FacesMessage.SEVERITY_ERROR);
         }
     }
+    
+    @Override
+    public String prepareIndex() {
+        return prepareIndexBySubject(subject.getSubjectId());
+    }
 
     public String addVideo() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_VIDEO;
-        // Quitar
-        activity.getSubject().setSubjectId(1);
+        activity.getSubject().setSubjectId(subject.getSubjectId());
         activity.setVideo(file.getContents());
         boolean isValid = Boolean.TRUE;
         for (Question question : questions) {
@@ -105,17 +108,17 @@ public class ActivityMB extends GenericMB implements Serializable {
             Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
             if (newActivityId != null) {
                 boolean hasErrors = false;
-                Activity activity = new Activity();
-                activity.setActivityId(newActivityId);
+                Activity newActivity = new Activity();
+                newActivity.setActivityId(newActivityId);
                 for (Question question : questions) {
-                    question.setActivity(activity);
+                    question.setActivity(newActivity);
                     if (!genericDAO.add(question)) {
                         hasErrors = true;
                         break;
                     }
                 }
                 if (!hasErrors) {
-                    redirect = prepareIndexBySubject(1);
+                    redirect = prepareIndexBySubject(subject.getSubjectId());
                     addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
                 } else {
                     addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
@@ -128,7 +131,7 @@ public class ActivityMB extends GenericMB implements Serializable {
     public String addSound() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_SOUND;
         // Quitar
-        activity.getSubject().setSubjectId(1);
+        activity.getSubject().setSubjectId(subject.getSubjectId());
         activity.setAudio(file.getContents());
         boolean isValid = Boolean.TRUE;
         for (Question question : questions) {
@@ -146,17 +149,17 @@ public class ActivityMB extends GenericMB implements Serializable {
             Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
             if (newActivityId != null) {
                 boolean hasErrors = false;
-                Activity activity = new Activity();
-                activity.setActivityId(newActivityId);
+                Activity newActivity = new Activity();
+                newActivity.setActivityId(newActivityId);
                 for (Question question : questions) {
-                    question.setActivity(activity);
+                    question.setActivity(newActivity);
                     if (!genericDAO.add(question)) {
                         hasErrors = true;
                         break;
                     }
                 }
                 if (!hasErrors) {
-                    redirect = prepareIndexBySubject(1);
+                    redirect = prepareIndexBySubject(subject.getSubjectId());
                     addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
                 } else {
                     addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
@@ -168,8 +171,7 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     public String addTexts() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_TEXTS;
-        // Quitar
-        activity.getSubject().setSubjectId(1);
+        activity.getSubject().setSubjectId(subject.getSubjectId());
         boolean isValid = Boolean.TRUE;
         for (Question question : questions) {
             if (question.getQuestion() == null || question.getQuestion().trim().isEmpty()) {
@@ -184,17 +186,17 @@ public class ActivityMB extends GenericMB implements Serializable {
             Integer newActivityId = (Integer) genericDAO.safeAdd(activity);
             if (newActivityId != null) {
                 boolean hasErrors = false;
-                Activity activity = new Activity();
-                activity.setActivityId(newActivityId);
+                Activity newActivity = new Activity();
+                newActivity.setActivityId(newActivityId);
                 for (Question question : questions) {
-                    question.setActivity(activity);
+                    question.setActivity(newActivity);
                     if (!genericDAO.add(question)) {
                         hasErrors = true;
                         break;
                     }
                 }
                 if (!hasErrors) {
-                    redirect = prepareIndexBySubject(1);
+                    redirect = prepareIndexBySubject(subject.getSubjectId());
                     addMessage("Succesfully Added Activity", "messages", FacesMessage.SEVERITY_INFO);
                 } else {
                     addMessage("System Error", "messages", FacesMessage.SEVERITY_ERROR);
@@ -267,6 +269,7 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     public String addImages() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_IMAGES;
+        activity.setSubject(subject);
         if (selectedImages.isEmpty()) {
             addMessage("Select one image at least", "messages", FacesMessage.SEVERITY_ERROR);
         } else if (activity.getActivityName() == null || activity.getActivityName().isEmpty()) {
@@ -277,7 +280,7 @@ public class ActivityMB extends GenericMB implements Serializable {
             activity.setImages(selectedImages);
             if (genericDAO.add(activity)) {
                 addMessage("Succesfully added Activity", "messages", FacesMessage.SEVERITY_INFO);
-                redirect = prepareIndexBySubject(1);
+                redirect = prepareIndexBySubject(subject.getSubjectId());
             }
         }
         return redirect;
@@ -290,7 +293,7 @@ public class ActivityMB extends GenericMB implements Serializable {
         } else {
             addMessage("Couldn't not delete activity " + activity.getActivityName(), "messages", FacesMessage.SEVERITY_ERROR);
         }
-        return prepareIndexBySubject(1);
+        return prepareIndexBySubject(subject.getSubjectId());
     }
 
     @Override
@@ -369,14 +372,6 @@ public class ActivityMB extends GenericMB implements Serializable {
         this.selectedImages = selectedImages;
     }
 
-    public List<Subject> getSubjects() {
-        return subjects;
-    }
-
-    public void setSubjects(List<Subject> subjects) {
-        this.subjects = subjects;
-    }
-
     public List<ActivityType> getActivityTypes() {
         return activityTypes;
     }
@@ -408,5 +403,17 @@ public class ActivityMB extends GenericMB implements Serializable {
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+   
+    
+    
 
 }

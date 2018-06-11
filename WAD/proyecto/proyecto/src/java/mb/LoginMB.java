@@ -1,8 +1,12 @@
 package mb;
 
+import dao.GenericDAO;
 import dao.UserDAO;
+import entity.Subject;
 import entity.User;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.annotation.PostConstruct;
@@ -19,9 +23,11 @@ import util.NavigationConstants;
 public class LoginMB extends GenericMB implements Serializable {
 
     private UserDAO userDAO;
+    private GenericDAO genericDAO;
     private String user;
     private String password;
     private String home;
+    private List<Subject> subjects;
 
     public LoginMB() {
         super();
@@ -30,6 +36,8 @@ public class LoginMB extends GenericMB implements Serializable {
     @PostConstruct
     public void init() {
         userDAO = new UserDAO();
+        genericDAO = new GenericDAO();
+        subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
     }
 
     public String validateLogin() {
@@ -85,6 +93,14 @@ public class LoginMB extends GenericMB implements Serializable {
    
     public String gotoHome() {
         return home;
+    }
+
+    public List<Subject> getSubjects() {
+        return subjects;
+    }
+
+    public void setSubjects(List<Subject> subjects) {
+        this.subjects = subjects;
     }
 
 }

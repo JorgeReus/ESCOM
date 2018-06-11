@@ -5,6 +5,7 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="../adminTemplate.xhtml">
         <ui:define name="title">
@@ -15,28 +16,17 @@
                 <h:commandLink action="#{loginMB.gotoHome()}"
                                value="Home"/>
             </li>
-            <li class='has-sub'><a href='#'><span>Images</span></a>
-                <ul>
-                    <li class='last'><h:commandLink value="Manage Images"
-                                                    action="#{imageMB.prepareIndex()}"/></li>
-                </ul>
-            </li>
-            <li class='has-sub'><a href='#'><span>Videos</span></a>
-                <ul>
-                    <li class='last'><h:commandLink action="#{videoMB.prepareIndex()}" 
-                                                    value="Manage Videos"/></li>
-                </ul>
-            </li>
-            <li class='has-sub'><a href='#'><span>Sound</span></a>
-                <ul>
-                    <li class='last'><h:commandLink action="#{soundMB.prepareIndex()}" 
-                                                    value="Manage Sounds"/></li>
-                </ul>
-            </li>
             <li class='has-sub'><a href='#'><span>Activities</span></a>
                 <ul>
-                    <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(1)}" 
-                                                    value="Manage Activities"/></li>
+                    <c:forEach items="#{loginMB.subjects}"
+                               var="subjectIter">
+                        <li class='last'><h:commandLink action="#{activityMB.prepareIndexBySubject(subjectIter.subjectId)}" 
+                                                        value="Manage Activities from #{subjectIter.subjectName}">
+                                <f:setPropertyActionListener value="#{subjectIter}"
+                                                             target="#{activityMB.subject}"/>
+                            </h:commandLink>
+                        </li>
+                    </c:forEach>
                 </ul>
             </li>
         </ui:define>
@@ -71,14 +61,6 @@
                              layout="grid">
                     <p:outputLabel value="Activity Name"/>
                     <p:inputText value="#{activityMB.activity.activityName}"/>
-                    <p:outputLabel value="Subject"/>
-                    <p:selectOneMenu value="#{activityMB.activity.subject.subjectId}">
-                        <f:selectItems value="#{activityMB.subjects}"
-                                       var="subjectIter" 
-                                       itemLabel="#{subjectIter.subjectName}"
-                                       itemValue="#{subjectIter.subjectId}"/>
-                    </p:selectOneMenu>
-
 
                 </p:panelGrid>
                 <div id="dnd-images">
@@ -134,6 +116,8 @@
                                      icon="fa fa-plus-circle"
                                      update="activitiesFrom:messages"
                                      action="#{activityMB.addImages()}"/>
+                    <p:commandButton action="#{activityMB.prepareIndex()}"
+                                         value="Cancel"/>
                 </div>
             </h:form>
         </ui:define>
