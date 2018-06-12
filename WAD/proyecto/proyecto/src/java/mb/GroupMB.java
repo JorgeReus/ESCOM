@@ -57,6 +57,7 @@ public class GroupMB extends GenericMB implements Serializable{
     
     @Override
     public String prepareAdd() {
+        canProceed = Boolean.TRUE;
         users = (ArrayList<User>) userDAO.findByUserType(BussinessConstants.USER_TYPE_TEACHER);
         userDAO = new UserDAO();
         students = (ArrayList<User>) userDAO.findByUserType(BussinessConstants.USER_TYPE_STUDENT);
@@ -65,7 +66,7 @@ public class GroupMB extends GenericMB implements Serializable{
             canProceed = Boolean.FALSE;
         }
         if (students == null || students.isEmpty()) {
-            addMessage("Couldn't load teacher information", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Couldn't load students information", "messages", FacesMessage.SEVERITY_ERROR);
             canProceed = Boolean.FALSE;
         }
         return NavigationConstants.MANAGE_GROUPS_ADD;
