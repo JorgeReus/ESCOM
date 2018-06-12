@@ -18,7 +18,7 @@
 
 class SocketMulticast {
 public:
-	SocketMulticast(unsigned int , unsigned int, unsigned int);
+	SocketMulticast(unsigned int);
 	~SocketMulticast();
 	int envia(PaqueteDatagrama & p, char *ipE);
 	int recibe(PaqueteDatagrama & p, unsigned char TTL);
