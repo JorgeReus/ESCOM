@@ -38,4 +38,5 @@ public class NavigationConstants {
     // Groups
     public static final String MANAGE_GROUPS_INDEX = "/groups/index.xhtml";
     public static final String MANAGE_GROUPS_ADD = "/groups/add.xhtml";
+    public static final String MANAGE_GROUPS_VIEW = "/groups/view.xhtml";
 }

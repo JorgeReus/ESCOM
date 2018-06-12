@@ -13,6 +13,7 @@ public class UserDAO extends GenericDAO {
 
     private static final String FIND_BY_USER_PASSWORD = "from User u where u.user=:userParam and u.password=:passwordParam";
     private static final String FIND_BY_USER_TYPE = "from User u where u.userType.typeId=:typeIdParam";
+    private static final String FIND_BY_GROUP_ID = "from User u where u.groupId=:groupIdParam";
 
     public UserDAO() {
 
@@ -47,6 +48,26 @@ public class UserDAO extends GenericDAO {
                     .setParameter("typeIdParam", typeId).list();
             if (users != null) {
                 Hibernate.initialize(typeId);
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            tx.rollback();
+            System.err.println(e);
+            users = null;
+        } finally {
+            session.close();
+        }
+        return users;
+    }
+    
+    public ArrayList<User> findByGroupId(Integer groupId) {
+        ArrayList<User> users;
+        try {
+            startOperation();
+            users = (ArrayList<User>) session.createQuery(FIND_BY_GROUP_ID)
+                    .setParameter("groupIdParam", groupId).list();
+            if (users != null) {
+                Hibernate.initialize(groupId);
             }
             tx.commit();
         } catch (HibernateException e) {

@@ -41,7 +41,8 @@
                         </p:selectOneMenu>
                     </p:panelGrid>
                     <div class="table-container">
-                        <p:dataTable id="checkboxDT" var="studentsIter" 
+                        <p:dataTable id="checkboxDT" 
+                                     var="studentsIter" 
                                      value="#{groupMB.students}" 
                                      selection="#{groupMB.selectedStudents}" 
                                      rowKey="#{studentsIter.userId}" 

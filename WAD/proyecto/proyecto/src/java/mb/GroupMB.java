@@ -25,6 +25,7 @@ public class GroupMB extends GenericMB implements Serializable{
     private ArrayList<User> students;
     private ArrayList<User> selectedStudents;
     private ArrayList<UserType> userTypes;
+    private ArrayList<User> studentsInGroup;
     private GenericDAO genericDAO;
     private UserDAO userDAO;
     private Boolean canProceed;
@@ -46,12 +47,19 @@ public class GroupMB extends GenericMB implements Serializable{
         group = new Group();
         groups = new ArrayList<>();
         selectedStudents = new ArrayList<>();
+        studentsInGroup = new ArrayList<>();
     }
     
     @Override
     public String prepareIndex() {
         String redirect = NavigationConstants.MANAGE_GROUPS_INDEX;
         groups = (ArrayList<Group>) genericDAO.findAll(Group.class);
+        return redirect;
+    }
+    
+    public String viewStudents() {
+        String redirect = NavigationConstants.MANAGE_GROUPS_VIEW;
+        studentsInGroup = (ArrayList<User>) userDAO.findByGroupId(group.getGroupId());
         return redirect;
     }
     
@@ -96,6 +104,16 @@ public class GroupMB extends GenericMB implements Serializable{
         String redirect = prepareAdd();
         if (validateAdd()) {
             if (genericDAO.add(group)) {
+                //System.out.println("List: "+selectedStudents.size());
+                //System.out.println("First: "+selectedStudents.get(0).getUser());
+                 
+                for (User selectedStudent : selectedStudents) {
+                    
+                    selectedStudent.setGroupId(group);
+                    if(!genericDAO.update(selectedStudent)){
+                        addMessage("Error!, couln't add the students", "messages", FacesMessage.SEVERITY_ERROR);
+                    }
+                }
                 addMessage("Successfully Registered", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndex();
             } else {
@@ -107,7 +125,7 @@ public class GroupMB extends GenericMB implements Serializable{
     
     @Override
     public String delete() {
-        System.out.println("Delted: "+group.getGroupName());
+        
         if (genericDAO.delete(group)) {
             addMessage("Successfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
         } else {
@@ -186,6 +204,14 @@ public class GroupMB extends GenericMB implements Serializable{
 
     public void setSelectedStudents(ArrayList<User> selectedStudents) {
         this.selectedStudents = selectedStudents;
+    }
+
+    public ArrayList<User> getStudentsInGroup() {
+        return studentsInGroup;
+    }
+
+    public void setStudentsInGroup(ArrayList<User> studentsInGroup) {
+        this.studentsInGroup = studentsInGroup;
     }
     
     

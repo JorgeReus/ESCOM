@@ -42,9 +42,17 @@
                                 <f:setPropertyActionListener value="#{groupIter}"
                                                              target="#{groupMB.group}"/>
                                 <i class="fa fa-remove fa-2x"/>
-                            </p:commandLink> 
+                            </p:commandLink>
+                            <p:spacer width="10px"/>
+                            <p:commandLink action="#{groupMB.viewStudents()}"
+                                           update="@form:groupsTable @form:messages">
+                                <f:setPropertyActionListener value="#{groupIter}"
+                                                             target="#{groupMB.group}"/>
+                                <i class="fa fa-list fa-2x"/>
+                            </p:commandLink>
                             
                         </p:column>
+                        
                     </p:dataTable>
 
                     <div class="button-container">
