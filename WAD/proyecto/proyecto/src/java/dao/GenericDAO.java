@@ -24,7 +24,13 @@ public class GenericDAO {
     public GenericDAO() {
 
     }
-
+    
+    /**
+     * Generic method to find an object based the object's id and class
+     * @param id
+     * @param clazz
+     * @return 
+     */
     public Object findByID(Integer id, Class clazz) {
         Object obj = null;
         try {
@@ -51,6 +57,11 @@ public class GenericDAO {
         return obj;
     }
 
+    /**
+     * Generic method to find all objects of a class
+     * @param clazz
+     * @return 
+     */
     public List findAll(Class clazz) {
         List objects = null;
         try {
@@ -84,6 +95,11 @@ public class GenericDAO {
         return objects;
     }
 
+    /**
+     * Generic method to update an object
+     * @param obj
+     * @return 
+     */
     public Boolean update(Object obj) {
         Boolean successful;
         try {
@@ -101,6 +117,11 @@ public class GenericDAO {
         return successful;
     }
 
+    /**
+     * Generic Method to delete an object
+     * @param obj
+     * @return 
+     */
     public Boolean delete(Object obj) {
         Boolean successful;
         try {
@@ -118,6 +139,11 @@ public class GenericDAO {
         return successful;
     }
 
+    /**
+     * Generic Method to add and object
+     * @param obj
+     * @return 
+     */
     public Boolean add(Object obj) {
         Boolean successful;
         try {
@@ -135,6 +161,11 @@ public class GenericDAO {
         return successful;
     }
 
+    /**
+     * Generic Method to add and get the id Of the persisted object
+     * @param obj
+     * @return 
+     */
     public Object safeAdd(Object obj) {
         Integer newObjectId;
         try {
@@ -151,6 +182,11 @@ public class GenericDAO {
         return newObjectId;
     }
 
+    /**
+     * Generic Method to get a session from the session factory
+     * and begin a transaction
+     * @throws HibernateException 
+     */
     protected void startOperation() throws HibernateException {
         session = HibernateUtil.getSessionFactory().openSession();
         tx = session.beginTransaction();

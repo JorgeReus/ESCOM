@@ -17,6 +17,11 @@ public class ActivityDAO extends GenericDAO{
 
     }
 
+    /**
+     * Method that finds all Activities from a subject
+     * @param subjectId
+     * @return 
+     */
     public List<Activity> findBySubjectId(Integer subjectId) {
         List<Activity> results;
         try {          
