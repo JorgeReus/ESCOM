@@ -18,12 +18,19 @@
                     </p:messages>
                 </div>
                 <p:outputLabel value="View Group" 
-                               style="font-size: 500%"/> 
+                               style="font-size: 500%"/><br/>
+                <p:outputLabel value="Teacher: "
+                               style="font-size: 150%"/>
+                <h:outputText value="#{groupMB.user.user}"
+                               style="font-size: 150%"/>
                 <div class="panelgrid-container">
                     <div class="table-container">
                         <p:dataTable id="studentsTable" 
                                      var="studentsIter" 
                                      value="#{groupMB.studentsInGroup}">
+                            <f:facet name="header">
+                                <h:outputText value="Students from group #{groupMB.group.groupName.toLowerCase()}" />
+                            </f:facet>
                             <p:column headerText="Id" style="width:200px;">
                                 <h:outputText value="#{studentsIter.userId}" />
                             </p:column>

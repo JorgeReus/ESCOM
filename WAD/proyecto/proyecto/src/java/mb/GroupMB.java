@@ -57,9 +57,11 @@ public class GroupMB extends GenericMB implements Serializable{
         return redirect;
     }
     
-    public String viewStudents() {
+    public String viewGroup() {
         String redirect = NavigationConstants.MANAGE_GROUPS_VIEW;
         studentsInGroup = (ArrayList<User>) userDAO.findByGroupId(group.getGroupId());
+        user = new User();
+        user = (User) genericDAO.findByID(group.getTeacherId().getUserId(), user.getClass());
         return redirect;
     }
     
@@ -125,11 +127,15 @@ public class GroupMB extends GenericMB implements Serializable{
     
     @Override
     public String delete() {
-        
+        studentsInGroup = (ArrayList<User>) userDAO.findByGroupId(group.getGroupId());
+        for (User student : studentsInGroup) {
+            student.setGroupId(null);
+            genericDAO.update(student);
+        }
         if (genericDAO.delete(group)) {
             addMessage("Successfully Deleted", "messages", FacesMessage.SEVERITY_INFO);
         } else {
-            addMessage("Couldn't delete the group", "messages", FacesMessage.SEVERITY_ERROR);
+            addMessage("Couldn't delete the group, maybe there are students asociated", "messages", FacesMessage.SEVERITY_ERROR);
         }
         return prepareIndex();
     }
