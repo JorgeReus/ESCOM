@@ -46,6 +46,12 @@ public class UserDAO extends GenericDAO {
         return u;
     }
     
+    /*
+        Método para obtener los usuarios de un tipo especificado, es decir:
+            Administrator, Teacher o Student
+        Recibe: id del tipo de usuario que se busca
+        Retorna: Lista de usuarios asociados al tipo de usuario
+    */
     public ArrayList<User> findByUserType(Integer typeId) {
         ArrayList<User> users;
         try {
@@ -65,6 +71,12 @@ public class UserDAO extends GenericDAO {
         }
         return users;
     }
+    
+    /*
+        Método para obtener los usuarios asociados a un grupo
+        Recibe: id del grupo 
+        Retorna: Lista de alumnos asociados al id del grupo
+    */
     
     public ArrayList<User> findByGroupId(Integer param) {
         ArrayList<User> users;

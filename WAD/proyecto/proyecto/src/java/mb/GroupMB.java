@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import javax.faces.application.FacesMessage;
 import util.BussinessConstants;
 
+    /*
+        ManagedBean que controla el registro y eliminación de grupos.
+    */
+
 @ManagedBean(name = "groupMB")
 @SessionScoped
 public class GroupMB extends GenericMB implements Serializable{
@@ -50,6 +54,10 @@ public class GroupMB extends GenericMB implements Serializable{
         studentsInGroup = new ArrayList<>();
     }
     
+    /*
+        Método que obtiene los datos necesarios para renderear el index de grupos
+        Retorna: String con la ruta del index de la gestión de grupos
+    */    
     @Override
     public String prepareIndex() {
         String redirect = NavigationConstants.MANAGE_GROUPS_INDEX;
@@ -57,6 +65,11 @@ public class GroupMB extends GenericMB implements Serializable{
         return redirect;
     }
     
+    /*
+        Método que obtiene los datos necesarios para mostrar el teacher y los alumnos
+        asociados a un grupo.
+        Retorna: String con la dirección de la pagina de detalles del grupo
+    */
     public String viewGroup() {
         String redirect = NavigationConstants.MANAGE_GROUPS_VIEW;
         studentsInGroup = (ArrayList<User>) userDAO.findByGroupId(group.getGroupId());
@@ -64,7 +77,12 @@ public class GroupMB extends GenericMB implements Serializable{
         user = (User) genericDAO.findByID(group.getTeacherId().getUserId(), user.getClass());
         return redirect;
     }
-    
+
+    /*
+        Método que obtiene los datos necesarios para renderear la pagina de registro
+        de un grupo
+        Retorna: String con la ruta de la pagina de registro de grupos
+    */ 
     @Override
     public String prepareAdd() {
         canProceed = Boolean.TRUE;
@@ -82,6 +100,12 @@ public class GroupMB extends GenericMB implements Serializable{
         return NavigationConstants.MANAGE_GROUPS_ADD;
     }
     
+    /*
+        Método que valida que los campos requeridos en el formulario no se encuentren 
+        vacíos al momento de realizar el registro. Muestra los mensajes correspondientes 
+        a cada error
+        Retorna: True si todos los campos se proporcionaron, False en caso contrario
+    */
     @Override
     protected Boolean validateAdd() {
         
@@ -101,12 +125,22 @@ public class GroupMB extends GenericMB implements Serializable{
         return isValid;
     }
     
+    /*
+        Método que realiza el registro de un grupo.
+        Retorna: String con la ruta de la gestión de grupos siempre y cuando el grupo
+        se haya registrado exitosamente, en caso contrario, el String devuelve la
+        ruta a la pagina actual
+    */
     @Override
     public String add() {
         String redirect = prepareAdd();
         if (validateAdd()) {
+<<<<<<< HEAD
             if (genericDAO.add(group)) {
                  
+=======
+            if (genericDAO.add(group)) { 
+>>>>>>> 77994a592d0b8eba880174ff5b2df6c7c5546132
                 for (User selectedStudent : selectedStudents) {
                     
                     selectedStudent.setGroupId(group);
@@ -123,6 +157,10 @@ public class GroupMB extends GenericMB implements Serializable{
         return redirect;
     }
     
+    /*
+        Método que borra un grupo, y desasocia los estudiantes de dicho grupo
+        Retorna: String con la ruta de la gestión de grupo
+    */
     @Override
     public String delete() {
         studentsInGroup = (ArrayList<User>) userDAO.findByGroupId(group.getGroupId());
@@ -138,6 +176,9 @@ public class GroupMB extends GenericMB implements Serializable{
         return prepareIndex();
     }
 
+    /*
+        Sección de getter y setter necesarios
+    */
     public Group getGroup() {
         return group;
     }
