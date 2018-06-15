@@ -13,6 +13,12 @@ public class GenericMB {
 
     protected final static String NOT_SUPPORTED = "Not Supported";
 
+    /**
+     * Generic method to add a message for the faces context
+     * @param message
+     * @param component
+     * @param severity 
+     */
     protected void addMessage(String message, String component, FacesMessage.Severity severity) {
         FacesMessage m = new FacesMessage();
         String summary;
@@ -27,22 +33,38 @@ public class GenericMB {
         FacesContext.getCurrentInstance().addMessage(component, m);
     }
 
+    /**
+     * Method that returns the httpSession
+     * @return 
+     */
     public HttpSession getSession() {
         return (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
     }
 
+    /**
+     * Method that returns the request
+     * @return 
+     */
     public HttpServletRequest getRequest() {
         return (HttpServletRequest) FacesContext.getCurrentInstance()
                 .getExternalContext().getRequest();
     }
 
+    /**
+     * Method that returns the userName
+     * @return 
+     */
     public String getUserName() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance()
                 .getExternalContext().getSession(false);
         return session.getAttribute("user").toString();
     }
 
+    /**
+     * Methods that returns the userId
+     * @return 
+     */
     public String getUserId() {
         HttpSession session = getSession();
         if (session != null) {

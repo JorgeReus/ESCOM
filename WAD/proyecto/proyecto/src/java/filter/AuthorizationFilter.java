@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package filter;
 
 import java.io.IOException;
@@ -25,6 +20,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"*.xhtml"})
 public class AuthorizationFilter implements Filter {
 
+    // Ajax request header
     private static final String AJAX_REDIRECT_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<partial-response><redirect url=\"%s\"></redirect></partial-response>";
 
@@ -42,14 +38,19 @@ public class AuthorizationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpSession session = request.getSession(false);
         String loginURL = request.getContextPath() + "/faces/login.xhtml";
-
+        
+        // User attribute not null
         boolean loggedIn = (session != null) && (session.getAttribute("user") != null);
+        // Login page requested
         boolean loginRequest = request.getRequestURI().equals(loginURL);
+        // Resource (image, video, etc.) requested
         boolean resourceRequest = request.getRequestURI().startsWith(request.getContextPath() + ResourceHandler.RESOURCE_IDENTIFIER + "/");
+        // Ajax request
         boolean ajaxRequest = "partial/ajax".equals(request.getHeader("Faces-Request"));
-
+        
+        
         if (loggedIn || loginRequest || resourceRequest) {
-            if (!resourceRequest) { // Prevent browser from caching restricted resources. See also https://stackoverflow.com/q/4194207/157882
+            if (!resourceRequest) { // Prevent browser from caching restricted resources
                 response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
                 response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
                 response.setDateHeader("Expires", 0); // Proxies.

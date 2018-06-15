@@ -19,6 +19,12 @@ public class UserDAO extends GenericDAO {
 
     }
 
+    /**
+     * Method that find an user based on hius username nad password, returns null if not found
+     * @param user
+     * @param password
+     * @return 
+     */
     public User findByUserPassword(String user, String password) {
         User u;
         try {
