@@ -135,12 +135,7 @@ public class GroupMB extends GenericMB implements Serializable{
     public String add() {
         String redirect = prepareAdd();
         if (validateAdd()) {
-<<<<<<< HEAD
             if (genericDAO.add(group)) {
-                 
-=======
-            if (genericDAO.add(group)) { 
->>>>>>> 77994a592d0b8eba880174ff5b2df6c7c5546132
                 for (User selectedStudent : selectedStudents) {
                     
                     selectedStudent.setGroupId(group);
