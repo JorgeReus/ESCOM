@@ -1,5 +1,6 @@
 package dao;
 
+import entity.Activity;
 import entity.User;
 import java.util.ArrayList;
 import org.hibernate.Hibernate;
@@ -20,10 +21,12 @@ public class UserDAO extends GenericDAO {
     }
 
     /**
-     * Method that find an user based on hius username nad password, returns null if not found
+     * Method that find an user based on hius username nad password, returns
+     * null if not found
+     *
      * @param user
      * @param password
-     * @return 
+     * @return
      */
     public User findByUserPassword(String user, String password) {
         User u;
@@ -34,6 +37,9 @@ public class UserDAO extends GenericDAO {
                     .setParameter("passwordParam", password).uniqueResult();
             if (u != null) {
                 Hibernate.initialize(u.getUserType());
+                for (Activity act : u.getActivities()) {
+                    Hibernate.initialize(act);
+                }
             }
             tx.commit();
         } catch (HibernateException e) {
@@ -45,13 +51,13 @@ public class UserDAO extends GenericDAO {
         }
         return u;
     }
-    
+
     /*
         Método para obtener los usuarios de un tipo especificado, es decir:
             Administrator, Teacher o Student
         Recibe: id del tipo de usuario que se busca
         Retorna: Lista de usuarios asociados al tipo de usuario
-    */
+     */
     public ArrayList<User> findByUserType(Integer typeId) {
         ArrayList<User> users;
         try {
@@ -71,13 +77,12 @@ public class UserDAO extends GenericDAO {
         }
         return users;
     }
-    
+
     /*
         Método para obtener los usuarios asociados a un grupo
         Recibe: id del grupo 
         Retorna: Lista de alumnos asociados al id del grupo
-    */
-    
+     */
     public ArrayList<User> findByGroupId(Integer param) {
         ArrayList<User> users;
         try {
@@ -86,7 +91,7 @@ public class UserDAO extends GenericDAO {
                     .setParameter("groupIdParam", param)
                     .list();
             if (users != null) {
-                for (User u : users){
+                for (User u : users) {
                     Hibernate.initialize(u.getUserType());
                     Hibernate.initialize(u.getGroupId());
                 }

@@ -1,7 +1,6 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -30,6 +30,10 @@ public class Question implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activityId")
     private Activity activity;
+    
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "answerId")
+    private Answer answer;
 
     public Integer getQuestionId() {
         return questionId;
@@ -53,6 +57,14 @@ public class Question implements Serializable {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
+    }
+
+    public Answer getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(Answer answer) {
+        this.answer = answer;
     }
 
     

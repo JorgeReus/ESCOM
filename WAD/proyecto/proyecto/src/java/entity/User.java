@@ -1,7 +1,7 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -37,6 +39,16 @@ public class User implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "groupId")
     private Group groupId;
+    
+    @ManyToMany
+    @JoinTable(
+            name = "user_activity",
+            joinColumns = {
+                @JoinColumn(name = "userId")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "activityId")}
+    )    
+    private List<Activity> activities;
 
     public Integer getUserId() {
         return userId;
@@ -76,6 +88,14 @@ public class User implements Serializable {
 
     public void setGroupId(Group groupId) {
         this.groupId = groupId;
+    }
+
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
     }
     
     

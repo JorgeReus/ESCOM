@@ -21,5 +21,6 @@
     <mapping class="entity.Sound"/>
     <mapping class="entity.Question"/>
     <mapping class="entity.Group"/>
+    <mapping class="entity.Answer"/>
   </session-factory>
 </hibernate-configuration>

@@ -1,7 +1,9 @@
 package mb;
 
+import dao.ActivityDAO;
 import dao.GenericDAO;
 import dao.UserDAO;
+import entity.Activity;
 import entity.Subject;
 import entity.User;
 import java.io.Serializable;
@@ -28,6 +30,9 @@ public class LoginMB extends GenericMB implements Serializable {
     private String password;
     private String home;
     private List<Subject> subjects;
+    private User student;
+    private ActivityDAO activityDAO;
+    private List<Activity> unansweredActivities;
 
     public LoginMB() {
         super();
@@ -38,6 +43,9 @@ public class LoginMB extends GenericMB implements Serializable {
         userDAO = new UserDAO();
         genericDAO = new GenericDAO();
         subjects = (ArrayList<Subject>) genericDAO.findAll(Subject.class);
+        student = new User();
+        activityDAO = new ActivityDAO();
+        unansweredActivities = new ArrayList<>();
     }
 
     public String validateLogin() {
@@ -56,6 +64,8 @@ public class LoginMB extends GenericMB implements Serializable {
                     redirect = NavigationConstants.LOGIN_TEACHER;
                     break;
                 case BussinessConstants.USER_TYPE_STUDENT:
+                    student = userResult;
+                    findUnansweredActivities();
                     redirect = NavigationConstants.LOGIN_STUDENT;
                     break;
                 default:
@@ -69,6 +79,18 @@ public class LoginMB extends GenericMB implements Serializable {
         home = redirect;
         return redirect;
     }
+    
+    public void findUnansweredActivities() {
+        unansweredActivities = activityDAO.findUnansweredByUser(student.getUserId());
+    }
+    
+    public String gotoHome() {
+        if (student != null && student.getUserType().getTypeId().equals(BussinessConstants.USER_TYPE_STUDENT)) {
+            findUnansweredActivities();
+        }
+        return home;
+    }
+    
 
     public String logout() {
         getSession().invalidate();
@@ -91,9 +113,6 @@ public class LoginMB extends GenericMB implements Serializable {
         this.password = password;
     }
    
-    public String gotoHome() {
-        return home;
-    }
 
     public List<Subject> getSubjects() {
         return subjects;
@@ -102,5 +121,14 @@ public class LoginMB extends GenericMB implements Serializable {
     public void setSubjects(List<Subject> subjects) {
         this.subjects = subjects;
     }
+
+    public List<Activity> getUnansweredActivities() {
+        return unansweredActivities;
+    }
+
+    public void setUnansweredActivities(List<Activity> unansweredActivities) {
+        this.unansweredActivities = unansweredActivities;
+    }
+    
 
 }

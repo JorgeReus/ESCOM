@@ -17,13 +17,14 @@
                     <h:commandLink action="#{loginMB.gotoHome()}"
                                    value="Home"/>
                 </li>
-                <li class='has-sub'><a href='#'><span>About</span></a>
+                <li class='has-sub'><a href='#'><span>Answer New Activity</span></a>
                     <ul>
-                        <li><a href='#'><span>Company</span></a></li>
-                        <li class='last'><a href='#'><span>Contact</span></a></li>
+                        <p:repeat value="#{loginMB.unansweredActivities}"
+                                  var="unansweredActivityIter">
+                            <li><p:commandLink value="#{unansweredActivityIter.activityName}"/></li>
+                        </p:repeat>
                     </ul>
                 </li>
-                <li class='last'><a href='#'><span>Contact</span></a></li>
             </ui:define>
         </ui:composition>
     </h:body>
