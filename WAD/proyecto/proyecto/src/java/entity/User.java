@@ -49,6 +49,16 @@ public class User implements Serializable {
                 @JoinColumn(name = "activityId")}
     )    
     private List<Activity> activities;
+    
+    @ManyToMany
+    @JoinTable(
+            name = "user_image",
+            joinColumns = {
+                @JoinColumn(name = "userId")},
+            inverseJoinColumns = {
+                @JoinColumn(name = "imageId")}
+    )    
+    private List<Image> images;
 
     public Integer getUserId() {
         return userId;
@@ -96,6 +106,14 @@ public class User implements Serializable {
 
     public void setActivities(List<Activity> activities) {
         this.activities = activities;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
     
     

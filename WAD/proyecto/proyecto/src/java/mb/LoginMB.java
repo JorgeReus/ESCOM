@@ -129,6 +129,15 @@ public class LoginMB extends GenericMB implements Serializable {
     public void setUnansweredActivities(List<Activity> unansweredActivities) {
         this.unansweredActivities = unansweredActivities;
     }
+
+    public User getStudent() {
+        return student;
+    }
+
+    public void setStudent(User student) {
+        this.student = student;
+    }
     
 
+    
 }

@@ -21,7 +21,13 @@
                     <ul>
                         <p:repeat value="#{loginMB.unansweredActivities}"
                                   var="unansweredActivityIter">
-                            <li><p:commandLink value="#{unansweredActivityIter.activityName}"/></li>
+                            <li><p:commandLink value="#{unansweredActivityIter.activityName}" action="#{userActivityMB.prepareUpdate()}">
+                                    <f:setPropertyActionListener value="#{unansweredActivityIter}"
+                                                                 target="#{userActivityMB.activity}"/>
+                                    <f:setPropertyActionListener value="#{loginMB.student}"
+                                                                 target="#{userActivityMB.student}"/>
+                                </p:commandLink>
+                            </li>
                         </p:repeat>
                     </ul>
                 </li>

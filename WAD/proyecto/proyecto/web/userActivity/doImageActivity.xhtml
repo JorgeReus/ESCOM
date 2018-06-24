@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="menuItems">
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Answer New Activity</span></a>
+                <ul>
+                    <c:forEach items="#{loginMB.unansweredActivities}"
+                               var="unansweredActivityIter">
+                        <li><p:commandLink value="#{unansweredActivityIter.activityName}" actionListener="#{userActivityMB.prepareUpdate()}"
+                                           update="@all">
+                                <f:setPropertyActionListener value="#{unansweredActivityIter}"
+                                                             target="#{userActivityMB.activity}"/>
+                            </p:commandLink>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </li>
+        </ui:define>
+        <ui:define name="mainContent">   
+            <script type="text/javascript">
+                function handleDrop(event, ui) {
+                    var image = ui.draggable;
+
+                    image.fadeOut('fast');
+                }
+            </script>
+            <h:form id="activitiesFrom">  
+                <div id="title">
+                    <p:outputLabel value="Do Activity" 
+                                   style="font-size: 500%"/>  
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
+                </div>
+                <p:panelGrid id="attribPanel" 
+                             styleClass="ui-panelgrid-blank"
+                             columnClasses="ui-grid-col-2, ui-grid-col-1" 
+                             columns="2" 
+                             layout="grid">
+                    <p:outputLabel value="Activity Name"/>
+                    <p:outputLabel value="#{userActivityMB.activity.activityName}"/>
+
+                </p:panelGrid>
+                <div id="dnd-images">
+                    <p:outputLabel value="Activity Images"
+                                   style="font-size: 200%"/>
+                    <div id="all-images">
+                        <p:fieldset id="availableImagesFieldSet" >
+                            <p:dataGrid id="availableImages" var="image" value="#{userActivityMB.activity.images}" columns="1">
+                                <p:panel id="imagePnl" header="#{image.imageName}" style="text-align:center">
+                                    <h:panelGrid columns="1" style="width:100%">
+                                        <p:graphicImage value="#{activityMB.image}"
+                                                        width="100px"
+                                                        height="100px"
+                                                        cache="false">
+                                            <f:param name="imageId" value="#{image.imageId}" />
+                                        </p:graphicImage>
+                                    </h:panelGrid>
+                                </p:panel>
+
+                                <p:draggable for="imagePnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                            </p:dataGrid>
+                        </p:fieldset>
+                    </div>
+                    <p:outputLabel value="Answer Images"
+                                   style="font-size: 200%"/>
+                    <div id="main-body">
+                        <p:fieldset id="selectedImages" style="margin-top:20px">
+                            <p:outputPanel id="dropArea">
+                                <h:outputText value="!!!Drop here!!!" rendered="#{empty userActivityMB.selectedImages}" style="font-size:24px;" />
+
+                                <p:dataGrid id="selectedImagesTable" var="selectedImage" value="#{userActivityMB.selectedImages}" columns="3"
+                                            rendered="#{not empty userActivityMB.selectedImages}">
+                                    <p:panel id="selectedImagePnl" header="#{selectedImage.imageName}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <p:graphicImage value="#{userActivityMB.image}"
+                                                            width="100px"
+                                                            height="100px">
+                                                <f:param name="imageId" value="#{selectedImage.imageId}" />
+                                            </p:graphicImage>
+                                        </h:panelGrid>
+                                    </p:panel>
+                                    <p:draggable for="selectedImagePnl" revert="true" handle=".ui-panel-titlebar" stack=".ui-panel"/>
+                                </p:dataGrid>
+                            </p:outputPanel>
+                        </p:fieldset>
+                        <p:droppable for="selectedImages" tolerance="touch" activeStyleClass="ui-state-highlight" datasource="availableImages" onDrop="handleDrop">
+                            <p:ajax listener="#{userActivityMB.onImageDrop}" update="dropArea availableImages" />
+                        </p:droppable>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <p:commandButton value="Save Activity" 
+                                     icon="fa fa-plus-circle"
+                                     update="activitiesFrom:messages @form"
+                                     action="#{userActivityMB.update()}"/>
+                    <p:commandButton action="#{loginMB.gotoHome()}"
+                        value="Cancel"/>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -39,4 +39,6 @@ public class NavigationConstants {
     public static final String MANAGE_GROUPS_INDEX = "/groups/index.xhtml";
     public static final String MANAGE_GROUPS_ADD = "/groups/add.xhtml";
     public static final String MANAGE_GROUPS_VIEW = "/groups/view.xhtml";
+    // User-activity
+    public static final String USER_ACTIVITY_ADD = "/userActivity/doImageActivity.xhtml";
 }
