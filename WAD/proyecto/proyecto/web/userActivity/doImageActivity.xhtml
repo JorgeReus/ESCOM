@@ -17,8 +17,7 @@
                 <ul>
                     <c:forEach items="#{loginMB.unansweredActivities}"
                                var="unansweredActivityIter">
-                        <li><p:commandLink value="#{unansweredActivityIter.activityName}" actionListener="#{userActivityMB.prepareUpdate()}"
-                                           update="@all">
+                        <li><p:commandLink value="#{unansweredActivityIter.activityName}" action="#{userActivityMB.prepareUpdate()}">
                                 <f:setPropertyActionListener value="#{unansweredActivityIter}"
                                                              target="#{userActivityMB.activity}"/>
                             </p:commandLink>
@@ -109,7 +108,7 @@
                     <p:commandButton value="Save Activity" 
                                      icon="fa fa-plus-circle"
                                      update="activitiesFrom:messages @form"
-                                     action="#{userActivityMB.update()}"/>
+                                     action="#{userActivityMB.updateImages()}"/>
                     <p:commandButton action="#{loginMB.gotoHome()}"
                         value="Cancel"/>
                 </div>

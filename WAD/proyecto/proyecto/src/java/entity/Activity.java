@@ -53,12 +53,15 @@ public class Activity implements Serializable {
             joinColumns = {
                 @JoinColumn(name = "activityId")},
             inverseJoinColumns = {
-                @JoinColumn(name = "imageId")}
+                @JoinColumn(name = "imageId")}          
     )    
     private List<Image> images;
     
     @OneToMany(mappedBy = "activity", cascade = CascadeType.REMOVE)
     private List<Question> questions;
+    
+    @Column(name = "reading")
+    private String reading;
     
     @Column(name = "video")  
     @Lob
@@ -130,6 +133,14 @@ public class Activity implements Serializable {
 
     public void setAudio(byte[] audio) {
         this.audio = audio;
+    }
+
+    public String getReading() {
+        return reading;
+    }
+
+    public void setReading(String reading) {
+        this.reading = reading;
     }
 
     

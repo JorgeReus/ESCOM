@@ -40,5 +40,16 @@ public class NavigationConstants {
     public static final String MANAGE_GROUPS_ADD = "/groups/add.xhtml";
     public static final String MANAGE_GROUPS_VIEW = "/groups/view.xhtml";
     // User-activity
-    public static final String USER_ACTIVITY_ADD = "/userActivity/doImageActivity.xhtml";
+    public static final String USER_ACTIVITY_EDIT_IMAGE = "/userActivity/doImageActivity.xhtml";
+    public static final String USER_ACTIVITY_EDIT_VIDEO = "/userActivity/doVideoActivity.xhtml";
+    public static final String USER_ACTIVITY_EDIT_AUDIO = "/userActivity/doAudioActivity.xhtml";
+    public static final String USER_ACTIVITY_EDIT_TEXT = "/userActivity/doTextActivity.xhtml";
+    public static final String USER_ACTIVITY_INDEX = "/userActivity/index.xhtml";
+    public static final String USER_ACTIVITY_VIEW = "/userActivity/view.xhtml";
+    // Grade User activity
+    public static final String GRADE_USER_ACTIVITY_IMAGES = "/gradeUserActivity/gradeImageActivity.xhtml";
+    public static final String GRADE_USER_ACTIVITY_AUDIO = "/gradeUserActivity/gradeAudioActivity.xhtml";
+    public static final String GRADE_USER_ACTIVITY_TEXT = "/gradeUserActivity/gradeTextActivity.xhtml";
+    public static final String GRADE_USER_ACTIVITY_VIDEO = "/gradeUserActivity/gradeVideoActivity.xhtml";
+    
 }

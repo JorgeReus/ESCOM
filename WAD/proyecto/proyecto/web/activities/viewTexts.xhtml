@@ -29,6 +29,22 @@
                     </c:forEach>
                 </ul>
             </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{imageMB.prepareIndex()}" 
+                                                    value="Manage Images">
+                        </h:commandLink>
+                    </li>
+                </ul> 
+            </li>
+            <li class='has-sub'><a href='#'><span>Students</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{userActivityMB.prepareIndex()}" 
+                                                    value="Students">
+                        </h:commandLink>
+                    </li>
+                </ul> 
+            </li>
         </ui:define>
         <ui:define name="facet-last">
             <h:outputStylesheet library="css" name="activity.css"/>
@@ -50,16 +66,18 @@
 
                 <p:panel id="imagePanel" 
                          header="#{activityMB.activity.activityName}">
-                    <p:media value="#{activityMB.audio}" 
-                             width="100vw"
-                             height="100vh" 
-                             player="flash" 
-                             cache="false" >
-                    </p:media>
 
                     <p:panelGrid styleClass="ui-panelgrid-blank"
                                  style="margin: auto"
                                  columns="3">
+                        <h:outputLabel id="readingLabel"
+                                       for="reading" 
+                                       value="Reading"/>
+                        <p:inputTextarea id="reading"
+                                         readonly="true"
+                                         value="#{activityMB.activity.reading}"
+                                         cols="90"/>
+                        <p:spacer/>
                         <p:spacer/>
                         <p:outputLabel value="Questions"/>
                         <p:spacer/>

@@ -26,9 +26,25 @@
                     </c:forEach>
                 </ul>
             </li>
+            <li class='has-sub'><a href='#'><span>Images</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{imageMB.prepareIndex()}" 
+                                                    value="Manage Images">
+                        </h:commandLink>
+                    </li>
+                </ul> 
+            </li>
+            <li class='has-sub'><a href='#'><span>Students</span></a>
+                <ul>
+                    <li class='last'><h:commandLink action="#{userActivityMB.prepareIndex()}" 
+                                                    value="Students">
+                        </h:commandLink>
+                    </li>
+                </ul> 
+            </li>
         </ui:define>
         <ui:define name="mainContent">
-            <h:form enctype="multipart/form-data">      
+            <h:form>      
                 <div id="divMessages">
                     <p:messages id="messages"
                                 showDetail="true" 
@@ -44,7 +60,14 @@
                                  styleClass="ui-panelgrid-blank"
                                  columnClasses="ui-grid-col-2, ui-grid-col-10"
                                  columns="2">
-
+                        <h:outputLabel id="readingLabel"
+                                       for="reading" 
+                                       value="Enter Reading"/>
+                        <p:inputTextarea id="reading"
+                                         value="#{activityMB.activity.reading}"
+                                         cols="90">
+                            
+                        </p:inputTextarea>
                         <h:outputLabel id="nameLabel"
                                        for="name" 
                                        value="Enter name"/>

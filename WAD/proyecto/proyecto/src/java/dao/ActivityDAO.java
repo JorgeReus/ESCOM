@@ -13,6 +13,7 @@ public class ActivityDAO extends GenericDAO{
 
     private static final String FIND_BY_SUBJECT_ID = "FROM Activity a WHERE a.subject.subjectId=:subjectId";
     private static final String FIND_UNANSWERED_BY_USER = "SELECT a FROM Activity a WHERE a NOT IN (SELECT ua FROM User u JOIN u.activities ua WHERE u.userId = :id)";
+    private static final String FIND_ANSWERED_BY_USER = "SELECT a FROM Activity a WHERE a IN (SELECT ua FROM User u JOIN u.activities ua WHERE u.userId = :id)";
 
     public ActivityDAO() {
 
@@ -52,6 +53,30 @@ public class ActivityDAO extends GenericDAO{
         try {          
             startOperation();
             results = (List<Activity>) session.createQuery(FIND_UNANSWERED_BY_USER)
+                    .setParameter("id", userId).list();
+            for(Activity a : results) {
+                Hibernate.initialize(a.getImages());
+                Hibernate.initialize(a.getSubject());             
+                Hibernate.initialize(a.getActivityType());             
+                Hibernate.initialize(a.getVideo());             
+                Hibernate.initialize(a.getQuestions());             
+            }
+            tx.commit();
+        } catch (HibernateException e){
+            tx.rollback();
+            System.err.println(e);
+            results = null;
+        } finally {
+            session.close();
+        }
+        return results;
+    }
+    
+    public List<Activity> findAnsweredByUser(Integer userId) {
+        List<Activity> results;
+        try {          
+            startOperation();
+            results = (List<Activity>) session.createQuery(FIND_ANSWERED_BY_USER)
                     .setParameter("id", userId).list();
             for(Activity a : results) {
                 Hibernate.initialize(a.getImages());

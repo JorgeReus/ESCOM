@@ -69,8 +69,9 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that handles the uploaded file asynchronously
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     public void handleFileUpload(FileUploadEvent event) throws IOException {
         file = event.getFile();
@@ -93,7 +94,7 @@ public class ActivityMB extends GenericMB implements Serializable {
             addMessage("Minimum one question", "messages", FacesMessage.SEVERITY_ERROR);
         }
     }
-    
+
     @Override
     public String prepareIndex() {
         return prepareIndexBySubject(subject.getSubjectId());
@@ -101,7 +102,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method for persisting a video
-     * @return 
+     *
+     * @return
      */
     public String addVideo() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_VIDEO;
@@ -148,7 +150,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that adds a sound
-     * @return 
+     *
+     * @return
      */
     public String addSound() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_SOUND;
@@ -252,15 +255,21 @@ public class ActivityMB extends GenericMB implements Serializable {
                 redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_IMAGES;
                 break;
             case BussinessConstants.ACTIVITY_TYPE_VIDEO:
-                questions.add(new Question());
+                if (questions.isEmpty()) {
+                    questions.add(new Question());
+                }
                 redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_VIDEO;
                 break;
             case BussinessConstants.ACTIVITY_TYPE_SOUND:
-                questions.add(new Question());
+                if (questions.isEmpty()) {
+                    questions.add(new Question());
+                }
                 redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_SOUND;
                 break;
             case BussinessConstants.ACTIVITY_TYPE_TEXT:
-                questions.add(new Question());
+                if (questions.isEmpty()) {
+                    questions.add(new Question());
+                }
                 redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_TEXTS;
                 break;
             default:
@@ -272,8 +281,9 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that retuns the StreamedContent of an image
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public StreamedContent getImage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -291,7 +301,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Hook that gets and image for the drag and drop
-     * @param ddEvent 
+     *
+     * @param ddEvent
      */
     public void onImageDrop(DragDropEvent ddEvent) {
         selectedImages.add(((Image) ddEvent.getData()));
@@ -299,7 +310,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method to ad an activity of images
-     * @return 
+     *
+     * @return
      */
     public String addImages() {
         String redirect = NavigationConstants.MANAGE_ACTIVITIES_ADD_IMAGES;
@@ -322,7 +334,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that deletes adn activity
-     * @return 
+     *
+     * @return
      */
     @Override
     public String delete() {
@@ -336,7 +349,8 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that redirects based on the activity type
-     * @return 
+     *
+     * @return
      */
     @Override
     public String prepareView() {
@@ -362,8 +376,9 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that returns the StreamedContent of a video
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public StreamedContent getVideo() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -378,8 +393,9 @@ public class ActivityMB extends GenericMB implements Serializable {
 
     /**
      * Method that returns the streamed content of an audio
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     public StreamedContent getAudio() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -463,9 +479,5 @@ public class ActivityMB extends GenericMB implements Serializable {
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
-
-   
-    
-    
 
 }

@@ -64,9 +64,11 @@ public class UserDAO extends GenericDAO {
             startOperation();
             users = (ArrayList<User>) session.createQuery(FIND_BY_USER_TYPE)
                     .setParameter("typeIdParam", typeId).list();
-            if (users != null) {
-                Hibernate.initialize(typeId);
+            for (User userIter : users) {
+                Hibernate.initialize(userIter.getGroupId());
+                Hibernate.initialize(userIter.getImages());
             }
+            
             tx.commit();
         } catch (HibernateException e) {
             tx.rollback();

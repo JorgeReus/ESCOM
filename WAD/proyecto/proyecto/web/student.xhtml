@@ -32,6 +32,20 @@
                     </ul>
                 </li>
             </ui:define>
+            <ui:define name="mainContent">
+                <div id="title">
+                    <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" 
+                                           style="font-size: 500%"/> 
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
+                </div>
+            </ui:define>
         </ui:composition>
     </h:body>
 

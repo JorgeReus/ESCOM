@@ -85,7 +85,7 @@ public class LoginMB extends GenericMB implements Serializable {
     }
     
     public String gotoHome() {
-        if (student != null && student.getUserType().getTypeId().equals(BussinessConstants.USER_TYPE_STUDENT)) {
+        if (student.getUserId() != null && student.getUserType().getTypeId().equals(BussinessConstants.USER_TYPE_STUDENT)) {
             findUnansweredActivities();
         }
         return home;
