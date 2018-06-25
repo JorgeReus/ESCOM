@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="../adminTemplate.xhtml">
+        <ui:define name="menuItems">
+            <li class='active'>
+                <h:commandLink action="#{loginMB.gotoHome()}"
+                               value="Home"/>
+            </li>
+            <li class='has-sub'><a href='#'><span>Answer New Activity</span></a>
+                <ul>
+                    <c:forEach items="#{loginMB.unansweredActivities}"
+                               var="unansweredActivityIter">
+                        <li><p:commandLink value="#{unansweredActivityIter.activityName}" action="#{userActivityMB.prepareUpdate()}">
+                                <f:setPropertyActionListener value="#{unansweredActivityIter}"
+                                                             target="#{userActivityMB.activity}"/>
+                            </p:commandLink>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </li>
+            <li class='has-sub'><a href='#'><span>Grades</span></a>
+                <ul>
+                    <li><p:commandLink value="View Grades" action="#{userActivityMB.prepareGradeindex()}"/></li>
+                </ul>
+            </li>
+        </ui:define>
+        <ui:define name="mainContent">   
+            <h:form id="activitiesFrom">  
+                <div id="title">
+                    <p:outputLabel value="Grades" 
+                                   style="font-size: 500%"/>  
+                    <div id="divMessages">
+                        <p:messages id="messages"
+                                    showDetail="true" 
+                                    closable="true"
+                                    showIcon="false">
+                            <p:autoUpdate />
+                        </p:messages>
+                    </div>
+                </div>
+
+                <p:dataTable id="gradesTable" 
+                             value="#{userActivityMB.grades}" 
+                             var="gradeIter">
+                    <p:column headerText="Activity">
+                        <h:outputText value="#{gradeIter.activity.activityName}"/>
+                    </p:column>
+                    <p:column headerText="Grade">
+                        <h:outputText value="#{gradeIter.grade}"/>
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

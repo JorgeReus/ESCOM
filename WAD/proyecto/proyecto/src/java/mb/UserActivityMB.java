@@ -55,6 +55,7 @@ public class UserActivityMB extends GenericMB implements Serializable {
     private AnswerDAO answerDAO;
     private Grade grade;
     private GradeDAO gradeDAO;
+    private List<Grade> grades;
 
     @PostConstruct
     public void init() {
@@ -71,6 +72,7 @@ public class UserActivityMB extends GenericMB implements Serializable {
         answerDAO = new AnswerDAO();
         grade = new Grade();
         gradeDAO = new GradeDAO();
+        grades = new ArrayList<>();
     }
 
     @Override
@@ -310,6 +312,11 @@ public class UserActivityMB extends GenericMB implements Serializable {
         }
         return redirect;
     }
+    
+    public String prepareGradeindex() {
+        grades = gradeDAO.findByUser((int)getSession().getAttribute("userId"));
+        return NavigationConstants.GRADE_USER_INDEX_STUDENT;
+    }
 
     public Activity getActivity() {
         return activity;
@@ -373,6 +380,14 @@ public class UserActivityMB extends GenericMB implements Serializable {
 
     public void setGrade(Grade grade) {
         this.grade = grade;
+    }
+
+    public List<Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
     }
 
 }

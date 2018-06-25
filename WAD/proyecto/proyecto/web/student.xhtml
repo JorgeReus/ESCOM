@@ -31,11 +31,16 @@
                         </p:repeat>
                     </ul>
                 </li>
+                <li class='has-sub'><a href='#'><span>Grades</span></a>
+                    <ul>
+                        <li><p:commandLink value="View Grades" action="#{userActivityMB.prepareGradeindex()}"/></li>
+                    </ul>
+                </li>
             </ui:define>
             <ui:define name="mainContent">
                 <div id="title">
                     <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" 
-                                           style="font-size: 500%"/> 
+                                   style="font-size: 500%"/> 
                     <div id="divMessages">
                         <p:messages id="messages"
                                     showDetail="true" 

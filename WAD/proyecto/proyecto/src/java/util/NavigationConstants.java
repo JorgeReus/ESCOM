@@ -51,5 +51,8 @@ public class NavigationConstants {
     public static final String GRADE_USER_ACTIVITY_AUDIO = "/gradeUserActivity/gradeAudioActivity.xhtml";
     public static final String GRADE_USER_ACTIVITY_TEXT = "/gradeUserActivity/gradeTextActivity.xhtml";
     public static final String GRADE_USER_ACTIVITY_VIDEO = "/gradeUserActivity/gradeVideoActivity.xhtml";
+    // Grade
+    public static final String GRADE_USER_INDEX_STUDENT = "/grades/indexStudent.xhtml";
+    
     
 }
