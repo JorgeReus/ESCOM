@@ -63,13 +63,13 @@
                         <h:outputLabel id="imageLabel"
                                        for="image" 
                                        value="Image file"/>
-                        <p:fileUpload id="image"
+                        <p:fileUpload id="imageUpload"
                                       fileUploadListener="#{imageMB.handleFileUpload}"/>
 
                         <h:outputLabel id="nameLabel"
-                                       for="name" 
+                                       for="imageNameInput" 
                                        value="Enter name"/>
-                        <h:inputText id="name"
+                        <h:inputText id="imageNameInput"
                                      value="#{imageMB.realImage.imageName}"/>
                         <h:outputLabel id="typeLabel"
                                        for="type" 

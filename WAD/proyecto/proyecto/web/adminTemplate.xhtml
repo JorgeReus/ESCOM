@@ -73,7 +73,7 @@
                     <div class="main"
                          id="mainContentContainer">
                         <ui:insert name="mainContent">
-                            <p:outputLabel value="Welcome #{loginMB.getSession().getAttribute('user')}" 
+                            <p:outputLabel id="welcomeLabel" value="Welcome #{loginMB.getSession().getAttribute('user')}" 
                                            style="font-size: 500%"/>          
                         </ui:insert>
                     </div>

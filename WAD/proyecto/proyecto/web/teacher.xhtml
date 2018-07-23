@@ -31,9 +31,10 @@
                         </c:forEach>
                     </ul>
                 </li>
-                <li class='has-sub'><a href='#'><span>Images</span></a>
+                <li class='has-sub'><a href='#' id="imagesSubMenu"><span>Images</span></a>
                     <ul>
                         <li class='last'><h:commandLink action="#{imageMB.prepareIndex()}" 
+                                                        id="manageImagesEntry"
                                                         value="Manage Images">
                             </h:commandLink>
                         </li>

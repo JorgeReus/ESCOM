@@ -102,9 +102,13 @@ public class ImageMB extends GenericMB implements Serializable {
     public String add() {
         String redirect = NavigationConstants.MANAGE_IMAGES_ADD;
         if (validateAdd()) {
-            realImage.setImage(file.getContents());
-            realImage.setImageSize(file.getContents().length);
-            if (genericDAO.add(realImage)) {
+            Image newImage = new Image();
+            newImage.setImageName(realImage.getImageName());
+            newImage.setImageCategory(realImage.getImageCategory());
+            newImage.setImageType(realImage.getImageType());
+            newImage.setImage(file.getContents());
+            newImage.setImageSize(file.getContents().length);
+            if (genericDAO.add(newImage)) {
                 addMessage("Succesfully added image", "messages", FacesMessage.SEVERITY_INFO);
                 redirect = prepareIndex();
             } else {
