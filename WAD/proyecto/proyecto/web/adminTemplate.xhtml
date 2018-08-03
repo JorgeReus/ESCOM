@@ -32,9 +32,10 @@
                             <ui:insert name="menuItems">
                                 <li class='active'><h:commandLink action="#{loginMB.gotoHome()}"
                                                                   value="Home"/></li>
-                                <li class='has-sub'><a href='#'><span>Users</span></a>
+                                <li class='has-sub'><a href='#' id="usersSubMenu"><span>Users</span></a>
                                     <ul>
                                         <li class='last'><h:commandLink action="#{userMB.prepareIndex()}" 
+                                                                        id="manageUsersEntry"
                                                                         value="Manage Users"/></li>
                                     </ul>
                                 </li>
