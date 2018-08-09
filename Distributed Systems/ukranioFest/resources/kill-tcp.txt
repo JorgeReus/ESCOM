@@ -1,0 +1,7 @@
+# Para cerrar un socket tcp 
+sudo netstat -nlp | grep :$port # e.g. sudo netstat -nlp | grep :8000
+# Obtenemos el pid de la última columna del output del comando anterior
+lsof -np $pid # e.g. lsof -np 6243
+# Obtenemos los sockets que tiene abiertos, solo usar los numéricos (0u, 1u, 2u, etc.)
+sudo gdb -p $pid --batch -ex 'call close($sock)' # e.g. sudo gdb -p 6243 --batch -ex 'call close(5u)'
+# Hacer esto para cada socket numérico

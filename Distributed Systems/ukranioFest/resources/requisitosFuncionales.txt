@@ -1,0 +1,24 @@
+1 servidor que grafica y se encarga de llevar el conteo de votos
+1 Servidor que se encarga de generar los votos máximo 88.7 millones de manera realista,
+Los mensajes generados son aleatorios en las primeras letras del rfc y las fechas de nacimiento 
+
+Un usuario solo puede votar una vez si ya está un voto con su mismo rfc se intenta otra
+La base de datos almacena 3 campos de cda mensaje (numero tel, rfc y partido )
+El servidor web no podra tener base de datos, solo los servidores de votos
+
+
+Generador de votos
+1 Genera RFC -- ya
+2 Generar Ponderacion
+3 Enviar Mensajes
+4 Verifica duplicidad 
+5 Mecanismo de base de datos
+
+Servidores 
+1 Recibir mensajes timeout 
+2 mecanismo de base de datos
+
+Sevidor Web
+1 Pedir datos a un servidor si no le contesta le pide al otro
+2 Graficación de datos
+3 Mecanismo de búsquedas

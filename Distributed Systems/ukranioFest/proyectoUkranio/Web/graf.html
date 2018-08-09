@@ -1,0 +1,50 @@
+<html>
+  <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script type="text/javascript" src="jsapi.js"></script>
+    <script src="jquery.min.js"></script>
+    <script type="text/javascript" src="loader.js"></script>
+    <script type="text/javascript">
+    var datos;
+    function printChar(){
+    datos = $.ajax({
+        url:'graficas.php',
+        type:'post',
+        dataType:'json',
+        async:false       
+      }).responseText;
+      
+      datos = JSON.parse(datos);
+    	google.charts.load('current', {packages: ['corechart', 'bar']});
+google.charts.setOnLoadCallback(drawTrendlines);
+}
+
+function drawTrendlines() {
+      var data = google.visualization.arrayToDataTable(datos);
+
+      var options = {
+        title: "Votos por Partido Politico",
+        width: 900,
+        height: 600,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+
+      var chart = new google.visualization.ColumnChart(document.getElementById('grafica'));
+      chart.draw(data, options);
+    }
+    printChar(); // This will run on page load
+    
+setInterval(function(){
+    printChar() // this will run after every 5 seconds
+}, 1000);
+	</script>
+  </head>
+  <body>
+  <a href="graf.html">Gráficas por Partido Pólitico</a>   
+  <a href="grafCan.html">Gráficas por Candidato</a>
+  <a href="graf.html">Busqueda Especifica</a>
+  <h1>Graficas</h1>
+    <div id="grafica"></div>
+  </body>
+</html>

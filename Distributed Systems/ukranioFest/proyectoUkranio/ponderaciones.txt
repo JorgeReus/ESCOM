@@ -1,0 +1,10 @@
+MORENA = 18 
+PT = 11
+ES = 6
+PAN = 13
+MC = 6
+PRD = 7
+PRI = 14
+VERDE = 6
+NA = 5
+BRONCO = 14
